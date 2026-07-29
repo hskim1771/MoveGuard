@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoveGuard — 근골격계 유해요인조사 MVP (RULA)</title>
+<style>
+  :root{
+    --ink:#1a2420; --paper:#f4f2ec; --line:#ccc7ba;
+    --safe:#2f6b4f; --watch:#b58a1f; --risk:#b5471f; --danger:#8a1f2a;
+    --accent:#2f5d8a; --mono:'JetBrains Mono','Consolas',monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Pretendard','Apple SD Gothic Neo',-apple-system,sans-serif;line-height:1.55;}
+  header{border-bottom:2px solid var(--ink);padding:22px 32px 16px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;}
+  header .brand{font-size:24px;font-weight:800;letter-spacing:0.3px;}
+  header .brand small{display:block;font-size:11px;font-weight:600;color:#666;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+  header .tag{font-family:var(--mono);font-size:11px;color:#666;text-align:right;}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 28px 100px;}
+
+  .stepper{display:flex;gap:4px;margin-bottom:28px;flex-wrap:wrap;}
+  .stepper .s{flex:1;min-width:80px;text-align:center;font-family:var(--mono);font-size:11px;padding:8px 4px;border-bottom:3px solid var(--line);color:#999;}
+  .stepper .s.active{color:var(--ink);border-color:var(--accent);font-weight:700;}
+  .stepper .s.done{color:var(--safe);border-color:var(--safe);}
+
+  .step{display:none;}
+  .step.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  .panel{border:1px solid var(--line);background:#fff;padding:24px;margin-bottom:20px;}
+  h2{font-size:18px;margin:0 0 6px;}
+  h2 .num{display:inline-flex;width:24px;height:24px;background:var(--ink);color:var(--paper);border-radius:50%;align-items:center;justify-content:center;font-size:12px;font-family:var(--mono);margin-right:8px;}
+  .sub{color:#666;font-size:13px;margin:0 0 18px;}
+  .notice{background:#fff8e6;border:1px solid var(--watch);padding:14px 18px;font-size:13px;margin-bottom:18px;}
+  .notice b{color:var(--watch);}
+  .guide-quote{background:#eef4fb;border-left:4px solid var(--accent);padding:14px 18px;font-size:14px;margin:14px 0;}
+
+  label{display:block;font-size:12px;font-weight:700;color:#555;margin:14px 0 6px;text-transform:uppercase;letter-spacing:0.4px;}
+  input[type=text],input[type=date],input[type=number],textarea,select{
+    width:100%;padding:9px 10px;border:1px solid var(--line);background:#fff;font-family:inherit;font-size:14px;
+  }
+  textarea{resize:vertical;min-height:56px;}
+  .row{display:flex;gap:16px;flex-wrap:wrap;}
+  .row > div{flex:1;min-width:200px;}
+  .checkline{display:flex;align-items:center;gap:8px;font-size:13px;margin:6px 0;}
+  .checkline input{width:auto;}
+
+  .btn{font-family:var(--mono);font-size:13px;padding:11px 22px;background:var(--ink);color:var(--paper);border:none;cursor:pointer;letter-spacing:0.4px;}
+  .btn:hover{opacity:.88;}
+  .btn:disabled{background:#aaa;cursor:not-allowed;}
+  .btn.secondary{background:transparent;color:var(--ink);border:1px solid var(--ink);}
+  .btn-row{display:flex;justify-content:space-between;margin-top:22px;}
+
+  .upload-zone{border:2px dashed #9a9484;padding:40px 20px;text-align:center;cursor:pointer;background:#fff;}
+  .upload-zone:hover{border-color:var(--accent);background:#f7fbff;}
+  .upload-zone input{display:none;}
+  .upload-zone .hint{font-size:12px;color:#777;margin-top:6px;}
+  .stage{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;}
+  .video-box{flex:1 1 340px;min-width:260px;}
+  video,canvas{width:100%;border-radius:2px;background:#111;}
+  .canvas-wrap{position:relative;}
+  .canvas-wrap canvas{position:absolute;top:0;left:0;}
+  .side-info{flex:1 1 240px;min-width:220px;font-family:var(--mono);font-size:12px;}
+  .progress-line{font-family:var(--mono);font-size:12px;color:#555;margin-top:10px;white-space:pre-wrap;min-height:18px;}
+
+  .score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:12px;}
+  .score-cell{background:#fff;padding:14px;text-align:center;}
+  .score-cell .label{font-family:var(--mono);font-size:10px;text-transform:uppercase;color:#777;letter-spacing:.5px;}
+  .score-cell .value{font-size:26px;font-weight:800;margin-top:4px;}
+  .score-cell .angle{font-family:var(--mono);font-size:10px;color:#999;margin-top:2px;}
+
+  .group-box{border:1px solid var(--line);padding:16px 18px;margin-top:14px;}
+  .group-box h3{margin:0 0 10px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;}
+  .group-box table{width:100%;border-collapse:collapse;font-size:13px;}
+  .group-box td{padding:5px 4px;border-bottom:1px dashed var(--line);}
+  .group-box td:last-child{text-align:right;font-weight:700;font-family:var(--mono);}
+  .score-sum{margin-top:10px;padding-top:10px;border-top:1px solid var(--ink);font-family:var(--mono);font-size:14px;font-weight:700;display:flex;justify-content:space-between;}
+
+  .verdict{margin-top:18px;padding:22px;border-left:6px solid var(--safe);background:#fff;border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .verdict.level-2{border-left-color:var(--watch);}
+  .verdict.level-3{border-left-color:var(--risk);}
+  .verdict.level-4{border-left-color:var(--danger);}
+  .verdict .grade{font-size:24px;font-weight:800;}
+  .verdict .action{font-family:var(--mono);font-size:12px;color:#555;margin-top:4px;}
+  .verdict .gscore{font-family:var(--mono);font-size:34px;font-weight:800;color:#bbb;}
+
+  /* 법정서식 문서 스타일 */
+  .doc{background:#fff;border:1px solid var(--line);}
+  .doc-title{background:var(--ink);color:var(--paper);padding:16px 20px;font-size:16px;font-weight:800;text-align:center;letter-spacing:1px;}
+  .doc-sec{padding:18px 22px;border-bottom:1px solid var(--line);}
+  .doc-sec h4{margin:0 0 10px;font-size:13px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.5px;color:var(--accent);}
+  table.form-table{width:100%;border-collapse:collapse;font-size:13px;}
+  table.form-table th,table.form-table td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  table.form-table th{background:#f4f2ec;font-weight:700;width:130px;font-size:12px;}
+  table.form-table td input,table.form-table td textarea,table.form-table td select{width:100%;border:none;background:transparent;font-family:inherit;font-size:13px;padding:2px 0;}
+  .cbgroup{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:12.5px;}
+  .cbgroup label{display:flex;align-items:center;gap:5px;font-weight:400;text-transform:none;margin:0;font-size:12.5px;color:var(--ink);flex:0 0 auto;white-space:nowrap;word-break:keep-all;}
+  .unit-row{display:grid;grid-template-columns:1.6fr 1fr 0.7fr 0.7fr 0.8fr;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px;font-size:12.5px;}
+  .unit-row > div{background:#fff;padding:7px 8px;}
+  .unit-row.head > div{background:#f4f2ec;font-weight:700;text-align:center;}
+  .rula-auto{background:#eef7f0;border:1px solid var(--safe);padding:14px;font-size:13px;}
+  .rula-auto b{color:var(--safe);}
+  .capture-photo{max-width:260px;border:1px solid var(--line);}
+  .mentor-flag{background:#fdeeee;border:1px solid var(--danger);color:#7a2020;font-size:11.5px;padding:8px 10px;margin-top:8px;}
+
+  footer{text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:#999;}
+
+  @media print{
+    header,.stepper,.btn-row,.notice,.step:not(#step-5){display:none !important;}
+    body{background:#fff;}
+    .step#step-5{display:block !important;}
+    .doc{border:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><small>MVP · RULA 1단계</small>MoveGuard</div>
+  <div class="tag">스마트폰 촬영 기반 근골격계 유해요인조사 자동화<br>제8회 K-디지털 트레이닝 해커톤 · 팀 아이디업</div>
+</header>
+
+<div class="wrap">
+
+  <div class="stepper" id="stepper">
+    <div class="s" data-s="1">01 안내</div>
+    <div class="s" data-s="2">02 조사개요</div>
+    <div class="s" data-s="3">03 촬영·분석</div>
+    <div class="s" data-s="4">04 RULA 결과</div>
+    <div class="s" data-s="5">05 법정서식</div>
+  </div>
+
+  <!-- STEP 1: 온보딩 -->
+  <section class="step active" id="step-1">
+    <div class="panel">
+      <h2><span class="num">1</span>시작하기 전에</h2>
+      <p class="sub">근골격계 유해요인조사가 처음이어도 괜찮습니다. 순서대로 따라오시면 됩니다.</p>
+
+      <div class="guide-quote">
+        "촬영 각도와 밝기는 분석 정확도, 나아가 여러분의 권익 보호와 직결됩니다. 조명이 충분한 공간에서 몸 전체가 프레임에 들어오도록 <b>측면 45도 각도</b>로 촬영해 주시기 바랍니다."
+      </div>
+
+      <p style="font-size:14px;">이 MVP는 <b>RULA(상지 중심 정밀평가도구)</b> 한 종류만 자동화합니다. REBA·OWAS 등 다른 도구는 이후 여유가 되면 추가할 계획이며, 지금은 RULA가 문제없이 끝까지 동작하는 것이 목표입니다.</p>
+
+      <div class="notice">
+        <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. 자세 추출은 MediaPipe Pose를 실제로 호출하고, RULA Table A/B/C 조견표를 그대로 적용하지만, 손목 굽힘·비틀림은 카메라만으로 정확히 잡기 어려워 중립값으로 고정합니다. 실제 제출용으로는 전문가 검토가 반드시 필요합니다.
+        <br><br><b>이 파일은 다운로드 후 로컬 브라우저에서 직접 열어야 정상 작동합니다.</b> (MediaPipe 모델을 외부 CDN에서 불러오기 때문)
+      </div>
+
+      <div class="btn-row" style="justify-content:flex-end;">
+        <button class="btn" onclick="goStep(2)">시작하기 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2: 조사개요 -->
+  <section class="step" id="step-2">
+    <div class="panel">
+      <h2><span class="num">2</span>조사 개요</h2>
+      <p class="sub">유해요인조사표(별지 제1호서식) 가목에 해당하는 기본 정보입니다. 아는 만큼만 채우고 나중에 수정해도 됩니다.</p>
+
+      <label>조사 구분</label>
+      <div class="cbgroup">
+        <label><input type="checkbox" id="chkRegular" checked> 정기조사</label>
+        <label><input type="checkbox" id="chkSick"> 수시조사 — 근골격계질환자 발생시</label>
+        <label><input type="checkbox" id="chkNew"> 수시조사 — 새로운 작업·설비 도입시</label>
+        <label><input type="checkbox" id="chkChange"> 수시조사 — 업무의 양·공정 등 변경시</label>
+      </div>
+
+      <div class="row">
+        <div><label>조사일시</label><input type="date" id="fSurveyDate"></div>
+        <div><label>조사자</label><input type="text" id="fSurveyor" placeholder="예: 홍길동"></div>
+      </div>
+      <div class="row">
+        <div><label>부서명</label><input type="text" id="fDept" placeholder="예: 포장부"></div>
+        <div><label>작업공정명</label><input type="text" id="fProcess" placeholder="예: 의자포장공정"></div>
+      </div>
+      <label>작업명 <span style="color:var(--risk);">*</span></label>
+      <input type="text" id="fJobName" placeholder="예: 의자포장 및 운반">
+
+      <div class="btn-row">
+        <button class="btn secondary" onclick="goStep(1)">← 이전</button>
+        <button class="btn" onclick="validateStep2()">다음 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3: 촬영/업로드 + 분석 -->
+  <section class="step" id="step-3">
+    <div class="panel">
+      <h2><span class="num">3</span>영상 업로드 및 분석</h2>
+      <p class="sub">10~30초 영상을 올려주세요. mp4/mov 권장.</p>
+
+      <div class="guide-quote" style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:22px;">💡</span>
+        <span><b>조명 충분한 곳에서, 측면 45도 각도로, 몸 전체가 프레임에 들어오도록</b> 촬영해 주세요. 각도·밝기가 분석 정확도를 크게 좌우합니다.</span>
+      </div>
+
+      <label class="upload-zone" id="dropZone">
+        <input type="file" id="videoInput" accept="video/*" capture="environment">
+        <div>작업 영상을 선택하세요</div>
+        <div class="hint">전신이 프레임에 들어오도록, 측면 45도 각도 촬영 권장</div>
+      </label>
+
+      <div class="stage" id="stage" style="display:none;">
+        <div class="video-box">
+          <div class="canvas-wrap">
+            <video id="video" muted playsinline></video>
+            <canvas id="overlay"></canvas>
+          </div>
+        </div>
+        <div class="side-info">
+          <div id="modelStatus">모델 로딩 대기 중...</div>
+          <div class="progress-line" id="progressLine"></div>
+          <div style="margin-top:14px;display:flex;gap:10px;">
+            <button class="btn" id="analyzeBtn" disabled>분석 시작</button>
+            <button class="btn secondary" id="resetBtn" type="button">초기화</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="supplementBox" style="display:none;margin-top:22px;">
+        <div class="group-box">
+          <h3>RULA 추가 입력 — 영상만으로는 알 수 없는 값</h3>
+          <label>이 작업에서 다루는 물체의 무게 (kg, 없으면 0)</label>
+          <input type="number" id="fWeight" value="0" min="0" step="0.5">
+          <div class="checkline"><input type="checkbox" id="fStaticForce"> <label for="fStaticForce" style="margin:0;text-transform:none;font-weight:400;">이 힘을 정적으로 유지하거나 반복적으로 가한다 (그렇지 않으면 간헐적으로 간주)</label></div>
+          <div class="checkline"><input type="checkbox" id="fMuscleStatic"> <label for="fMuscleStatic" style="margin:0;text-transform:none;font-weight:400;">이 자세를 10분 이상 유지하거나, 분당 4회 이상 반복한다</label></div>
+          <div class="checkline"><input type="checkbox" id="fLegsUnsupported"> <label for="fLegsUnsupported" style="margin:0;text-transform:none;font-weight:400;">다리가 불안정하거나 한쪽으로 치우친 자세다 (기본: 양다리 지지)</label></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn secondary" onclick="goStep(2)">← 이전</button>
+        <button class="btn" id="toResultsBtn" onclick="computeAndShowResults()" disabled>RULA 결과 계산 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4: RULA 결과 -->
+  <section class="step" id="step-4">
+    <div class="panel">
+      <h2><span class="num">4</span>RULA 정밀평가 결과</h2>
+      <p class="sub">가장 위험도가 높은 프레임을 기준으로 Table A / Table B / Table C를 그대로 적용한 결과입니다.</p>
+
+      <div class="score-grid" id="scoreGrid"></div>
+
+      <div class="group-box">
+        <h3>Group A — 상지 (Table A)</h3>
+        <table id="groupATable"></table>
+        <div class="score-sum"><span>Score A</span><span id="scoreAOut">—</span></div>
+      </div>
+
+      <div class="group-box">
+        <h3>Group B — 목·몸통·다리 (Table B)</h3>
+        <table id="groupBTable"></table>
+        <div class="score-sum"><span>Score B</span><span id="scoreBOut">—</span></div>
+      </div>
+
+      <div class="verdict" id="verdict">
+        <div>
+          <div class="grade" id="verdictGrade">—</div>
+          <div class="action" id="verdictAction">—</div>
+        </div>
+        <div class="gscore" id="gscoreOut">—</div>
+      </div>
+
+      <div class="notice" style="margin-top:16px;">
+        손목 굽힘·비틀림은 중립값(1점)으로 고정되어 계산되었습니다. 실제 손목 자세가 다르면 결과가 달라질 수 있습니다.
+      </div>
+
+      <div class="btn-row">
+        <button class="btn secondary" onclick="goStep(3)">← 이전</button>
+        <button class="btn" onclick="buildDocument(); goStep(5);">법정서식에 반영 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 5: 법정서식 -->
+  <section class="step" id="step-5">
+    <div class="panel">
+      <h2><span class="num">5</span>유해요인조사표 (별지 제1호서식)</h2>
+      <p class="sub">RULA 결과는 "3-1. 작업분석·평가 결과표"에 자동으로 채워집니다. 나머지 항목은 근로자 면담 등을 통해 직접 채워주세요.</p>
+
+      <div class="doc" id="docRoot"></div>
+
+      <div class="btn-row">
+        <button class="btn secondary" onclick="goStep(4)">← 이전</button>
+        <button class="btn" onclick="window.print()">인쇄 / PDF로 저장</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>MoveGuard MVP · 팀 아이디업 · 데모 목적으로만 사용하세요</footer>
+
+<script type="module">
+import { FilesetResolver, PoseLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+
+/* ---------- 상태 ---------- */
+const state = { survey:{}, frames:[], worst:null, scores:null, capturedPhoto:null };
+window.state = state;
+
+/* ---------- 스텝 네비게이션 ---------- */
+window.goStep = function(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step-'+n).classList.add('active');
+  document.querySelectorAll('.stepper .s').forEach(el=>{
+    const sn = parseInt(el.dataset.s);
+    el.classList.toggle('active', sn===n);
+    el.classList.toggle('done', sn<n);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+};
+
+document.getElementById('fSurveyDate').valueAsDate = new Date();
+
+window.validateStep2 = function(){
+  const jobName = document.getElementById('fJobName').value.trim();
+  if(!jobName){ alert('작업명은 최소한 입력해 주세요.'); return; }
+  state.survey = {
+    regular: document.getElementById('chkRegular').checked,
+    sick: document.getElementById('chkSick').checked,
+    newEquip: document.getElementById('chkNew').checked,
+    change: document.getElementById('chkChange').checked,
+    date: document.getElementById('fSurveyDate').value,
+    surveyor: document.getElementById('fSurveyor').value,
+    dept: document.getElementById('fDept').value,
+    process: document.getElementById('fProcess').value,
+    jobName: jobName,
+  };
+  goStep(3);
+};
+
+/* ---------- RULA 조견표 (KOSHA GUIDE H-9-2022 / McAtamney & Corlett 1993 2차출처 교차검증값) ---------- */
+// Table A[upperArm-1][lowerArm-1] = {w1:[T1,T2], w2:[T1,T2], w3:[T1,T2], w4:[T1,T2]}
+const TABLE_A = [
+  // upperArm 1
+  [ {1:[1,2],2:[2,2],3:[2,3],4:[3,3]}, {1:[2,2],2:[2,2],3:[3,3],4:[3,3]}, {1:[2,3],2:[3,3],3:[3,3],4:[4,4]} ],
+  // upperArm 2
+  [ {1:[2,3],2:[3,3],3:[3,4],4:[4,4]}, {1:[3,3],2:[3,4],3:[4,4],4:[4,5]}, {1:[3,4],2:[4,4],3:[4,4],4:[5,5]} ],
+  // upperArm 3
+  [ {1:[3,3],2:[4,4],3:[4,4],4:[5,5]}, {1:[3,4],2:[4,4],3:[4,4],4:[5,5]}, {1:[4,4],2:[4,4],3:[4,5],4:[5,5]} ],
+  // upperArm 4
+  [ {1:[4,4],2:[4,4],3:[4,5],4:[5,5]}, {1:[4,4],2:[4,4],3:[4,5],4:[5,5]}, {1:[4,4],2:[4,5],3:[5,5],4:[6,6]} ],
+];
+// Table B[neck-1][trunk-1] = {leg1, leg2}
+const TABLE_B = [
+  [ [2,3],[2,3],[3,4],[5,5],[6,6],[7,7] ],
+  [ [2,3],[2,3],[4,5],[5,5],[6,7],[7,7] ],
+  [ [3,3],[3,4],[4,5],[5,6],[6,7],[7,7] ],
+  [ [5,5],[5,6],[6,7],[7,7],[7,7],[8,8] ],
+  [ [7,7],[7,7],[7,8],[8,8],[8,8],[8,8] ],
+  [ [8,8],[8,8],[8,8],[8,9],[9,9],[9,9] ],
+];
+// Table C[WA-1][NTL-1], WA 1-8, NTL 1-7
+const TABLE_C = [
+  [1,2,3,4,5,6,7],
+  [2,2,2,3,4,5,5],
+  [3,3,3,3,4,5,6],
+  [3,3,4,4,4,5,6],
+  [4,4,4,4,5,6,7],
+  [4,4,4,5,6,6,7],
+  [5,5,5,6,6,7,7],
+  [5,5,6,6,7,7,7],
+];
+const ACTION_LEVELS = [
+  {max:2, label:'조치수준 1 — 문제 없음', desc:'현재 자세는 허용 가능한 수준입니다.'},
+  {max:4, label:'조치수준 2 — 추가 관찰 필요', desc:'조만간 개선을 권장합니다.'},
+  {max:6, label:'조치수준 3 — 빠른 시일 내 개선 필요', desc:'작업 방식 개선을 가까운 시일 내 계획하세요.'},
+  {max:99,label:'조치수준 4 — 즉시 개선 필요', desc:'즉각적인 작업 개선 조치가 필요합니다.'},
+];
+
+function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+/* ---------- 각도 → RULA 점수 ---------- */
+function neckScore(a){ if(a<=10) return 1; if(a<=20) return 2; return 3; }
+function trunkScore(a){ if(a<=5) return 1; if(a<=20) return 2; if(a<=60) return 3; return 4; }
+function upperArmScore(a){ if(a<=20) return 1; if(a<=45) return 2; if(a<=90) return 3; return 4; }
+function lowerArmScore(a){ return (a>=60 && a<=100) ? 1 : 2; }
+
+function forceScore(kg, staticOrRepetitive){
+  if(kg < 2) return staticOrRepetitive ? 1 : 0;
+  if(kg <= 10) return 2;
+  return 3;
+}
+
+/* ---------- MediaPipe 파이프라인 (기존 프로토타입 로직 재사용) ---------- */
+const videoInput = document.getElementById('videoInput');
+const video = document.getElementById('video');
+const overlay = document.getElementById('overlay');
+const ctx = overlay.getContext('2d');
+const stage = document.getElementById('stage');
+const modelStatus = document.getElementById('modelStatus');
+const progressLine = document.getElementById('progressLine');
+const analyzeBtn = document.getElementById('analyzeBtn');
+const resetBtn = document.getElementById('resetBtn');
+const supplementBox = document.getElementById('supplementBox');
+const toResultsBtn = document.getElementById('toResultsBtn');
+
+let poseLandmarker = null;
+let analyzing = false;
+
+const CONNECTIONS = [
+  [11,12],[11,13],[13,15],[12,14],[14,16],
+  [11,23],[12,24],[23,24],[23,25],[25,27],[24,26],[26,28],
+  [0,11],[0,12]
+];
+
+async function initModel(){
+  modelStatus.textContent = 'MediaPipe Pose 모델 로딩 중... (최초 1회, 수 초 소요)';
+  try{
+    const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+    poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
+      baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task", delegate:"GPU" },
+      runningMode:"VIDEO", numPoses:1
+    });
+    modelStatus.textContent = '✅ 모델 로딩 완료. 분석 시작 버튼을 누르세요.';
+    analyzeBtn.disabled = false;
+  }catch(e){
+    try{
+      const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+      poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
+        baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task", delegate:"CPU" },
+        runningMode:"VIDEO", numPoses:1
+      });
+      modelStatus.textContent = '✅ 모델 로딩 완료 (CPU 모드). 분석 시작 버튼을 누르세요.';
+      analyzeBtn.disabled = false;
+    }catch(e2){
+      modelStatus.textContent = '❌ 모델 로딩 실패: ' + e2.message;
+    }
+  }
+}
+initModel();
+
+videoInput.addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  video.src = URL.createObjectURL(file);
+  stage.style.display = 'flex';
+  video.onloadedmetadata = ()=>{ overlay.width = video.videoWidth; overlay.height = video.videoHeight; };
+});
+
+resetBtn.addEventListener('click', ()=>{ location.reload(); });
+
+function angleBetween(v1,v2){
+  const dot=v1.x*v2.x+v1.y*v2.y, m1=Math.hypot(v1.x,v1.y), m2=Math.hypot(v2.x,v2.y);
+  if(m1===0||m2===0) return 0;
+  let cos = Math.max(-1, Math.min(1, dot/(m1*m2)));
+  return Math.acos(cos)*180/Math.PI;
+}
+function vec(a,b){ return {x:b.x-a.x, y:b.y-a.y}; }
+
+function computeFrameAngles(lm){
+  const leftVis=(lm[11].visibility+lm[13].visibility+lm[15].visibility+lm[23].visibility)/4;
+  const rightVis=(lm[12].visibility+lm[14].visibility+lm[16].visibility+lm[24].visibility)/4;
+  const side = rightVis>=leftVis ? {sh:12,el:14,wr:16,hip:24} : {sh:11,el:13,wr:15,hip:23};
+  const shoulder=lm[side.sh], elbow=lm[side.el], wrist=lm[side.wr], nose=lm[0];
+  const shoulderMid={x:(lm[11].x+lm[12].x)/2,y:(lm[11].y+lm[12].y)/2};
+  const hipMid={x:(lm[23].x+lm[24].x)/2,y:(lm[23].y+lm[24].y)/2};
+  const vertical={x:0,y:-1};
+  const trunkVec=vec(hipMid,shoulderMid);
+  const trunkAngle=angleBetween(trunkVec,vertical);
+  const neckVec=vec(shoulderMid,nose);
+  const neckAngle=angleBetween(neckVec,trunkVec);
+  const upperArmVec=vec(shoulder,elbow);
+  const upperArmAngle=angleBetween(upperArmVec,trunkVec);
+  const elbowAngle=angleBetween(vec(elbow,shoulder),vec(elbow,wrist));
+  return {neckAngle,trunkAngle,upperArmAngle,elbowAngle,confidence:Math.max(leftVis,rightVis)};
+}
+
+function drawSkeleton(lm){
+  ctx.clearRect(0,0,overlay.width,overlay.height);
+  ctx.strokeStyle='#3fe0a0'; ctx.lineWidth=3;
+  CONNECTIONS.forEach(([a,b])=>{
+    const p1=lm[a], p2=lm[b];
+    ctx.beginPath(); ctx.moveTo(p1.x*overlay.width,p1.y*overlay.height); ctx.lineTo(p2.x*overlay.width,p2.y*overlay.height); ctx.stroke();
+  });
+  ctx.fillStyle='#ff6b4a';
+  lm.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x*overlay.width,p.y*overlay.height,4,0,2*Math.PI); ctx.fill(); });
+}
+
+analyzeBtn.addEventListener('click', async ()=>{
+  if(analyzing || !poseLandmarker) return;
+  analyzing = true; analyzeBtn.disabled = true;
+  video.pause(); video.currentTime = 0;
+  await new Promise(r=> video.onseeked = r);
+
+  const frames = [];
+  const duration = video.duration;
+  const step = Math.max(duration/30, 0.1);
+  let t=0, idx=0, worstFrameTime=0, worstTotal=-1;
+
+  while(t < duration){
+    video.currentTime = t;
+    await new Promise(r=>{ video.onseeked = r; });
+    const result = poseLandmarker.detectForVideo(video, performance.now());
+    if(result.landmarks && result.landmarks.length>0){
+      const lm = result.landmarks[0];
+      drawSkeleton(lm);
+      const a = computeFrameAngles(lm);
+      const total = neckScore(a.neckAngle)+trunkScore(a.trunkAngle)+upperArmScore(a.upperArmAngle)+lowerArmScore(a.elbowAngle);
+      frames.push(a);
+      if(total > worstTotal){ worstTotal = total; worstFrameTime = t; }
+      idx++;
+      progressLine.textContent = `프레임 분석 중... ${idx} / ~${Math.ceil(duration/step)} (t=${t.toFixed(1)}s)`;
+    }
+    t += step;
+  }
+
+  analyzing = false;
+
+  if(frames.length===0){
+    progressLine.textContent = '⚠️ 사람의 자세를 인식하지 못했습니다. 촬영 각도를 조정해 다시 시도해 주세요.';
+    return;
+  }
+
+  const worst = frames.reduce((acc,f)=>{
+    const total = neckScore(f.neckAngle)+trunkScore(f.trunkAngle)+upperArmScore(f.upperArmAngle)+lowerArmScore(f.elbowAngle);
+    if(!acc || total>acc.total) return {...f, total};
+    return acc;
+  }, null);
+
+  state.frames = frames;
+  state.worst = worst;
+
+  // 최악 프레임 사진 캡처 (법정서식용)
+  video.currentTime = worstFrameTime;
+  await new Promise(r=> video.onseeked = r);
+  const capCanvas = document.createElement('canvas');
+  capCanvas.width = video.videoWidth; capCanvas.height = video.videoHeight;
+  capCanvas.getContext('2d').drawImage(video, 0, 0);
+  state.capturedPhoto = capCanvas.toDataURL('image/jpeg', 0.85);
+
+  progressLine.textContent = `✅ 분석 완료 — 총 ${frames.length}개 프레임 처리, 최고 위험 자세 기준으로 판정합니다.`;
+  supplementBox.style.display = 'block';
+  toResultsBtn.disabled = false;
+});
+
+/* ---------- Step 4: RULA 결과 계산 & 렌더 ---------- */
+window.computeAndShowResults = function(){
+  const w = state.worst;
+  const weight = parseFloat(document.getElementById('fWeight').value) || 0;
+  const staticForce = document.getElementById('fStaticForce').checked;
+  const muscleStatic = document.getElementById('fMuscleStatic').checked;
+  const legsUnsupported = document.getElementById('fLegsUnsupported').checked;
+
+  const nS = neckScore(w.neckAngle);
+  const tS = trunkScore(w.trunkAngle);
+  const uaS = upperArmScore(w.upperArmAngle);
+  const laS = lowerArmScore(w.elbowAngle);
+  const wristS = 1;      // 손목: 카메라만으로 측정 불가 → 중립 고정
+  const wristTwist = 1;  // T1 고정
+  const legS = legsUnsupported ? 2 : 1;
+
+  const fS = forceScore(weight, staticForce);
+  const mS = muscleStatic ? 1 : 0;
+
+  const tableAEntry = TABLE_A[uaS-1][laS-1][wristS];
+  const tableAVal = tableAEntry[wristTwist-1];
+  const scoreA = clamp(tableAVal + mS + fS, 1, 8);
+
+  const tableBRow = TABLE_B[nS-1][tS-1];
+  const tableBVal = tableBRow[legS-1];
+  const scoreB = clamp(tableBVal + mS + fS, 1, 7);
+
+  const grand = TABLE_C[scoreA-1][scoreB-1];
+  const level = ACTION_LEVELS.find(l=> grand<=l.max);
+
+  state.scores = { nS,tS,uaS,laS,wristS,wristTwist,legS,fS,mS,scoreA,scoreB,grand,level,
+                    weight, staticForce, muscleStatic, legsUnsupported,
+                    neckAngle:w.neckAngle, trunkAngle:w.trunkAngle, upperArmAngle:w.upperArmAngle, elbowAngle:w.elbowAngle };
+
+  renderResults();
+  goStep(4);
+};
+
+function renderResults(){
+  const s = state.scores;
+  const cells = [
+    {label:'목 (Neck)', score:s.nS, angle:s.neckAngle},
+    {label:'몸통 (Trunk)', score:s.tS, angle:s.trunkAngle},
+    {label:'위팔 (Upper Arm)', score:s.uaS, angle:s.upperArmAngle},
+    {label:'아래팔 (Lower Arm)', score:s.laS, angle:s.elbowAngle},
+    {label:'손목 (Wrist)', score:s.wristS, angle:null},
+    {label:'다리 (Legs)', score:s.legS, angle:null},
+  ];
+  document.getElementById('scoreGrid').innerHTML = cells.map(c=>`
+    <div class="score-cell"><div class="label">${c.label}</div><div class="value">${c.score}</div>
+    <div class="angle">${c.angle!==null? c.angle.toFixed(1)+'°' : (c.label.includes('손목')?'중립 고정':'수동 입력')}</div></div>
+  `).join('');
+
+  document.getElementById('groupATable').innerHTML = `
+    <tr><td>상완(Upper Arm) 점수</td><td>${s.uaS}</td></tr>
+    <tr><td>하완(Lower Arm) 점수</td><td>${s.laS}</td></tr>
+    <tr><td>손목(Wrist) 점수 — 중립 고정</td><td>${s.wristS}</td></tr>
+    <tr><td>Table A 기본값</td><td>${TABLE_A[s.uaS-1][s.laS-1][s.wristS][s.wristTwist-1]}</td></tr>
+    <tr><td>근육사용(A) 가산</td><td>+${s.mS}</td></tr>
+    <tr><td>힘/부하(A) 가산 (${s.weight}kg)</td><td>+${s.fS}</td></tr>`;
+  document.getElementById('scoreAOut').textContent = 'Score A = '+s.scoreA;
+
+  document.getElementById('groupBTable').innerHTML = `
+    <tr><td>목(Neck) 점수</td><td>${s.nS}</td></tr>
+    <tr><td>몸통(Trunk) 점수</td><td>${s.tS}</td></tr>
+    <tr><td>다리(Legs) 점수</td><td>${s.legS}</td></tr>
+    <tr><td>Table B 기본값</td><td>${TABLE_B[s.nS-1][s.tS-1][s.legS-1]}</td></tr>
+    <tr><td>근육사용(B) 가산</td><td>+${s.mS}</td></tr>
+    <tr><td>힘/부하(B) 가산</td><td>+${s.fS}</td></tr>`;
+  document.getElementById('scoreBOut').textContent = 'Score B = '+s.scoreB;
+
+  const levelIdx = ACTION_LEVELS.indexOf(s.level)+1;
+  const verdictEl = document.getElementById('verdict');
+  verdictEl.className = 'verdict level-'+levelIdx;
+  document.getElementById('verdictGrade').textContent = s.level.label;
+  document.getElementById('verdictAction').textContent = s.level.desc;
+  document.getElementById('gscoreOut').textContent = s.grand;
+}
+
+/* ---------- Step 5: 법정서식 렌더 ---------- */
+window.buildDocument = function(){
+  const sv = state.survey;
+  const s = state.scores;
+  const today = new Date().toLocaleDateString('ko-KR');
+  const photoHtml = state.capturedPhoto
+    ? `<img class="capture-photo" src="${state.capturedPhoto}" alt="분석 프레임 캡처">`
+    : `<div style="color:#999;font-size:12px;">사진 없음</div>`;
+
+  const html = `
+    <div class="doc-title">유해요인조사표 (별지 제1호서식)</div>
+
+    <div class="doc-sec">
+      <h4>가. 조사 개요</h4>
+      <table class="form-table">
+        <tr><th>조사 구분</th><td>
+          <div class="cbgroup">
+            <label><input type="checkbox" ${sv.regular?'checked':''} disabled> 정기조사</label>
+            <label><input type="checkbox" ${sv.sick?'checked':''} disabled> 근골격계질환자 발생시</label>
+            <label><input type="checkbox" ${sv.newEquip?'checked':''} disabled> 새로운 작업·설비 도입시</label>
+            <label><input type="checkbox" ${sv.change?'checked':''} disabled> 업무양·공정 변경시</label>
+          </div>
+        </td></tr>
+        <tr><th>조사일시</th><td>${sv.date||today}</td><th style="width:90px;">조사자</th><td>${sv.surveyor||'—'}</td></tr>
+        <tr><th>부서명</th><td colspan="3">${sv.dept||'—'}</td></tr>
+        <tr><th>작업공정명</th><td colspan="3">${sv.process||'—'}</td></tr>
+        <tr><th>작업명</th><td colspan="3">${sv.jobName}</td></tr>
+      </table>
+    </div>
+
+    <div class="doc-sec">
+      <h4>나. 작업장 상황 조사</h4>
+      <p style="font-size:12px;color:#777;margin:0 0 8px;">근로자 면담을 통해 아래 항목을 확인해 직접 체크해 주세요 (기본값: 변화 없음).</p>
+      <table class="form-table">
+        ${['작업설비','작업량','작업속도','업무형태'].map(k=>`
+        <tr><th>${k}</th><td>
+          <div class="cbgroup">
+            <label><input type="radio" name="wc_${k}" checked> 변화 없음</label>
+            <label><input type="radio" name="wc_${k}"> 변화 있음 (<input type="text" style="width:160px;display:inline;border-bottom:1px solid #999;">)</label>
+          </div>
+        </td></tr>`).join('')}
+      </table>
+    </div>
+
+    <div class="doc-sec">
+      <h4>다. 작업조건 조사 — 1단계: 작업별 주요 작업내용</h4>
+      <table class="form-table">
+        <tr><th>작업명</th><td>${sv.jobName}</td></tr>
+        <tr><th>작업내용</th><td><textarea placeholder="예: 1) 컨베이어를 타고 오는 부품을 포장상자에 넣음&#10;2) 포장상자를 운반수레로 옮김"></textarea></td></tr>
+      </table>
+    </div>
+
+    <div class="doc-sec">
+      <h4>다. 작업조건 조사 — 2단계: 단위작업별 작업부하 및 작업빈도 (근로자 면담)</h4>
+      <div class="mentor-flag">참고: 이 총점수(작업부하×작업빈도)를 해석하는 공식 등급 기준표는 KOSHA 서식·고시 어디에도 없습니다. 상대적 우선순위 비교 용도로만 활용하세요.</div>
+      <div class="unit-row head"><div>단위작업명</div><div>부담작업(호)</div><div>작업부하(A)</div><div>작업빈도(B)</div><div>총점수</div></div>
+      ${[1,2,3].map(()=>`
+      <div class="unit-row">
+        <div><input type="text" placeholder="단위작업명"></div>
+        <div><input type="text" placeholder="예: 2,3,9"></div>
+        <div><select class="wA"><option value="1">1 매우쉬움</option><option value="2">2 쉬움</option><option value="3" selected>3 약간힘듦</option><option value="4">4 힘듦</option><option value="5">5 매우힘듦</option></select></div>
+        <div><select class="wB"><option value="1">1 3개월마다</option><option value="2">2 가끔</option><option value="3" selected>3 자주</option><option value="4">4 계속</option><option value="5">5 초과근무</option></select></div>
+        <div class="wTotal">—</div>
+      </div>`).join('')}
+    </div>
+
+    <div class="doc-sec">
+      <h4>다. 작업조건 조사 — 3단계: 유해요인평가</h4>
+      <table class="form-table">
+        <tr><th>작업명</th><td>${sv.jobName}</td><th style="width:90px;">근로자명</th><td><input type="text" placeholder="근로자 성함"></td></tr>
+      </table>
+      <div style="margin-top:12px;">${photoHtml}</div>
+      <p style="font-size:12px;color:#777;margin:10px 0 6px;">해당하는 근골격계부담작업 호수를 체크하세요 (11가지 유형, 고시 제3조 기준).</p>
+      <div class="cbgroup">
+        ${['1호 키보드/마우스','2호 반복동작','3호 팔 머리위/뒤','4호 목·허리 굽힘·트림','5호 쪼그림·무릎굽힘','6호 손가락 집기(1kg↑)','7호 한손 들기(4.5kg↑)','8호 25kg↑ 하루10회↑','9호 10kg↑ 하루25회↑','10호 4.5kg↑ 분당2회↑','11호 반복 충격'].map((t,i)=>
+          `<label><input type="checkbox" ${state.scores && (i===2 && state.scores.uaS>=3)?'checked':''}> ${t}</label>`).join('')}
+      </div>
+      <label style="margin-top:14px;">유해요인 발생 원인 / 비고</label>
+      <textarea placeholder="예: 부적절한 자세(3호) — 어깨를 반복적으로 들어올려 뻗침"></textarea>
+    </div>
+
+    <div class="doc-sec">
+      <h4>3-1. 작업분석·평가 결과표 (인간공학 측면을 고려한 조사)</h4>
+      <table class="form-table">
+        <tr><th>작업공정명</th><td>${sv.process||'—'}</td><th style="width:90px;">작업명</th><td>${sv.jobName}</td></tr>
+      </table>
+      <div style="margin-top:10px;">${photoHtml}</div>
+      <div class="rula-auto" style="margin-top:12px;">
+        <b>MoveGuard 자동 산출 (RULA)</b><br>
+        평가도구: RULA &nbsp;|&nbsp; Score A(상지) = ${s?s.scoreA:'—'} &nbsp;|&nbsp; Score B(목·몸통·다리) = ${s?s.scoreB:'—'}<br>
+        Grand Score = <b>${s?s.grand:'—'}</b> &nbsp;|&nbsp; 판정: <b>${s?s.level.label:'—'}</b><br>
+        <span style="font-size:12px;color:#555;">${s?s.level.desc:''}</span>
+      </div>
+    </div>
+
+    <div class="doc-sec" style="border-bottom:none;">
+      <h4>4. 종합요약</h4>
+      <textarea style="min-height:80px;" placeholder="조사 결과를 종합하여 요약해 주세요."></textarea>
+    </div>
+  `;
+  document.getElementById('docRoot').innerHTML = html;
+
+  // 단위작업 총점수 자동계산
+  document.querySelectorAll('.unit-row').forEach(row=>{
+    if(row.classList.contains('head')) return;
+    const a = row.querySelector('.wA'), b = row.querySelector('.wB'), out = row.querySelector('.wTotal');
+    function upd(){ out.textContent = (parseInt(a.value)*parseInt(b.value)); }
+    a.addEventListener('change', upd); b.addEventListener('change', upd); upd();
+  });
+};
+</script>
+</body>
+</html>
