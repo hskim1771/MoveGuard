@@ -46,15 +46,38 @@ def get_landmarker():
 
 
 def try_init_firebase():
-    """서비스 계정 키가 있으면 Firebase Admin 초기화, 없으면 None 반환 (기능만 꺼짐, 서버는 계속 동작)."""
-    cred_path = os.environ.get("FIREBASE_CREDENTIALS_PATH")
-    if not cred_path or not os.path.exists(cred_path):
-        print("⚠️  FIREBASE_CREDENTIALS_PATH 없음 — Firebase 저장 없이 분석만 동작합니다.")
+    """
+    서비스 계정 키가 있으면 Firebase Admin 초기화, 없으면 None 반환 (기능만 꺼짐, 서버는 계속 동작).
+    두 가지 방식 지원:
+      1) FIREBASE_CREDENTIALS_JSON — JSON 내용 전체를 환경변수 값으로 (권장, Render Secret File보다 안정적)
+      2) FIREBASE_CREDENTIALS_PATH — JSON 파일 경로
+    """
+    import json
+
+    import firebase_admin
+    from firebase_admin import credentials
+
+    cred = None
+    json_str = os.environ.get("FIREBASE_CREDENTIALS_JSON")
+    if json_str:
+        try:
+            cred = credentials.Certificate(json.loads(json_str))
+        except Exception as e:
+            print(f"⚠️  FIREBASE_CREDENTIALS_JSON 파싱 실패: {e}")
+
+    if cred is None:
+        cred_path = os.environ.get("FIREBASE_CREDENTIALS_PATH")
+        if cred_path and os.path.exists(cred_path) and os.path.getsize(cred_path) > 0:
+            try:
+                cred = credentials.Certificate(cred_path)
+            except Exception as e:
+                print(f"⚠️  FIREBASE_CREDENTIALS_PATH 읽기 실패: {e}")
+
+    if cred is None:
+        print("⚠️  Firebase 인증정보 없음 — Firebase 저장 없이 분석만 동작합니다.")
         return None
+
     try:
-        import firebase_admin
-        from firebase_admin import credentials
-        cred = credentials.Certificate(cred_path)
         firebase_admin.initialize_app(cred, {
             "storageBucket": os.environ.get("FIREBASE_STORAGE_BUCKET", "moveguard-c6e06.firebasestorage.app"),
         })
