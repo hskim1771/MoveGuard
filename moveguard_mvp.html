@@ -144,7 +144,8 @@
 
       <div class="notice">
         <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. 자세 추출은 MediaPipe Pose를 실제로 호출하고, RULA Table A/B/C 조견표를 그대로 적용하지만, 손목 굽힘·비틀림은 카메라만으로 정확히 잡기 어려워 중립값으로 고정합니다. 실제 제출용으로는 전문가 검토가 반드시 필요합니다.
-        <br><br><b>이 파일은 다운로드 후 로컬 브라우저에서 직접 열어야 정상 작동합니다.</b> (MediaPipe 모델을 외부 CDN에서 불러오기 때문)
+        <br><br><b>이 버전은 완전 오프라인으로 동작합니다</b> (MediaPipe 실행엔진·모델 파일을 `mediapipe/` 폴더에 내장 — 인터넷 없이도 동작). 다만 브라우저 보안 정책 때문에 파일을 더블클릭해서 바로 열면 안 되고, <b>이 폴더에서 간단한 로컬 서버를 띄운 뒤</b> 그 주소로 열어야 합니다:
+        <br><code>python3 -m http.server 8000</code> 실행 → 브라우저에서 <code>http://localhost:8000/moveguard_mvp.html</code> 접속 (인터넷 연결 없이도 동작)
       </div>
 
       <div class="btn-row" style="justify-content:flex-end;">
@@ -296,7 +297,7 @@
 <footer>MoveGuard MVP · 팀 아이디업 · 데모 목적으로만 사용하세요</footer>
 
 <script type="module">
-import { FilesetResolver, PoseLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+import { FilesetResolver, PoseLandmarker } from "./mediapipe/vision_bundle.mjs";
 
 /* ---------- 상태 ---------- */
 const state = { survey:{}, frames:[], worst:null, scores:null, capturedPhoto:null };
@@ -411,18 +412,18 @@ const CONNECTIONS = [
 async function initModel(){
   modelStatus.textContent = 'MediaPipe Pose 모델 로딩 중... (최초 1회, 수 초 소요)';
   try{
-    const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+    const vision = await FilesetResolver.forVisionTasks("./mediapipe/wasm");
     poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
-      baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task", delegate:"GPU" },
+      baseOptions:{ modelAssetPath:"./mediapipe/models/pose_landmarker_lite.task", delegate:"GPU" },
       runningMode:"VIDEO", numPoses:1
     });
     modelStatus.textContent = '✅ 모델 로딩 완료. 분석 시작 버튼을 누르세요.';
     analyzeBtn.disabled = false;
   }catch(e){
     try{
-      const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+      const vision = await FilesetResolver.forVisionTasks("./mediapipe/wasm");
       poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
-        baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task", delegate:"CPU" },
+        baseOptions:{ modelAssetPath:"./mediapipe/models/pose_landmarker_lite.task", delegate:"CPU" },
         runningMode:"VIDEO", numPoses:1
       });
       modelStatus.textContent = '✅ 모델 로딩 완료 (CPU 모드). 분석 시작 버튼을 누르세요.';
