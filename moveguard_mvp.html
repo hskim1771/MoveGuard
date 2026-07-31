@@ -402,7 +402,10 @@
 window.MOVEGUARD_CONFIG = window.MOVEGUARD_CONFIG || {
   // 팀 백엔드 서버 하나로 통합됨 (RULA 분석 + Firebase 저장 + AI Hub 비교 전부 이 서버가 처리)
   teamBackendUrl: "https://moveguard-backend.onrender.com",
-  aihubApiUrl: "https://moveguard-backend.onrender.com"
+  aihubApiUrl: "https://moveguard-backend.onrender.com",
+  // 백엔드가 무작위 봇/스캐너의 자동 남용을 막기 위해 확인하는 값. 완전한 비밀은 아님(코드에 그대로 보임) —
+  // 백엔드의 MOVEGUARD_API_KEY 환경변수와 같은 값이어야 함.
+  apiKey: "06QrqB5q7hjCPaHlRlmf1W9H2Ux5lvbb"
 };
 </script>
 <script type="module">
@@ -415,6 +418,7 @@ const AIHUB_API_URL = (
   window.MOVEGUARD_CONFIG.analysisApiUrl ||
   ''
 ).replace(/\/$/, '');
+const API_KEY = window.MOVEGUARD_CONFIG.apiKey || '';
 const MIN_FRAME_CONFIDENCE = 0.55;
 const MIN_USABLE_FRAMES = 5;
 const state = {
@@ -733,6 +737,7 @@ async function requestTeamBackendAnalysis({
   try{
     const response = await fetch(`${TEAM_BACKEND_URL}/analyze`, {
       method:'POST',
+      headers: API_KEY ? {'X-MoveGuard-Key': API_KEY} : {},
       body:form,
       signal:controller.signal
     });
@@ -770,7 +775,7 @@ async function requestAihubAnalysis(imageBlob){
   try{
     const response = await fetch(`${AIHUB_API_URL}/v1/aihub/classify`, {
       method:'POST',
-      headers:{'Content-Type':'image/jpeg'},
+      headers: API_KEY ? {'Content-Type':'image/jpeg', 'X-MoveGuard-Key': API_KEY} : {'Content-Type':'image/jpeg'},
       body:imageBlob,
       signal:controller.signal
     });
