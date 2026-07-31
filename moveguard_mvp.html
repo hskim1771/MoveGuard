@@ -410,7 +410,7 @@ window.MOVEGUARD_CONFIG = window.MOVEGUARD_CONFIG || {
 };
 </script>
 <script type="module">
-import { FilesetResolver, PoseLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
+import { FilesetResolver, PoseLandmarker } from "./mediapipe/vision_bundle.mjs";
 
 /* ---------- 상태 ---------- */
 const TEAM_BACKEND_URL = (window.MOVEGUARD_CONFIG.teamBackendUrl || '').replace(/\/$/, '');
@@ -799,9 +799,9 @@ const CONNECTIONS = [
 async function initModel(){
   modelStatus.textContent = 'MediaPipe Pose 모델 로딩 중... (최초 1회, 수 초 소요)';
   try{
-    const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+    const vision = await FilesetResolver.forVisionTasks("./mediapipe/wasm");
     poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
-      baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task", delegate:"GPU" },
+      baseOptions:{ modelAssetPath:"./mediapipe/models/pose_landmarker_lite.task", delegate:"GPU" },
       runningMode:"VIDEO", numPoses:1
     });
     modelStatus.textContent = '✅ 모델 준비 완료. 실시간 측정이나 영상 분석을 시작하세요.';
@@ -809,9 +809,9 @@ async function initModel(){
     startLiveBtn.disabled = false;
   }catch(e){
     try{
-      const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
+      const vision = await FilesetResolver.forVisionTasks("./mediapipe/wasm");
       poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
-        baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task", delegate:"CPU" },
+        baseOptions:{ modelAssetPath:"./mediapipe/models/pose_landmarker_lite.task", delegate:"CPU" },
         runningMode:"VIDEO", numPoses:1
       });
       modelStatus.textContent = '✅ 모델 준비 완료 (CPU 모드). 실시간 측정이나 영상 분석을 시작하세요.';
