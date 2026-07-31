@@ -1,0 +1,7 @@
+MoveGuard uses service-ready posture classification models derived from the
+AI Hub dataset 71439 model package:
+"근골격계 질환 예측을 위한 작업자 자세 데이터".
+
+Source: https://aihub.or.kr/aihubdata/data/view.do?dataSetSn=71439
+
+The original AI Hub image dataset is not included in this repository.
