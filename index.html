@@ -971,6 +971,13 @@ function drawSkeleton(lm){
   lm.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x*overlay.width,p.y*overlay.height,4,0,2*Math.PI); ctx.fill(); });
 }
 
+function drawVideoFrameWithSkeleton(lm){
+  if(video.readyState<2) return;
+  ctx.clearRect(0, 0, overlay.width, overlay.height);
+  ctx.drawImage(video, 0, 0, overlay.width, overlay.height);
+  if(lm) drawSkeleton(lm);
+}
+
 function snapshotLandmarks(lm){
   return lm.map(point=>({
     x:point.x,
@@ -1246,7 +1253,7 @@ analyzeBtn.addEventListener('click', async ()=>{
     if(result.landmarks && result.landmarks.length>0){
       const lm = result.landmarks[0];
       detectedFrames++;
-      drawSkeleton(lm);
+      drawVideoFrameWithSkeleton(lm);
       const a = computeFrameAngles(lm);
       const usable = a.confidence>=MIN_FRAME_CONFIDENCE && a.fullBodyConfidence>=MIN_FRAME_CONFIDENCE && a.fullBodyInFrame;
       if(usable){
@@ -1299,6 +1306,7 @@ analyzeBtn.addEventListener('click', async ()=>{
   // 최악 프레임 사진 캡처 (법정서식용)
   video.currentTime = worstFrameTime;
   await new Promise(r=> video.onseeked = r);
+  drawVideoFrameWithSkeleton(worst.landmarks);
   const capCanvas = document.createElement('canvas');
   capCanvas.width = video.videoWidth; capCanvas.height = video.videoHeight;
   capCanvas.getContext('2d').drawImage(video, 0, 0);
