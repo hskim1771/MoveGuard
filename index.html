@@ -164,6 +164,24 @@
 </head>
 <body>
 
+<div id="inAppBrowserNotice" style="display:none;background:#fff3cd;border-bottom:1px solid #d8bd70;padding:10px 16px;font-size:13px;text-align:center;">
+  카카오톡 등 인앱 브라우저에서는 카메라가 제한될 수 있습니다.
+  <button id="openExternalBrowserBtn" type="button" style="margin-left:8px;background:#111;color:#fff;border:none;padding:6px 12px;border-radius:3px;font-size:12.5px;cursor:pointer;">기본 브라우저로 열기</button>
+</div>
+<script>
+(function(){
+  var ua = navigator.userAgent || '';
+  var isKakao = /KAKAOTALK/i.test(ua);
+  if(isKakao){
+    document.getElementById('inAppBrowserNotice').style.display = 'block';
+    document.getElementById('openExternalBrowserBtn').addEventListener('click', function(){
+      var url = encodeURIComponent(window.location.href);
+      window.location.href = 'kakaotalk://web/openExternal?url=' + url;
+    });
+  }
+})();
+</script>
+
 <header>
   <div class="brand"><small>MVP · RULA 1단계</small>MoveGuard</div>
   <div class="tag">스마트폰 촬영 기반 근골격계 유해요인조사 자동화<br>제8회 K-디지털 트레이닝 해커톤 · 팀 아이디업</div>
@@ -1045,11 +1063,13 @@ startLiveBtn.addEventListener('click', async ()=>{
     });
     video.removeAttribute('src');
     video.srcObject = liveStream;
+    // 사파리 계열 브라우저는 컨테이너가 숨겨진(display:none) 상태에서 재생을 시작하면
+    // 화면을 보이게 바꿔도 실제 영상이 그려지지 않는 경우가 있다 — 보이게 먼저 만들고 재생한다.
+    stage.style.display = 'flex';
     await video.play();
     const recorderReady = startLiveRecording(liveStream);
     overlay.width = video.videoWidth || 1280;
     overlay.height = video.videoHeight || 720;
-    stage.style.display = 'flex';
     liveRisk.className = 'live-risk visible level-1';
     liveRiskLabel.textContent = '자세 인식 준비';
     liveRiskScore.textContent = '현재 추정 RULA —';
