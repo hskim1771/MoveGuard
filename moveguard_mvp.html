@@ -109,6 +109,8 @@
   .group-box table{width:100%;border-collapse:collapse;font-size:13px;}
   .group-box td{padding:5px 4px;border-bottom:1px dashed var(--line);}
   .group-box td:last-child{text-align:right;font-weight:700;font-family:var(--mono);}
+  .team-backend-box{background:#f0f7f3;border-color:#9bc4ad;}
+  .team-backend-box .aihub-help{font-size:12px;color:#4f6859;line-height:1.55;margin:10px 0 0;}
   .score-sum{margin-top:10px;padding-top:10px;border-top:1px solid var(--ink);font-family:var(--mono);font-size:14px;font-weight:700;display:flex;justify-content:space-between;}
   .aihub-box{background:#f7f9fc;border-color:#aebfd1;}
   .aihub-box .aihub-help{font-size:12px;color:#596776;line-height:1.55;margin:0 0 10px;}
@@ -191,15 +193,15 @@
 
       <div class="notice">
         <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. 자세 추출은 MediaPipe Pose를 실제로 호출하고, RULA Table A/B/C 조견표를 그대로 적용하지만, 손목 굽힘·비틀림은 카메라만으로 정확히 잡기 어려워 중립값으로 고정합니다. 실제 제출용으로는 전문가 검토가 반드시 필요합니다.
-        <br><br><b>MoveGuard 웹 안에서 바로 영상을 선택해 분석할 수 있습니다.</b> 로컬 AI 서버가 연결되지 않은 환경에서도 브라우저 RULA 분석은 계속 동작합니다.
+        <br><br><b>MoveGuard 웹 안에서 바로 영상을 선택해 분석할 수 있습니다.</b> 팀 서버가 연결되지 않은 환경에서도 브라우저 RULA 분석은 계속 동작합니다.
       </div>
 
       <div class="consent-box">
         <h3>근로자 촬영·분석 동의</h3>
-        <p>현재 기본 분석은 이 브라우저 안에서 처리됩니다. 대표 사진 1장은 법정서식 미리보기에만 사용되며, 초기화하거나 화면을 닫으면 사라집니다. 로컬 FastAPI가 연결된 경우 원본 영상 전체가 아니라 최고 위험 프레임 사진 1장과 관절 좌표만 전송하며 서버에는 저장하지 않습니다.</p>
+        <p>촬영 또는 선택한 영상 전체는 RULA 분석을 위해 MoveGuard 팀 서버로 전송됩니다. 서버의 임시 영상은 분석 직후 삭제되며, 최고 위험 자세의 대표 사진 1장과 RULA 결과·작업명은 Firebase에 저장될 수 있습니다. AI Hub 비교 기능이 켜진 배포 환경에서는 대표 사진 1장이 별도 분류 서버로 전송됩니다. 팀 서버 연결에 실패하면 브라우저 안에서 계산한 임시 결과만 표시합니다.</p>
         <label>
           <input type="checkbox" id="fWorkerConsent">
-          <span>촬영 목적과 처리 방식을 안내받았으며, 자세 분석과 대표 사진 생성에 동의합니다.</span>
+          <span>촬영 목적과 영상의 서버 전송, 대표 사진·분석 결과 저장 방식을 안내받았으며 이에 동의합니다.</span>
         </label>
       </div>
 
@@ -355,9 +357,14 @@
         <div class="gscore" id="gscoreOut">—</div>
       </div>
 
+      <div class="group-box team-backend-box">
+        <h3>팀 백엔드 최종 분석</h3>
+        <div id="teamBackendContent">팀 FastAPI 서버 분석 대기 중입니다.</div>
+      </div>
+
       <div class="group-box aihub-box">
         <h3>AI Hub 학습모델 비교 — 결과 덮어쓰기 없음</h3>
-        <p class="aihub-help">AI Hub 71439 EfficientNet 모델이 같은 위험 프레임을 분류한 결과입니다. 기존 MediaPipe 각도 기반 RULA 점수는 그대로 유지됩니다.</p>
+        <p class="aihub-help">AI Hub 71439 EfficientNet 모델이 같은 위험 프레임을 분류한 참고 결과입니다. 팀 백엔드의 최종 RULA 점수는 덮어쓰지 않습니다.</p>
         <div id="aihubComparisonContent">로컬 AI Hub 서버 결과가 없습니다.</div>
       </div>
 
@@ -393,11 +400,12 @@
 
 <script>
 window.MOVEGUARD_CONFIG = window.MOVEGUARD_CONFIG || {
-  analysisApiUrl:
+  teamBackendUrl: "https://moveguard-backend.onrender.com",
+  aihubApiUrl:
     window.location.protocol === "file:" ||
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
-      ? "http://127.0.0.1:8000"
+      ? ""
       : "https://moveguard-analysis-api-4que.onrender.com"
 };
 </script>
@@ -405,7 +413,12 @@ window.MOVEGUARD_CONFIG = window.MOVEGUARD_CONFIG || {
 import { FilesetResolver, PoseLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
 
 /* ---------- 상태 ---------- */
-const ANALYSIS_API_URL = (window.MOVEGUARD_CONFIG.analysisApiUrl || '').replace(/\/$/, '');
+const TEAM_BACKEND_URL = (window.MOVEGUARD_CONFIG.teamBackendUrl || '').replace(/\/$/, '');
+const AIHUB_API_URL = (
+  window.MOVEGUARD_CONFIG.aihubApiUrl ||
+  window.MOVEGUARD_CONFIG.analysisApiUrl ||
+  ''
+).replace(/\/$/, '');
 const MIN_FRAME_CONFIDENCE = 0.55;
 const MIN_USABLE_FRAMES = 5;
 const state = {
@@ -417,7 +430,11 @@ const state = {
   capturedPhoto:null,
   quality:null,
   serverAnalysis:null,
+  teamBackendAnalysis:null,
+  teamBackendError:null,
   aihubAnalysis:null,
+  sourceVideoBlob:null,
+  sourceVideoName:null,
   sourceMode:'live',
   measurementStartedAt:null,
   measurementEndedAt:null,
@@ -564,10 +581,55 @@ let liveRejectedFrames = 0;
 let liveWorstScore = -1;
 let liveWorstCanvas = null;
 let liveStartedAtMs = 0;
+let liveRecorder = null;
+let liveRecordedChunks = [];
 
 function setApiStatus(message, mode=''){
   apiStatus.textContent = message;
   apiStatus.className = 'status-chip' + (mode ? ' '+mode : '');
+}
+
+function startLiveRecording(stream){
+  liveRecordedChunks = [];
+  liveRecorder = null;
+  if(!window.MediaRecorder) return false;
+  const mimeType = [
+    'video/webm;codecs=vp9',
+    'video/webm;codecs=vp8',
+    'video/webm',
+    'video/mp4'
+  ].find(type=>MediaRecorder.isTypeSupported(type));
+  try{
+    liveRecorder = new MediaRecorder(stream, mimeType ? {mimeType} : undefined);
+    liveRecorder.addEventListener('dataavailable', event=>{
+      if(event.data?.size) liveRecordedChunks.push(event.data);
+    });
+    liveRecorder.start(1000);
+    return true;
+  }catch{
+    liveRecorder = null;
+    return false;
+  }
+}
+
+function finishLiveRecording(){
+  return new Promise(resolve=>{
+    if(!liveRecorder || liveRecorder.state==='inactive'){
+      resolve(null);
+      return;
+    }
+    const recorder = liveRecorder;
+    recorder.addEventListener('stop', ()=>{
+      const type = recorder.mimeType || 'video/webm';
+      const blob = liveRecordedChunks.length
+        ? new Blob(liveRecordedChunks, {type})
+        : null;
+      liveRecorder = null;
+      liveRecordedChunks = [];
+      resolve(blob);
+    }, {once:true});
+    recorder.stop();
+  });
 }
 
 function stopLiveTracks(){
@@ -612,57 +674,93 @@ modeButtons.forEach(button=>{
 });
 
 async function checkApiHealth(){
-  if(!ANALYSIS_API_URL){
+  if(!TEAM_BACKEND_URL){
     setApiStatus('브라우저 분석 모드');
     return;
   }
   const controller = new AbortController();
-  const timeout = setTimeout(()=>controller.abort(), 2500);
+  const timeout = setTimeout(()=>controller.abort(), 45000);
   try{
-    const response = await fetch(`${ANALYSIS_API_URL}/health`, {
+    const response = await fetch(`${TEAM_BACKEND_URL}/health`, {
       signal:controller.signal
     });
     if(!response.ok) throw new Error('health check failed');
     const health = await response.json();
     setApiStatus(
-      health.aihub?.configured
-        ? 'FastAPI · AI Hub 모델 준비됨'
-        : 'FastAPI 연결됨 · AI Hub 모델 확인 필요',
-      health.aihub?.configured ? 'online' : 'offline'
+      health.firebase_connected
+        ? '팀 FastAPI · Firebase 연결됨'
+        : '팀 FastAPI 연결됨 · Firebase 저장 안 함',
+      'online'
     );
   }catch{
-    setApiStatus('서버 연결 실패 · 브라우저 분석 유지', 'offline');
+    setApiStatus('팀 서버 연결 실패 · 브라우저 RULA 유지', 'offline');
   }finally{
     clearTimeout(timeout);
   }
 }
 
-async function requestServerAnalysis(landmarks){
-  if(!ANALYSIS_API_URL || !landmarks) return null;
+function loadLevelToKg(loadLevel){
+  if(loadLevel==='medium') return 5;
+  if(loadLevel==='heavy') return 11;
+  return 0;
+}
+
+async function requestTeamBackendAnalysis({
+  loadLevel,
+  staticForce,
+  muscleStatic,
+  legsUnsupported
+}){
+  state.teamBackendError = null;
+  if(!TEAM_BACKEND_URL){
+    state.teamBackendError = '팀 백엔드 주소가 설정되지 않았습니다.';
+    return null;
+  }
+  if(!state.sourceVideoBlob){
+    state.teamBackendError = '서버로 보낼 영상이 없어 브라우저 RULA 결과를 사용했습니다.';
+    return null;
+  }
   const controller = new AbortController();
-  const timeout = setTimeout(()=>controller.abort(), 3500);
+  const timeout = setTimeout(()=>controller.abort(), 180000);
+  const form = new FormData();
+  form.append(
+    'video',
+    state.sourceVideoBlob,
+    state.sourceVideoName || (state.sourceMode==='live' ? 'live-measurement.webm' : 'measurement.mp4')
+  );
+  form.append('weight_kg', String(loadLevelToKg(loadLevel)));
+  form.append('static_force', String(staticForce));
+  form.append('muscle_static', String(muscleStatic));
+  form.append('legs_unsupported', String(legsUnsupported));
+  form.append('job_name', state.survey.jobName || '');
+  setApiStatus('팀 FastAPI에서 영상 최종 분석 중...');
   try{
-    const response = await fetch(`${ANALYSIS_API_URL}/v1/analyze`, {
+    const response = await fetch(`${TEAM_BACKEND_URL}/analyze`, {
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        timestamp_ms:Date.now(),
-        people:[{
-          person_id:'person-1',
-          landmarks,
-          world_landmarks:null
-        }]
-      }),
+      body:form,
       signal:controller.signal
     });
-    if(!response.ok) throw new Error('analysis request failed');
+    if(!response.ok){
+      let message = '팀 백엔드 분석에 실패했습니다.';
+      try{
+        const error = await response.json();
+        if(error.detail) message = typeof error.detail==='string' ? error.detail : message;
+      }catch{}
+      throw new Error(message);
+    }
     const result = await response.json();
-    state.serverAnalysis = result;
-    setApiStatus('FastAPI 보조 분석 연결됨', 'online');
+    state.teamBackendAnalysis = result;
+    setApiStatus(
+      result.firebaseSaved
+        ? '팀 FastAPI 분석 · Firebase 저장 완료'
+        : '팀 FastAPI 분석 완료 · Firebase 저장 안 됨',
+      'online'
+    );
     return result;
-  }catch{
-    state.serverAnalysis = null;
-    setApiStatus('서버 분석 실패 · 브라우저 결과 사용', 'offline');
+  }catch(error){
+    state.teamBackendAnalysis = null;
+    setApiStatus('팀 서버 분석 실패 · 브라우저 RULA 결과 사용', 'offline');
+    state.teamBackendError = error?.message || '팀 백엔드 분석 실패';
     return null;
   }finally{
     clearTimeout(timeout);
@@ -670,12 +768,11 @@ async function requestServerAnalysis(landmarks){
 }
 
 async function requestAihubAnalysis(imageBlob){
-  if(!ANALYSIS_API_URL || !imageBlob) return null;
+  if(!AIHUB_API_URL || !imageBlob) return null;
   const controller = new AbortController();
   const timeout = setTimeout(()=>controller.abort(), 45000);
-  setApiStatus('AI Hub 학습모델로 위험 프레임 분석 중...');
   try{
-    const response = await fetch(`${ANALYSIS_API_URL}/v1/aihub/classify`, {
+    const response = await fetch(`${AIHUB_API_URL}/v1/aihub/classify`, {
       method:'POST',
       headers:{'Content-Type':'image/jpeg'},
       body:imageBlob,
@@ -684,11 +781,9 @@ async function requestAihubAnalysis(imageBlob){
     if(!response.ok) throw new Error('AI Hub analysis request failed');
     const result = await response.json();
     state.aihubAnalysis = result;
-    setApiStatus('AI Hub 학습모델 비교 완료', 'online');
     return result;
   }catch{
     state.aihubAnalysis = null;
-    setApiStatus('AI Hub 분석 실패 · 브라우저 RULA 결과 유지', 'offline');
     return null;
   }finally{
     clearTimeout(timeout);
@@ -740,7 +835,11 @@ videoInput.addEventListener('change', (e)=>{
   state.dashboardSessionId = crypto.randomUUID();
   state.dashboardSaved = false;
   state.serverAnalysis = null;
+  state.teamBackendAnalysis = null;
+  state.teamBackendError = null;
   state.aihubAnalysis = null;
+  state.sourceVideoBlob = file;
+  state.sourceVideoName = file.name || 'uploaded-video.mp4';
   video.src = URL.createObjectURL(file);
   stage.style.display = 'flex';
   qualityNotice.className = 'quality-notice';
@@ -849,7 +948,11 @@ function resetAnalysisState(sourceMode){
   state.capturedPhoto = null;
   state.quality = null;
   state.serverAnalysis = null;
+  state.teamBackendAnalysis = null;
+  state.teamBackendError = null;
   state.aihubAnalysis = null;
+  state.sourceVideoBlob = null;
+  state.sourceVideoName = null;
   state.dashboardSaved = false;
   state.dashboardSessionId = crypto.randomUUID();
   supplementBox.style.display = 'none';
@@ -938,6 +1041,7 @@ startLiveBtn.addEventListener('click', async ()=>{
     video.removeAttribute('src');
     video.srcObject = liveStream;
     await video.play();
+    const recorderReady = startLiveRecording(liveStream);
     overlay.width = video.videoWidth || 1280;
     overlay.height = video.videoHeight || 720;
     stage.style.display = 'flex';
@@ -950,7 +1054,9 @@ startLiveBtn.addEventListener('click', async ()=>{
     stopLiveBtn.hidden = false;
     stopLiveBtn.disabled = false;
     modeButtons.forEach(button=>button.disabled=true);
-    progressLine.textContent = '카메라 측정 시작 · 몸 전체가 보이도록 자세를 잡아주세요.';
+    progressLine.textContent = recorderReady
+      ? '카메라 측정 시작 · 팀 백엔드 최종 분석용 영상을 임시 기록합니다.'
+      : '카메라 측정 시작 · 브라우저 RULA 분석으로 진행합니다.';
     liveFrameRequest = requestAnimationFrame(runLiveMeasurement);
   }catch(error){
     stopLiveTracks();
@@ -974,6 +1080,12 @@ stopLiveBtn.addEventListener('click', async ()=>{
   video.pause();
   stopLiveBtn.disabled = true;
   modeButtons.forEach(button=>button.disabled=false);
+  const recordedBlob = await finishLiveRecording();
+  if(recordedBlob?.size){
+    const extension = recordedBlob.type.includes('mp4') ? 'mp4' : 'webm';
+    state.sourceVideoBlob = recordedBlob;
+    state.sourceVideoName = `live-measurement.${extension}`;
+  }
   stopLiveTracks();
 
   if(liveFrames.length<MIN_USABLE_FRAMES){
@@ -1021,15 +1133,11 @@ stopLiveBtn.addEventListener('click', async ()=>{
     ? `실시간 유효 프레임 ${liveFrames.length}개로 분석했습니다. 저신뢰·전신 누락 프레임 ${liveRejectedFrames}개는 제외했습니다.`
     : `실시간 측정의 모든 감지 프레임이 품질 기준을 통과했습니다.`;
   progressLine.textContent =
-    `실시간 측정 완료 · 최고 위험 자세 선택 · AI Hub 학습모델 비교 중...`;
-  await Promise.all([
-    requestServerAnalysis(worst.landmarks),
-    requestAihubAnalysis(capturedBlob)
-  ]);
-  progressLine.textContent = state.aihubAnalysis
-    ? `✅ 실시간 측정 완료 · 유효 프레임 ${liveFrames.length}개 · 같은 RULA 결과표로 이동할 수 있습니다.`
-    : `✅ 실시간 측정 완료 · 유효 프레임 ${liveFrames.length}개 · 브라우저 RULA 결과를 사용합니다.`;
-  liveRiskGuide.textContent = '측정이 끝났습니다. 하중과 반복 작업 정보를 입력하면 최종 RULA 점수가 계산됩니다.';
+    `실시간 측정 완료 · 최고 위험 자세 선택 · 비교 모델 확인 중...`;
+  await requestAihubAnalysis(capturedBlob);
+  progressLine.textContent =
+    `✅ 실시간 1차 측정 완료 · 유효 프레임 ${liveFrames.length}개 · 하중 입력 후 팀 백엔드 최종 분석을 진행합니다.`;
+  liveRiskGuide.textContent = '측정이 끝났습니다. 하중과 반복 작업 정보를 입력하면 녹화 영상을 팀 백엔드가 다시 분석합니다.';
   supplementBox.style.display = 'block';
   toResultsBtn.disabled = false;
   startLiveBtn.disabled = false;
@@ -1126,16 +1234,12 @@ analyzeBtn.addEventListener('click', async ()=>{
   qualityNotice.textContent = rejectedFrames
     ? `사용 가능한 프레임 ${frames.length}개로 분석했습니다. 저신뢰·전신 누락 프레임 ${rejectedFrames}개는 결과에서 제외했습니다.`
     : `모든 감지 프레임의 품질이 기준을 통과했습니다.`;
-  progressLine.textContent = ANALYSIS_API_URL
+  progressLine.textContent = AIHUB_API_URL
     ? `브라우저 분석 완료 — 유효 프레임 ${frames.length}개 · AI Hub 학습모델 비교 중...`
     : `✅ 분석 완료 — 유효 프레임 ${frames.length}개, 최고 위험 자세 기준으로 판정합니다.`;
-  await Promise.all([
-    requestServerAnalysis(worst.landmarks),
-    requestAihubAnalysis(capturedBlob)
-  ]);
-  progressLine.textContent = state.aihubAnalysis
-    ? `✅ 분석 완료 — 유효 프레임 ${frames.length}개 · MediaPipe RULA와 AI Hub 분류를 함께 확인했습니다.`
-    : `✅ 분석 완료 — 유효 프레임 ${frames.length}개 · 브라우저 RULA 결과를 사용합니다.`;
+  await requestAihubAnalysis(capturedBlob);
+  progressLine.textContent =
+    `✅ 1차 분석 완료 — 유효 프레임 ${frames.length}개 · 하중 입력 후 팀 백엔드 최종 분석을 진행합니다.`;
   supplementBox.style.display = 'block';
   toResultsBtn.disabled = false;
 });
@@ -1229,7 +1333,7 @@ async function saveDashboardSession(){
 }
 
 /* ---------- Step 4: RULA 결과 계산 & 렌더 ---------- */
-window.computeAndShowResults = function(){
+window.computeAndShowResults = async function(){
   const w = state.worst;
   if(!w){
     alert('먼저 품질 기준을 통과한 영상을 분석해 주세요.');
@@ -1269,7 +1373,65 @@ window.computeAndShowResults = function(){
 
   state.scores = { nS,tS,uaS,laS,wristS,wristTwist,legS,fS,mS,scoreA,scoreB,grand,level,
                     loadLevel, loadLabel:loadLabels[loadLevel], staticForce, muscleStatic, legsUnsupported,
-                    neckAngle:w.neckAngle, trunkAngle:w.trunkAngle, upperArmAngle:w.upperArmAngle, elbowAngle:w.elbowAngle };
+                    neckAngle:w.neckAngle, trunkAngle:w.trunkAngle, upperArmAngle:w.upperArmAngle, elbowAngle:w.elbowAngle,
+                    resultSource:'browser' };
+
+  const originalButtonText = toResultsBtn.textContent;
+  toResultsBtn.disabled = true;
+  toResultsBtn.textContent = '팀 백엔드 최종 분석 중...';
+  try{
+    const teamResult = await requestTeamBackendAnalysis({
+      loadLevel,
+      staticForce,
+      muscleStatic,
+      legsUnsupported
+    });
+    const r = teamResult?.rula;
+    if(r){
+      const angles = r.angles || {};
+      state.scores = {
+        nS:r.neckScore,
+        tS:r.trunkScore,
+        uaS:r.upperArmScore,
+        laS:r.lowerArmScore,
+        wristS:r.wristScore,
+        wristTwist:r.wristTwist,
+        legS:r.legScore,
+        fS:r.forceScore,
+        mS:r.muscleScore,
+        scoreA:r.scoreA,
+        scoreB:r.scoreB,
+        grand:r.grandScore,
+        level:r.actionLevel || ACTION_LEVELS.find(item=>r.grandScore<=item.max),
+        loadLevel,
+        loadLabel:loadLabels[loadLevel],
+        staticForce,
+        muscleStatic,
+        legsUnsupported,
+        neckAngle:angles.neckAngle ?? w.neckAngle,
+        trunkAngle:angles.trunkAngle ?? w.trunkAngle,
+        upperArmAngle:angles.upperArmAngle ?? w.upperArmAngle,
+        elbowAngle:angles.elbowAngle ?? w.elbowAngle,
+        resultSource:'team-backend'
+      };
+      if(teamResult.photoBase64){
+        state.capturedPhoto = `data:image/jpeg;base64,${teamResult.photoBase64}`;
+      }
+      if(Number.isFinite(teamResult.framesChecked)){
+        const rejectedFrames = Number(teamResult.lowConfidenceFrames) || 0;
+        state.quality = {
+          ...(state.quality || {}),
+          detectedFrames:teamResult.framesChecked,
+          usableFrames:Math.max(0, teamResult.framesChecked-rejectedFrames),
+          rejectedFrames,
+          source:'team-backend'
+        };
+      }
+    }
+  }finally{
+    toResultsBtn.disabled = false;
+    toResultsBtn.textContent = originalButtonText;
+  }
 
   renderResults();
   saveDashboardSession();
@@ -1279,8 +1441,9 @@ window.computeAndShowResults = function(){
 function renderResults(){
   const s = state.scores;
   const sourceLabel = state.sourceMode==='live' ? '실시간 카메라 측정' : '촬영 영상 업로드';
+  const resultSourceLabel = s.resultSource==='team-backend' ? '팀 FastAPI 최종 분석' : '브라우저 임시 분석';
   document.getElementById('analysisSourceOut').textContent =
-    `${sourceLabel}의 최고 위험 자세를 기준으로 동일한 RULA Table A / B / C를 적용했습니다. 유효 프레임 ${state.quality?.usableFrames??0}개.`;
+    `${sourceLabel} · ${resultSourceLabel}. 최고 위험 자세를 기준으로 RULA Table A / B / C를 적용했습니다. 유효 프레임 ${state.quality?.usableFrames??0}개.`;
   const cells = [
     {label:'목 (Neck)', score:s.nS, angle:s.neckAngle},
     {label:'몸통 (Trunk)', score:s.tS, angle:s.trunkAngle},
@@ -1312,18 +1475,34 @@ function renderResults(){
     <tr><td>힘/부하(B) 가산</td><td>+${s.fS}</td></tr>`;
   document.getElementById('scoreBOut').textContent = 'Score B = '+s.scoreB;
 
-  const levelIdx = ACTION_LEVELS.indexOf(s.level)+1;
+  const levelIdx = ACTION_LEVELS.findIndex(item=>s.grand<=item.max)+1;
   const verdictEl = document.getElementById('verdict');
   verdictEl.className = 'verdict level-'+levelIdx;
   document.getElementById('verdictGrade').textContent = s.level.label;
   document.getElementById('verdictAction').textContent = s.level.desc;
   document.getElementById('gscoreOut').textContent = s.grand;
 
+  const teamContent = document.getElementById('teamBackendContent');
+  const team = state.teamBackendAnalysis;
+  if(team?.rula){
+    teamContent.innerHTML = `
+      <table>
+        <tr><td>최종 RULA 점수</td><td><b>${team.rula.grandScore}</b> · ${team.rula.actionLevel?.label || s.level.label}</td></tr>
+        <tr><td>영상 분석 프레임</td><td>${team.framesChecked ?? '—'}개 (저신뢰 ${team.lowConfidenceFrames ?? 0}개)</td></tr>
+        <tr><td>Firebase 저장</td><td>${team.firebaseSaved ? '완료' : '저장 안 됨'}</td></tr>
+      </table>
+      <p class="aihub-help">위 결과표와 법정서식에는 이 팀 백엔드 분석값이 최종값으로 반영되었습니다.</p>`;
+  }else{
+    teamContent.innerHTML = `
+      <p class="aihub-help">팀 백엔드 최종 분석을 사용하지 못해 브라우저에서 계산한 RULA 결과를 표시했습니다.<br>
+      ${state.teamBackendError || '서버 연결 또는 영상 전송 상태를 확인해 주세요.'}</p>`;
+  }
+
   const ai = state.aihubAnalysis;
   const aiContent = document.getElementById('aihubComparisonContent');
   if(!ai?.predictions){
     aiContent.innerHTML = `
-      <p class="aihub-help">AI Hub 결과가 없습니다. 로컬 서버를 켜지 않았거나 모델 분석이 실패한 경우이며, 위 MediaPipe RULA 결과는 그대로 사용할 수 있습니다.</p>`;
+      <p class="aihub-help">AI Hub 비교 결과가 없습니다. 모델 서버를 사용하지 않았거나 분류에 실패한 경우이며, 위 최종 RULA 결과에는 영향이 없습니다.</p>`;
     return;
   }
 
@@ -1367,6 +1546,9 @@ window.buildDocument = function(){
         .map(p=>`${p.class_id} ${p.label_ko}(${p.confidence_percent}%)`)
         .join(' · ')
     : 'AI Hub 비교 결과 없음';
+  const teamSummary = state.teamBackendAnalysis?.rula
+    ? `팀 FastAPI 최종 분석 · Firebase ${state.teamBackendAnalysis.firebaseSaved ? '저장 완료' : '저장 안 됨'}`
+    : `브라우저 임시 분석${state.teamBackendError ? ` (${state.teamBackendError})` : ''}`;
 
   const html = `
     <div class="doc-title">유해요인조사표 (별지 제1호서식)</div>
@@ -1451,6 +1633,7 @@ window.buildDocument = function(){
       <div class="rula-auto" style="margin-top:12px;">
         <b>MoveGuard 자동 산출 (RULA)</b><br>
         분석 방식: ${state.sourceMode==='live'?'실시간 카메라 측정':'촬영 영상 업로드'} &nbsp;|&nbsp; 평가도구: RULA<br>
+        최종 판정 출처: <b>${teamSummary}</b><br>
         Score A(상지) = ${s?s.scoreA:'—'} &nbsp;|&nbsp; Score B(목·몸통·다리) = ${s?s.scoreB:'—'}<br>
         Grand Score = <b>${s?s.grand:'—'}</b> &nbsp;|&nbsp; 판정: <b>${s?s.level.label:'—'}</b><br>
         하중: ${s?s.loadLabel:'—'} &nbsp;|&nbsp; 유효 프레임: ${state.quality?.usableFrames??'—'}개 &nbsp;|&nbsp; 저신뢰 제외: ${state.quality?.rejectedFrames??'—'}개<br>
