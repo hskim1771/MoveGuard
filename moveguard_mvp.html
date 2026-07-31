@@ -400,13 +400,9 @@
 
 <script>
 window.MOVEGUARD_CONFIG = window.MOVEGUARD_CONFIG || {
+  // 팀 백엔드 서버 하나로 통합됨 (RULA 분석 + Firebase 저장 + AI Hub 비교 전부 이 서버가 처리)
   teamBackendUrl: "https://moveguard-backend.onrender.com",
-  aihubApiUrl:
-    window.location.protocol === "file:" ||
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1"
-      ? ""
-      : "https://moveguard-analysis-api-4que.onrender.com"
+  aihubApiUrl: "https://moveguard-backend.onrender.com"
 };
 </script>
 <script type="module">
