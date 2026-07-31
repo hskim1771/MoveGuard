@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MoveGuard — 근골격계 유해요인조사 MVP (RULA)</title>
+<script>
+  if(new URLSearchParams(window.location.search).get('embedded') === '1'){
+    document.documentElement.classList.add('embedded');
+  }
+</script>
 <style>
   :root{
     --ink:#1a2420; --paper:#f4f2ec; --line:#ccc7ba;
@@ -34,6 +39,11 @@
   .notice{background:#fff8e6;border:1px solid var(--watch);padding:14px 18px;font-size:13px;margin-bottom:18px;}
   .notice b{color:var(--watch);}
   .guide-quote{background:#eef4fb;border-left:4px solid var(--accent);padding:14px 18px;font-size:14px;margin:14px 0;}
+  .consent-box{border:1px solid #aac2b4;background:#f2f8f4;padding:16px 18px;margin-top:18px;}
+  .consent-box h3{margin:0 0 8px;font-size:14px;}
+  .consent-box p{font-size:12.5px;color:#4f5c55;margin:0 0 10px;}
+  .consent-box label{display:flex;align-items:flex-start;gap:8px;margin:0;color:var(--ink);font-size:13px;font-weight:600;text-transform:none;letter-spacing:0;}
+  .consent-box input{margin-top:3px;}
 
   label{display:block;font-size:12px;font-weight:700;color:#555;margin:14px 0 6px;text-transform:uppercase;letter-spacing:0.4px;}
   input[type=text],input[type=date],input[type=number],textarea,select{
@@ -55,13 +65,38 @@
   .upload-zone:hover{border-color:var(--accent);background:#f7fbff;}
   .upload-zone input{display:none;}
   .upload-zone .hint{font-size:12px;color:#777;margin-top:6px;}
+  .measure-mode{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 14px;}
+  .mode-btn{border:1px solid var(--line);background:#f7f6f2;color:#666;padding:12px 14px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;}
+  .mode-btn.active{border-color:var(--accent);background:#eef4fb;color:var(--accent);box-shadow:inset 0 -3px 0 var(--accent);}
+  .live-mode-card{border:1px solid #aebfd1;background:#f7f9fc;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .live-mode-card h3{margin:0 0 4px;font-size:15px;}
+  .live-mode-card p{margin:0;color:#596776;font-size:12.5px;}
   .stage{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;}
   .video-box{flex:1 1 340px;min-width:260px;}
   video,canvas{width:100%;border-radius:2px;background:#111;}
   .canvas-wrap{position:relative;}
   .canvas-wrap canvas{position:absolute;top:0;left:0;}
   .side-info{flex:1 1 240px;min-width:220px;font-family:var(--mono);font-size:12px;}
+  .live-risk{display:none;margin-top:12px;padding:12px 14px;border:1px solid var(--line);background:#f7f6f2;}
+  .live-risk.visible{display:block;}
+  .live-risk.level-1{border-color:#9bc4ad;background:#eef7f0;color:var(--safe);}
+  .live-risk.level-2{border-color:#d8bd70;background:#fff8e6;color:#775d16;}
+  .live-risk.level-3,.live-risk.level-4{border-color:#d9a8a8;background:#fdeeee;color:#7a2020;}
+  .live-risk strong{display:block;font-size:19px;margin-top:3px;}
+  .live-risk small{display:block;color:inherit;opacity:.82;margin-top:3px;line-height:1.45;}
   .progress-line{font-family:var(--mono);font-size:12px;color:#555;margin-top:10px;white-space:pre-wrap;min-height:18px;}
+  .status-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#f7f6f2;color:#666;padding:5px 8px;margin-top:10px;font-family:var(--mono);font-size:10.5px;}
+  .status-chip.online{border-color:#9bc4ad;background:#eef7f0;color:var(--safe);}
+  .status-chip.offline{border-color:#dccb98;background:#fff8e6;color:#7e641a;}
+  .quality-notice{display:none;margin-top:14px;padding:12px 14px;border:1px solid var(--line);font-size:12.5px;}
+  .quality-notice.good{display:block;border-color:#9bc4ad;background:#eef7f0;color:var(--safe);}
+  .quality-notice.warning{display:block;border-color:#d8bd70;background:#fff8e6;color:#775d16;}
+  .quality-notice.danger{display:block;border-color:#d9a8a8;background:#fdeeee;color:#7a2020;}
+  .choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;}
+  .choice-card{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--line);background:#fff;padding:11px 12px;margin:0;color:var(--ink);font-size:12.5px;font-weight:600;text-transform:none;letter-spacing:0;cursor:pointer;}
+  .choice-card:has(input:checked){border-color:var(--accent);background:#eef4fb;}
+  .choice-card input{margin-top:3px;}
+  .choice-card small{display:block;color:#777;font-size:10.5px;font-weight:400;margin-top:2px;}
 
   .score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:12px;}
   .score-cell{background:#fff;padding:14px;text-align:center;}
@@ -75,6 +110,11 @@
   .group-box td{padding:5px 4px;border-bottom:1px dashed var(--line);}
   .group-box td:last-child{text-align:right;font-weight:700;font-family:var(--mono);}
   .score-sum{margin-top:10px;padding-top:10px;border-top:1px solid var(--ink);font-family:var(--mono);font-size:14px;font-weight:700;display:flex;justify-content:space-between;}
+  .aihub-box{background:#f7f9fc;border-color:#aebfd1;}
+  .aihub-box .aihub-help{font-size:12px;color:#596776;line-height:1.55;margin:0 0 10px;}
+  .aihub-box .confidence{font-family:var(--mono);font-size:11px;color:#587065;}
+  .aihub-box .confidence.low{color:#9a5d18;font-weight:700;}
+  .aihub-box .aihub-limit{font-size:11px;color:#777;line-height:1.55;margin:10px 0 0;}
 
   .verdict{margin-top:18px;padding:22px;border-left:6px solid var(--safe);background:#fff;border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
   .verdict.level-2{border-left-color:var(--watch);}
@@ -104,6 +144,13 @@
   .mentor-flag{background:#fdeeee;border:1px solid var(--danger);color:#7a2020;font-size:11.5px;padding:8px 10px;margin-top:8px;}
 
   footer{text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:#999;}
+  html.embedded header,html.embedded footer{display:none;}
+  html.embedded .wrap{padding-top:28px;}
+
+  @media(max-width:620px){
+    .choice-grid{grid-template-columns:1fr;}
+    .measure-mode{grid-template-columns:1fr;}
+  }
 
   @media print{
     header,.stepper,.btn-row,.notice,.step:not(#step-5){display:none !important;}
@@ -144,11 +191,20 @@
 
       <div class="notice">
         <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. 자세 추출은 MediaPipe Pose를 실제로 호출하고, RULA Table A/B/C 조견표를 그대로 적용하지만, 손목 굽힘·비틀림은 카메라만으로 정확히 잡기 어려워 중립값으로 고정합니다. 실제 제출용으로는 전문가 검토가 반드시 필요합니다.
-        <br><br><b>이 파일은 다운로드 후 로컬 브라우저에서 직접 열어야 정상 작동합니다.</b> (MediaPipe 모델을 외부 CDN에서 불러오기 때문)
+        <br><br><b>MoveGuard 웹 안에서 바로 영상을 선택해 분석할 수 있습니다.</b> 로컬 AI 서버가 연결되지 않은 환경에서도 브라우저 RULA 분석은 계속 동작합니다.
+      </div>
+
+      <div class="consent-box">
+        <h3>근로자 촬영·분석 동의</h3>
+        <p>현재 기본 분석은 이 브라우저 안에서 처리됩니다. 대표 사진 1장은 법정서식 미리보기에만 사용되며, 초기화하거나 화면을 닫으면 사라집니다. 로컬 FastAPI가 연결된 경우 원본 영상 전체가 아니라 최고 위험 프레임 사진 1장과 관절 좌표만 전송하며 서버에는 저장하지 않습니다.</p>
+        <label>
+          <input type="checkbox" id="fWorkerConsent">
+          <span>촬영 목적과 처리 방식을 안내받았으며, 자세 분석과 대표 사진 생성에 동의합니다.</span>
+        </label>
       </div>
 
       <div class="btn-row" style="justify-content:flex-end;">
-        <button class="btn" onclick="goStep(2)">시작하기 →</button>
+        <button class="btn" id="startBtn" onclick="startSurvey()" disabled>동의하고 시작하기 →</button>
       </div>
     </div>
   </section>
@@ -188,18 +244,31 @@
   <!-- STEP 3: 촬영/업로드 + 분석 -->
   <section class="step" id="step-3">
     <div class="panel">
-      <h2><span class="num">3</span>영상 업로드 및 분석</h2>
-      <p class="sub">10~30초 영상을 올려주세요. mp4/mov 권장.</p>
+      <h2><span class="num">3</span>촬영 및 RULA 분석</h2>
+      <p class="sub">실시간 카메라와 업로드 영상 모두 같은 RULA 계산·결과표·법정서식으로 이어집니다.</p>
 
       <div class="guide-quote" style="display:flex;align-items:center;gap:12px;">
         <span style="font-size:22px;">💡</span>
         <span><b>조명 충분한 곳에서, 측면 45도 각도로, 몸 전체가 프레임에 들어오도록</b> 촬영해 주세요. 각도·밝기가 분석 정확도를 크게 좌우합니다.</span>
       </div>
 
-      <label class="upload-zone" id="dropZone">
+      <div class="measure-mode" role="tablist" aria-label="측정 방식 선택">
+        <button class="mode-btn active" id="liveModeBtn" type="button" role="tab" aria-selected="true" data-mode="live">실시간 카메라 측정</button>
+        <button class="mode-btn" id="uploadModeBtn" type="button" role="tab" aria-selected="false" data-mode="upload">촬영 영상 업로드</button>
+      </div>
+
+      <div class="live-mode-card" id="liveModePanel">
+        <div>
+          <h3>현재 자세를 보면서 바로 측정합니다</h3>
+          <p>측정 중에는 하중 입력 전 추정 RULA를 안내하고, 종료 후 최고 위험 자세로 최종 보고서를 만듭니다.</p>
+        </div>
+        <button class="btn" id="startLiveBtn" type="button" disabled>카메라 켜고 측정 시작</button>
+      </div>
+
+      <label class="upload-zone" id="dropZone" hidden>
         <input type="file" id="videoInput" accept="video/*" capture="environment">
         <div>작업 영상을 선택하세요</div>
-        <div class="hint">전신이 프레임에 들어오도록, 측면 45도 각도 촬영 권장</div>
+        <div class="hint">10~30초 mp4/mov 권장 · 전신이 프레임에 들어오도록 촬영</div>
       </label>
 
       <div class="stage" id="stage" style="display:none;">
@@ -212,18 +281,39 @@
         <div class="side-info">
           <div id="modelStatus">모델 로딩 대기 중...</div>
           <div class="progress-line" id="progressLine"></div>
+          <div class="live-risk" id="liveRisk" aria-live="polite">
+            <span id="liveRiskLabel">현재 자세 추정</span>
+            <strong id="liveRiskScore">RULA —</strong>
+            <small id="liveRiskGuide">하중·반복 작업 입력 전 자세만 반영한 안내입니다.</small>
+          </div>
+          <div class="status-chip" id="apiStatus">브라우저 분석 모드</div>
           <div style="margin-top:14px;display:flex;gap:10px;">
-            <button class="btn" id="analyzeBtn" disabled>분석 시작</button>
+            <button class="btn" id="analyzeBtn" disabled hidden>업로드 영상 분석</button>
+            <button class="btn" id="stopLiveBtn" type="button" hidden>측정 종료·RULA 분석</button>
             <button class="btn secondary" id="resetBtn" type="button">초기화</button>
           </div>
         </div>
       </div>
+      <div class="quality-notice" id="qualityNotice" role="status" aria-live="polite"></div>
 
       <div id="supplementBox" style="display:none;margin-top:22px;">
         <div class="group-box">
           <h3>RULA 추가 입력 — 영상만으로는 알 수 없는 값</h3>
-          <label>이 작업에서 다루는 물체의 무게 (kg, 없으면 0)</label>
-          <input type="number" id="fWeight" value="0" min="0" step="0.5">
+          <label>이 작업에서 다루는 물체의 하중</label>
+          <div class="choice-grid" id="loadLevelGroup">
+            <label class="choice-card">
+              <input type="radio" name="loadLevel" value="light" checked>
+              <span>가벼움<small>2kg 미만 또는 물체 없음</small></span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="loadLevel" value="medium">
+              <span>보통<small>2kg 이상 10kg 이하</small></span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="loadLevel" value="heavy">
+              <span>무거움<small>10kg 초과</small></span>
+            </label>
+          </div>
           <div class="checkline"><input type="checkbox" id="fStaticForce"> <label for="fStaticForce" style="margin:0;text-transform:none;font-weight:400;">이 힘을 정적으로 유지하거나 반복적으로 가한다 (그렇지 않으면 간헐적으로 간주)</label></div>
           <div class="checkline"><input type="checkbox" id="fMuscleStatic"> <label for="fMuscleStatic" style="margin:0;text-transform:none;font-weight:400;">이 자세를 10분 이상 유지하거나, 분당 4회 이상 반복한다</label></div>
           <div class="checkline"><input type="checkbox" id="fLegsUnsupported"> <label for="fLegsUnsupported" style="margin:0;text-transform:none;font-weight:400;">다리가 불안정하거나 한쪽으로 치우친 자세다 (기본: 양다리 지지)</label></div>
@@ -241,7 +331,7 @@
   <section class="step" id="step-4">
     <div class="panel">
       <h2><span class="num">4</span>RULA 정밀평가 결과</h2>
-      <p class="sub">가장 위험도가 높은 프레임을 기준으로 Table A / Table B / Table C를 그대로 적용한 결과입니다.</p>
+      <p class="sub" id="analysisSourceOut">가장 위험도가 높은 프레임을 기준으로 Table A / Table B / Table C를 그대로 적용한 결과입니다.</p>
 
       <div class="score-grid" id="scoreGrid"></div>
 
@@ -263,6 +353,12 @@
           <div class="action" id="verdictAction">—</div>
         </div>
         <div class="gscore" id="gscoreOut">—</div>
+      </div>
+
+      <div class="group-box aihub-box">
+        <h3>AI Hub 학습모델 비교 — 결과 덮어쓰기 없음</h3>
+        <p class="aihub-help">AI Hub 71439 EfficientNet 모델이 같은 위험 프레임을 분류한 결과입니다. 기존 MediaPipe 각도 기반 RULA 점수는 그대로 유지됩니다.</p>
+        <div id="aihubComparisonContent">로컬 AI Hub 서버 결과가 없습니다.</div>
       </div>
 
       <div class="notice" style="margin-top:16px;">
@@ -295,11 +391,39 @@
 
 <footer>MoveGuard MVP · 팀 아이디업 · 데모 목적으로만 사용하세요</footer>
 
+<script>
+window.MOVEGUARD_CONFIG = window.MOVEGUARD_CONFIG || {
+  analysisApiUrl:
+    window.location.protocol === "file:" ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+      ? "http://127.0.0.1:8000"
+      : "https://moveguard-analysis-api-4que.onrender.com"
+};
+</script>
 <script type="module">
 import { FilesetResolver, PoseLandmarker } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs";
 
 /* ---------- 상태 ---------- */
-const state = { survey:{}, frames:[], worst:null, scores:null, capturedPhoto:null };
+const ANALYSIS_API_URL = (window.MOVEGUARD_CONFIG.analysisApiUrl || '').replace(/\/$/, '');
+const MIN_FRAME_CONFIDENCE = 0.55;
+const MIN_USABLE_FRAMES = 5;
+const state = {
+  survey:{},
+  consent:null,
+  frames:[],
+  worst:null,
+  scores:null,
+  capturedPhoto:null,
+  quality:null,
+  serverAnalysis:null,
+  aihubAnalysis:null,
+  sourceMode:'live',
+  measurementStartedAt:null,
+  measurementEndedAt:null,
+  dashboardSessionId:null,
+  dashboardSaved:false
+};
 window.state = state;
 
 /* ---------- 스텝 네비게이션 ---------- */
@@ -312,6 +436,24 @@ window.goStep = function(n){
     el.classList.toggle('done', sn<n);
   });
   window.scrollTo({top:0, behavior:'smooth'});
+};
+
+const workerConsent = document.getElementById('fWorkerConsent');
+const startBtn = document.getElementById('startBtn');
+workerConsent.addEventListener('change', ()=>{
+  startBtn.disabled = !workerConsent.checked;
+});
+
+window.startSurvey = function(){
+  if(!workerConsent.checked){
+    alert('촬영·분석 동의 내용을 확인해 주세요.');
+    return;
+  }
+  state.consent = {
+    agreed:true,
+    agreedAt:new Date().toISOString()
+  };
+  goStep(2);
 };
 
 document.getElementById('fSurveyDate').valueAsDate = new Date();
@@ -380,9 +522,9 @@ function trunkScore(a){ if(a<=5) return 1; if(a<=20) return 2; if(a<=60) return 
 function upperArmScore(a){ if(a<=20) return 1; if(a<=45) return 2; if(a<=90) return 3; return 4; }
 function lowerArmScore(a){ return (a>=60 && a<=100) ? 1 : 2; }
 
-function forceScore(kg, staticOrRepetitive){
-  if(kg < 2) return staticOrRepetitive ? 1 : 0;
-  if(kg <= 10) return 2;
+function forceScore(loadLevel, staticOrRepetitive){
+  if(loadLevel === 'light') return staticOrRepetitive ? 1 : 0;
+  if(loadLevel === 'medium') return 2;
   return 3;
 }
 
@@ -392,15 +534,166 @@ const video = document.getElementById('video');
 const overlay = document.getElementById('overlay');
 const ctx = overlay.getContext('2d');
 const stage = document.getElementById('stage');
+const modeButtons = [...document.querySelectorAll('.mode-btn')];
+const liveModePanel = document.getElementById('liveModePanel');
+const uploadZone = document.getElementById('dropZone');
+const startLiveBtn = document.getElementById('startLiveBtn');
+const stopLiveBtn = document.getElementById('stopLiveBtn');
+const liveRisk = document.getElementById('liveRisk');
+const liveRiskLabel = document.getElementById('liveRiskLabel');
+const liveRiskScore = document.getElementById('liveRiskScore');
+const liveRiskGuide = document.getElementById('liveRiskGuide');
 const modelStatus = document.getElementById('modelStatus');
 const progressLine = document.getElementById('progressLine');
 const analyzeBtn = document.getElementById('analyzeBtn');
 const resetBtn = document.getElementById('resetBtn');
 const supplementBox = document.getElementById('supplementBox');
 const toResultsBtn = document.getElementById('toResultsBtn');
+const apiStatus = document.getElementById('apiStatus');
+const qualityNotice = document.getElementById('qualityNotice');
 
 let poseLandmarker = null;
 let analyzing = false;
+let liveStream = null;
+let liveMeasuring = false;
+let liveFrameRequest = null;
+let liveLastDetectionAt = 0;
+let liveFrames = [];
+let liveDetectedFrames = 0;
+let liveRejectedFrames = 0;
+let liveWorstScore = -1;
+let liveWorstCanvas = null;
+let liveStartedAtMs = 0;
+
+function setApiStatus(message, mode=''){
+  apiStatus.textContent = message;
+  apiStatus.className = 'status-chip' + (mode ? ' '+mode : '');
+}
+
+function stopLiveTracks(){
+  if(liveFrameRequest){
+    cancelAnimationFrame(liveFrameRequest);
+    liveFrameRequest = null;
+  }
+  if(liveStream){
+    liveStream.getTracks().forEach(track=>track.stop());
+    liveStream = null;
+  }
+  if(video.srcObject) video.srcObject = null;
+}
+
+function setMeasurementMode(mode){
+  if(liveMeasuring) return;
+  state.sourceMode = mode;
+  modeButtons.forEach(button=>{
+    const active = button.dataset.mode === mode;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-selected', String(active));
+  });
+  liveModePanel.hidden = mode !== 'live';
+  uploadZone.hidden = mode !== 'upload';
+  analyzeBtn.hidden = mode !== 'upload';
+  stopLiveBtn.hidden = true;
+  liveRisk.className = 'live-risk';
+  if(mode === 'live'){
+    video.removeAttribute('src');
+    video.load();
+    stage.style.display = 'none';
+    progressLine.textContent = '카메라를 켜면 동일한 RULA 방식으로 실시간 자세를 확인합니다.';
+  }else{
+    stopLiveTracks();
+    stage.style.display = videoInput.files?.length ? 'flex' : 'none';
+    progressLine.textContent = videoInput.files?.length ? '업로드 영상 분석을 시작해 주세요.' : '10~30초 작업 영상을 선택해 주세요.';
+  }
+}
+
+modeButtons.forEach(button=>{
+  button.addEventListener('click', ()=>setMeasurementMode(button.dataset.mode));
+});
+
+async function checkApiHealth(){
+  if(!ANALYSIS_API_URL){
+    setApiStatus('브라우저 분석 모드');
+    return;
+  }
+  const controller = new AbortController();
+  const timeout = setTimeout(()=>controller.abort(), 2500);
+  try{
+    const response = await fetch(`${ANALYSIS_API_URL}/health`, {
+      signal:controller.signal
+    });
+    if(!response.ok) throw new Error('health check failed');
+    const health = await response.json();
+    setApiStatus(
+      health.aihub?.configured
+        ? 'FastAPI · AI Hub 모델 준비됨'
+        : 'FastAPI 연결됨 · AI Hub 모델 확인 필요',
+      health.aihub?.configured ? 'online' : 'offline'
+    );
+  }catch{
+    setApiStatus('서버 연결 실패 · 브라우저 분석 유지', 'offline');
+  }finally{
+    clearTimeout(timeout);
+  }
+}
+
+async function requestServerAnalysis(landmarks){
+  if(!ANALYSIS_API_URL || !landmarks) return null;
+  const controller = new AbortController();
+  const timeout = setTimeout(()=>controller.abort(), 3500);
+  try{
+    const response = await fetch(`${ANALYSIS_API_URL}/v1/analyze`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        timestamp_ms:Date.now(),
+        people:[{
+          person_id:'person-1',
+          landmarks,
+          world_landmarks:null
+        }]
+      }),
+      signal:controller.signal
+    });
+    if(!response.ok) throw new Error('analysis request failed');
+    const result = await response.json();
+    state.serverAnalysis = result;
+    setApiStatus('FastAPI 보조 분석 연결됨', 'online');
+    return result;
+  }catch{
+    state.serverAnalysis = null;
+    setApiStatus('서버 분석 실패 · 브라우저 결과 사용', 'offline');
+    return null;
+  }finally{
+    clearTimeout(timeout);
+  }
+}
+
+async function requestAihubAnalysis(imageBlob){
+  if(!ANALYSIS_API_URL || !imageBlob) return null;
+  const controller = new AbortController();
+  const timeout = setTimeout(()=>controller.abort(), 45000);
+  setApiStatus('AI Hub 학습모델로 위험 프레임 분석 중...');
+  try{
+    const response = await fetch(`${ANALYSIS_API_URL}/v1/aihub/classify`, {
+      method:'POST',
+      headers:{'Content-Type':'image/jpeg'},
+      body:imageBlob,
+      signal:controller.signal
+    });
+    if(!response.ok) throw new Error('AI Hub analysis request failed');
+    const result = await response.json();
+    state.aihubAnalysis = result;
+    setApiStatus('AI Hub 학습모델 비교 완료', 'online');
+    return result;
+  }catch{
+    state.aihubAnalysis = null;
+    setApiStatus('AI Hub 분석 실패 · 브라우저 RULA 결과 유지', 'offline');
+    return null;
+  }finally{
+    clearTimeout(timeout);
+  }
+}
 
 const CONNECTIONS = [
   [11,12],[11,13],[13,15],[12,14],[14,16],
@@ -416,8 +709,9 @@ async function initModel(){
       baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task", delegate:"GPU" },
       runningMode:"VIDEO", numPoses:1
     });
-    modelStatus.textContent = '✅ 모델 로딩 완료. 분석 시작 버튼을 누르세요.';
+    modelStatus.textContent = '✅ 모델 준비 완료. 실시간 측정이나 영상 분석을 시작하세요.';
     analyzeBtn.disabled = false;
+    startLiveBtn.disabled = false;
   }catch(e){
     try{
       const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
@@ -425,21 +719,41 @@ async function initModel(){
         baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task", delegate:"CPU" },
         runningMode:"VIDEO", numPoses:1
       });
-      modelStatus.textContent = '✅ 모델 로딩 완료 (CPU 모드). 분석 시작 버튼을 누르세요.';
+      modelStatus.textContent = '✅ 모델 준비 완료 (CPU 모드). 실시간 측정이나 영상 분석을 시작하세요.';
       analyzeBtn.disabled = false;
+      startLiveBtn.disabled = false;
     }catch(e2){
       modelStatus.textContent = '❌ 모델 로딩 실패: ' + e2.message;
     }
   }
 }
 initModel();
+checkApiHealth();
+setMeasurementMode('live');
 
 videoInput.addEventListener('change', (e)=>{
   const file = e.target.files[0];
   if(!file) return;
+  state.sourceMode = 'upload';
+  state.measurementStartedAt = new Date().toISOString();
+  state.measurementEndedAt = null;
+  state.dashboardSessionId = crypto.randomUUID();
+  state.dashboardSaved = false;
+  state.serverAnalysis = null;
+  state.aihubAnalysis = null;
   video.src = URL.createObjectURL(file);
   stage.style.display = 'flex';
-  video.onloadedmetadata = ()=>{ overlay.width = video.videoWidth; overlay.height = video.videoHeight; };
+  qualityNotice.className = 'quality-notice';
+  qualityNotice.textContent = '';
+  supplementBox.style.display = 'none';
+  toResultsBtn.disabled = true;
+  video.onloadedmetadata = ()=>{
+    overlay.width = video.videoWidth;
+    overlay.height = video.videoHeight;
+    state.measurementEndedAt = new Date(
+      new Date(state.measurementStartedAt).getTime() + Math.max(1, video.duration)*1000
+    ).toISOString();
+  };
 });
 
 resetBtn.addEventListener('click', ()=>{ location.reload(); });
@@ -455,6 +769,12 @@ function vec(a,b){ return {x:b.x-a.x, y:b.y-a.y}; }
 function computeFrameAngles(lm){
   const leftVis=(lm[11].visibility+lm[13].visibility+lm[15].visibility+lm[23].visibility)/4;
   const rightVis=(lm[12].visibility+lm[14].visibility+lm[16].visibility+lm[24].visibility)/4;
+  const fullBodyIndexes=[11,12,23,24,25,26,27,28];
+  const fullBodyConfidence=fullBodyIndexes.reduce((sum,index)=>sum+(lm[index].visibility||0),0)/fullBodyIndexes.length;
+  const fullBodyInFrame=fullBodyIndexes.every(index=>{
+    const point=lm[index];
+    return point.visibility>=0.4 && point.x>=0.015 && point.x<=0.985 && point.y>=0.015 && point.y<=0.985;
+  });
   const side = rightVis>=leftVis ? {sh:12,el:14,wr:16,hip:24} : {sh:11,el:13,wr:15,hip:23};
   const shoulder=lm[side.sh], elbow=lm[side.el], wrist=lm[side.wr], nose=lm[0];
   const shoulderMid={x:(lm[11].x+lm[12].x)/2,y:(lm[11].y+lm[12].y)/2};
@@ -467,7 +787,15 @@ function computeFrameAngles(lm){
   const upperArmVec=vec(shoulder,elbow);
   const upperArmAngle=angleBetween(upperArmVec,trunkVec);
   const elbowAngle=angleBetween(vec(elbow,shoulder),vec(elbow,wrist));
-  return {neckAngle,trunkAngle,upperArmAngle,elbowAngle,confidence:Math.max(leftVis,rightVis)};
+  return {
+    neckAngle,
+    trunkAngle,
+    upperArmAngle,
+    elbowAngle,
+    confidence:Math.max(leftVis,rightVis),
+    fullBodyConfidence,
+    fullBodyInFrame
+  };
 }
 
 function drawSkeleton(lm){
@@ -481,9 +809,241 @@ function drawSkeleton(lm){
   lm.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x*overlay.width,p.y*overlay.height,4,0,2*Math.PI); ctx.fill(); });
 }
 
+function snapshotLandmarks(lm){
+  return lm.map(point=>({
+    x:point.x,
+    y:point.y,
+    z:point.z||0,
+    visibility:point.visibility||0
+  }));
+}
+
+function provisionalRula(frame){
+  const nS = neckScore(frame.neckAngle);
+  const tS = trunkScore(frame.trunkAngle);
+  const uaS = upperArmScore(frame.upperArmAngle);
+  const laS = lowerArmScore(frame.elbowAngle);
+  const scoreA = clamp(TABLE_A[uaS-1][laS-1][1][0], 1, 8);
+  const scoreB = clamp(TABLE_B[nS-1][tS-1][0], 1, 7);
+  const grand = TABLE_C[scoreA-1][scoreB-1];
+  const level = ACTION_LEVELS.find(item=>grand<=item.max);
+  return {
+    nS,tS,uaS,laS,scoreA,scoreB,grand,level,
+    levelIndex:ACTION_LEVELS.indexOf(level)+1
+  };
+}
+
+function captureCurrentVideoFrame(){
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth || 640;
+  canvas.height = video.videoHeight || 480;
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+  return canvas;
+}
+
+function resetAnalysisState(sourceMode){
+  state.sourceMode = sourceMode;
+  state.frames = [];
+  state.worst = null;
+  state.scores = null;
+  state.capturedPhoto = null;
+  state.quality = null;
+  state.serverAnalysis = null;
+  state.aihubAnalysis = null;
+  state.dashboardSaved = false;
+  state.dashboardSessionId = crypto.randomUUID();
+  supplementBox.style.display = 'none';
+  toResultsBtn.disabled = true;
+  qualityNotice.className = 'quality-notice';
+  qualityNotice.textContent = '';
+}
+
+async function runLiveMeasurement(timestamp){
+  if(!liveMeasuring) return;
+  if(video.readyState>=2 && timestamp-liveLastDetectionAt>=160){
+    liveLastDetectionAt = timestamp;
+    try{
+      const result = poseLandmarker.detectForVideo(video, timestamp);
+      if(result.landmarks?.length){
+        const lm = result.landmarks[0];
+        liveDetectedFrames++;
+        drawSkeleton(lm);
+        const angles = computeFrameAngles(lm);
+        const usable =
+          angles.confidence>=MIN_FRAME_CONFIDENCE &&
+          angles.fullBodyConfidence>=MIN_FRAME_CONFIDENCE &&
+          angles.fullBodyInFrame;
+        if(usable){
+          const frame = {
+            ...angles,
+            time:(Date.now()-liveStartedAtMs)/1000,
+            landmarks:snapshotLandmarks(lm)
+          };
+          const preview = provisionalRula(frame);
+          const postureWeight =
+            preview.grand*10 +
+            preview.nS+preview.tS+preview.uaS+preview.laS;
+          frame.total = postureWeight;
+          frame.provisionalGrand = preview.grand;
+          liveFrames.push(frame);
+          if(postureWeight>liveWorstScore){
+            liveWorstScore = postureWeight;
+            liveWorstCanvas = captureCurrentVideoFrame();
+          }
+          liveRisk.className = `live-risk visible level-${preview.levelIndex}`;
+          liveRiskLabel.textContent = preview.level.label;
+          liveRiskScore.textContent = `현재 추정 RULA ${preview.grand}`;
+          liveRiskGuide.textContent = '하중·반복 작업 입력 전 자세만 반영한 값이며, 종료 후 같은 RULA 표로 최종 계산합니다.';
+        }else{
+          liveRejectedFrames++;
+        }
+      }
+      progressLine.textContent =
+        `실시간 측정 중 · 유효 프레임 ${liveFrames.length}개 · 저신뢰 제외 ${liveRejectedFrames}개`;
+    }catch{
+      progressLine.textContent = '자세 분석을 잠시 재시도하고 있습니다...';
+    }
+  }
+  liveFrameRequest = requestAnimationFrame(runLiveMeasurement);
+}
+
+startLiveBtn.addEventListener('click', async ()=>{
+  if(liveMeasuring || !poseLandmarker) return;
+  if(!navigator.mediaDevices?.getUserMedia){
+    qualityNotice.className = 'quality-notice danger';
+    qualityNotice.textContent = '이 브라우저에서는 카메라를 사용할 수 없습니다. 촬영 영상 업로드를 이용해 주세요.';
+    return;
+  }
+
+  resetAnalysisState('live');
+  state.measurementStartedAt = new Date().toISOString();
+  state.measurementEndedAt = null;
+  liveFrames = [];
+  liveDetectedFrames = 0;
+  liveRejectedFrames = 0;
+  liveWorstScore = -1;
+  liveWorstCanvas = null;
+  liveLastDetectionAt = 0;
+  liveStartedAtMs = Date.now();
+
+  try{
+    liveStream = await navigator.mediaDevices.getUserMedia({
+      audio:false,
+      video:{
+        facingMode:{ideal:'environment'},
+        width:{ideal:1280},
+        height:{ideal:720}
+      }
+    });
+    video.removeAttribute('src');
+    video.srcObject = liveStream;
+    await video.play();
+    overlay.width = video.videoWidth || 1280;
+    overlay.height = video.videoHeight || 720;
+    stage.style.display = 'flex';
+    liveRisk.className = 'live-risk visible level-1';
+    liveRiskLabel.textContent = '자세 인식 준비';
+    liveRiskScore.textContent = '현재 추정 RULA —';
+    liveRiskGuide.textContent = '몸 전체가 화면에 들어오면 같은 RULA 계산 방식으로 실시간 안내가 시작됩니다.';
+    liveMeasuring = true;
+    startLiveBtn.disabled = true;
+    stopLiveBtn.hidden = false;
+    stopLiveBtn.disabled = false;
+    modeButtons.forEach(button=>button.disabled=true);
+    progressLine.textContent = '카메라 측정 시작 · 몸 전체가 보이도록 자세를 잡아주세요.';
+    liveFrameRequest = requestAnimationFrame(runLiveMeasurement);
+  }catch(error){
+    stopLiveTracks();
+    startLiveBtn.disabled = false;
+    qualityNotice.className = 'quality-notice danger';
+    qualityNotice.textContent =
+      error?.name==='NotAllowedError'
+        ? '카메라 권한이 필요합니다. 브라우저에서 카메라 사용을 허용해 주세요.'
+        : '카메라를 열지 못했습니다. 다른 앱의 카메라 사용을 종료하거나 영상 업로드를 이용해 주세요.';
+  }
+});
+
+stopLiveBtn.addEventListener('click', async ()=>{
+  if(!liveMeasuring) return;
+  liveMeasuring = false;
+  if(liveFrameRequest){
+    cancelAnimationFrame(liveFrameRequest);
+    liveFrameRequest = null;
+  }
+  state.measurementEndedAt = new Date().toISOString();
+  video.pause();
+  stopLiveBtn.disabled = true;
+  modeButtons.forEach(button=>button.disabled=false);
+  stopLiveTracks();
+
+  if(liveFrames.length<MIN_USABLE_FRAMES){
+    state.frames = [];
+    state.worst = null;
+    state.quality = {
+      detectedFrames:liveDetectedFrames,
+      rejectedFrames:liveRejectedFrames,
+      usableFrames:liveFrames.length
+    };
+    qualityNotice.className = 'quality-notice danger';
+    qualityNotice.textContent =
+      `사용 가능한 프레임이 ${liveFrames.length}개뿐입니다. 조명을 밝게 하고 머리부터 발끝까지 보이도록 다시 측정해 주세요.`;
+    progressLine.textContent = liveDetectedFrames===0
+      ? '⚠️ 사람의 자세를 인식하지 못했습니다.'
+      : `⚠️ 저신뢰 프레임 ${liveRejectedFrames}개를 제외한 뒤 분석할 자세가 부족합니다.`;
+    startLiveBtn.disabled = false;
+    startLiveBtn.textContent = '다시 측정하기';
+    stopLiveBtn.hidden = true;
+    return;
+  }
+
+  const worst = liveFrames.reduce((current,frame)=>
+    !current || frame.total>current.total ? frame : current
+  , null);
+  state.frames = liveFrames;
+  state.worst = worst;
+  state.quality = {
+    detectedFrames:liveDetectedFrames,
+    rejectedFrames:liveRejectedFrames,
+    usableFrames:liveFrames.length
+  };
+
+  const captureCanvas = liveWorstCanvas;
+  state.capturedPhoto = captureCanvas.toDataURL('image/jpeg', 0.85);
+  const capturedBlob = await new Promise(resolve=>
+    captureCanvas.toBlob(resolve, 'image/jpeg', 0.85)
+  );
+  const rejectedRatio = liveDetectedFrames
+    ? liveRejectedFrames/liveDetectedFrames
+    : 0;
+  qualityNotice.className =
+    rejectedRatio>0.35 ? 'quality-notice warning' : 'quality-notice good';
+  qualityNotice.textContent = liveRejectedFrames
+    ? `실시간 유효 프레임 ${liveFrames.length}개로 분석했습니다. 저신뢰·전신 누락 프레임 ${liveRejectedFrames}개는 제외했습니다.`
+    : `실시간 측정의 모든 감지 프레임이 품질 기준을 통과했습니다.`;
+  progressLine.textContent =
+    `실시간 측정 완료 · 최고 위험 자세 선택 · AI Hub 학습모델 비교 중...`;
+  await Promise.all([
+    requestServerAnalysis(worst.landmarks),
+    requestAihubAnalysis(capturedBlob)
+  ]);
+  progressLine.textContent = state.aihubAnalysis
+    ? `✅ 실시간 측정 완료 · 유효 프레임 ${liveFrames.length}개 · 같은 RULA 결과표로 이동할 수 있습니다.`
+    : `✅ 실시간 측정 완료 · 유효 프레임 ${liveFrames.length}개 · 브라우저 RULA 결과를 사용합니다.`;
+  liveRiskGuide.textContent = '측정이 끝났습니다. 하중과 반복 작업 정보를 입력하면 최종 RULA 점수가 계산됩니다.';
+  supplementBox.style.display = 'block';
+  toResultsBtn.disabled = false;
+  startLiveBtn.disabled = false;
+  startLiveBtn.textContent = '다시 측정하기';
+  stopLiveBtn.hidden = true;
+});
+
 analyzeBtn.addEventListener('click', async ()=>{
   if(analyzing || !poseLandmarker) return;
   analyzing = true; analyzeBtn.disabled = true;
+  supplementBox.style.display = 'none';
+  toResultsBtn.disabled = true;
+  qualityNotice.className = 'quality-notice';
+  qualityNotice.textContent = '';
   video.pause(); video.currentTime = 0;
   await new Promise(r=> video.onseeked = r);
 
@@ -491,6 +1051,7 @@ analyzeBtn.addEventListener('click', async ()=>{
   const duration = video.duration;
   const step = Math.max(duration/30, 0.1);
   let t=0, idx=0, worstFrameTime=0, worstTotal=-1;
+  let detectedFrames=0, rejectedFrames=0;
 
   while(t < duration){
     video.currentTime = t;
@@ -498,32 +1059,56 @@ analyzeBtn.addEventListener('click', async ()=>{
     const result = poseLandmarker.detectForVideo(video, performance.now());
     if(result.landmarks && result.landmarks.length>0){
       const lm = result.landmarks[0];
+      detectedFrames++;
       drawSkeleton(lm);
       const a = computeFrameAngles(lm);
-      const total = neckScore(a.neckAngle)+trunkScore(a.trunkAngle)+upperArmScore(a.upperArmAngle)+lowerArmScore(a.elbowAngle);
-      frames.push(a);
-      if(total > worstTotal){ worstTotal = total; worstFrameTime = t; }
+      const usable = a.confidence>=MIN_FRAME_CONFIDENCE && a.fullBodyConfidence>=MIN_FRAME_CONFIDENCE && a.fullBodyInFrame;
+      if(usable){
+        const frame = {
+          ...a,
+          time:t,
+          landmarks:snapshotLandmarks(lm)
+        };
+        const preview = provisionalRula(frame);
+        const total =
+          preview.grand*10 +
+          preview.nS+preview.tS+preview.uaS+preview.laS;
+        frame.provisionalGrand = preview.grand;
+        frame.total = total;
+        frames.push(frame);
+        if(total > worstTotal){ worstTotal = total; worstFrameTime = t; }
+      }else{
+        rejectedFrames++;
+      }
       idx++;
-      progressLine.textContent = `프레임 분석 중... ${idx} / ~${Math.ceil(duration/step)} (t=${t.toFixed(1)}s)`;
+      progressLine.textContent = `프레임 분석 중... ${idx} / ~${Math.ceil(duration/step)} · 저신뢰 제외 ${rejectedFrames}`;
     }
     t += step;
   }
 
   analyzing = false;
+  analyzeBtn.disabled = false;
 
-  if(frames.length===0){
-    progressLine.textContent = '⚠️ 사람의 자세를 인식하지 못했습니다. 촬영 각도를 조정해 다시 시도해 주세요.';
+  if(frames.length<MIN_USABLE_FRAMES){
+    state.frames = [];
+    state.worst = null;
+    state.quality = {detectedFrames,rejectedFrames,usableFrames:frames.length};
+    qualityNotice.className = 'quality-notice danger';
+    qualityNotice.textContent = `사용 가능한 프레임이 ${frames.length}개뿐입니다. 밝은 곳에서 카메라를 고정하고 머리부터 발끝까지 전신이 나오도록 다시 촬영해 주세요.`;
+    progressLine.textContent = detectedFrames===0
+      ? '⚠️ 사람의 자세를 인식하지 못했습니다. 촬영 각도를 조정해 다시 시도해 주세요.'
+      : `⚠️ 저신뢰 프레임 ${rejectedFrames}개를 제외한 뒤 분석할 영상이 부족합니다.`;
     return;
   }
 
   const worst = frames.reduce((acc,f)=>{
-    const total = neckScore(f.neckAngle)+trunkScore(f.trunkAngle)+upperArmScore(f.upperArmAngle)+lowerArmScore(f.elbowAngle);
-    if(!acc || total>acc.total) return {...f, total};
+    if(!acc || f.total>acc.total) return f;
     return acc;
   }, null);
 
   state.frames = frames;
   state.worst = worst;
+  state.quality = {detectedFrames,rejectedFrames,usableFrames:frames.length};
 
   // 최악 프레임 사진 캡처 (법정서식용)
   video.currentTime = worstFrameTime;
@@ -532,16 +1117,130 @@ analyzeBtn.addEventListener('click', async ()=>{
   capCanvas.width = video.videoWidth; capCanvas.height = video.videoHeight;
   capCanvas.getContext('2d').drawImage(video, 0, 0);
   state.capturedPhoto = capCanvas.toDataURL('image/jpeg', 0.85);
+  const capturedBlob = await new Promise(resolve=>
+    capCanvas.toBlob(resolve, 'image/jpeg', 0.85)
+  );
 
-  progressLine.textContent = `✅ 분석 완료 — 총 ${frames.length}개 프레임 처리, 최고 위험 자세 기준으로 판정합니다.`;
+  const rejectedRatio = detectedFrames ? rejectedFrames/detectedFrames : 0;
+  qualityNotice.className = rejectedRatio>0.35 ? 'quality-notice warning' : 'quality-notice good';
+  qualityNotice.textContent = rejectedFrames
+    ? `사용 가능한 프레임 ${frames.length}개로 분석했습니다. 저신뢰·전신 누락 프레임 ${rejectedFrames}개는 결과에서 제외했습니다.`
+    : `모든 감지 프레임의 품질이 기준을 통과했습니다.`;
+  progressLine.textContent = ANALYSIS_API_URL
+    ? `브라우저 분석 완료 — 유효 프레임 ${frames.length}개 · AI Hub 학습모델 비교 중...`
+    : `✅ 분석 완료 — 유효 프레임 ${frames.length}개, 최고 위험 자세 기준으로 판정합니다.`;
+  await Promise.all([
+    requestServerAnalysis(worst.landmarks),
+    requestAihubAnalysis(capturedBlob)
+  ]);
+  progressLine.textContent = state.aihubAnalysis
+    ? `✅ 분석 완료 — 유효 프레임 ${frames.length}개 · MediaPipe RULA와 AI Hub 분류를 함께 확인했습니다.`
+    : `✅ 분석 완료 — 유효 프레임 ${frames.length}개 · 브라우저 RULA 결과를 사용합니다.`;
   supplementBox.style.display = 'block';
   toResultsBtn.disabled = false;
 });
 
+function buildDashboardSession(){
+  const frames = state.frames;
+  if(!frames?.length) return null;
+  const emptyMetrics = ()=>({
+    neck:0,
+    trunk:0,
+    shoulder:0,
+    headRotation:0,
+    trunkRotation:0,
+    leftWristRotation:0,
+    rightWristRotation:0
+  });
+  const metricMax = emptyMetrics();
+  const metricAverage = emptyMetrics();
+  const metricWarnings = emptyMetrics();
+  let neckTotal = 0;
+  let trunkTotal = 0;
+  let shoulderTotal = 0;
+  let normalSamples = 0;
+  let cautionSamples = 0;
+  let dangerSamples = 0;
+  let confidenceTotal = 0;
+
+  frames.forEach(frame=>{
+    const neck = Number(frame.neckAngle)||0;
+    const trunk = Number(frame.trunkAngle)||0;
+    const shoulder = Number(frame.upperArmAngle)||0;
+    metricMax.neck = Math.max(metricMax.neck, neck);
+    metricMax.trunk = Math.max(metricMax.trunk, trunk);
+    metricMax.shoulder = Math.max(metricMax.shoulder, shoulder);
+    neckTotal += neck;
+    trunkTotal += trunk;
+    shoulderTotal += shoulder;
+    if(neck>20) metricWarnings.neck++;
+    if(trunk>15) metricWarnings.trunk++;
+    if(shoulder>30) metricWarnings.shoulder++;
+    confidenceTotal += Number(frame.confidence)||0;
+    const grand = frame.provisionalGrand || provisionalRula(frame).grand;
+    if(grand<=2) normalSamples++;
+    else if(grand<=4) cautionSamples++;
+    else dangerSamples++;
+  });
+
+  metricAverage.neck = Math.round(neckTotal/frames.length*10)/10;
+  metricAverage.trunk = Math.round(trunkTotal/frames.length*10)/10;
+  metricAverage.shoulder = Math.round(shoulderTotal/frames.length*10)/10;
+  const startedAt = state.measurementStartedAt || new Date().toISOString();
+  const endedAt = state.measurementEndedAt || new Date().toISOString();
+  const durationSeconds = Math.max(
+    1,
+    Math.round((new Date(endedAt).getTime()-new Date(startedAt).getTime())/1000)
+  );
+  return {
+    id:state.dashboardSessionId || crypto.randomUUID(),
+    startedAt,
+    endedAt,
+    durationSeconds,
+    maxPeople:1,
+    samples:frames.length,
+    normalSamples,
+    cautionSamples,
+    dangerSamples,
+    averageConfidence:Math.round(confidenceTotal/frames.length*1000)/10,
+    metricMax,
+    metricAverage,
+    metricWarnings
+  };
+}
+
+async function saveDashboardSession(){
+  if(state.dashboardSaved || window.location.protocol==='file:') return;
+  const session = buildDashboardSession();
+  if(!session) return;
+  try{
+    const response = await fetch('/api/sessions', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(session)
+    });
+    if(response.ok){
+      state.dashboardSaved = true;
+      state.dashboardSessionId = session.id;
+    }
+  }catch{
+    // 보고서 생성은 대시보드 저장 실패와 관계없이 계속 동작합니다.
+  }
+}
+
 /* ---------- Step 4: RULA 결과 계산 & 렌더 ---------- */
 window.computeAndShowResults = function(){
   const w = state.worst;
-  const weight = parseFloat(document.getElementById('fWeight').value) || 0;
+  if(!w){
+    alert('먼저 품질 기준을 통과한 영상을 분석해 주세요.');
+    return;
+  }
+  const loadLevel = document.querySelector('input[name="loadLevel"]:checked')?.value || 'light';
+  const loadLabels = {
+    light:'가벼움 (2kg 미만 또는 없음)',
+    medium:'보통 (2kg 이상 10kg 이하)',
+    heavy:'무거움 (10kg 초과)'
+  };
   const staticForce = document.getElementById('fStaticForce').checked;
   const muscleStatic = document.getElementById('fMuscleStatic').checked;
   const legsUnsupported = document.getElementById('fLegsUnsupported').checked;
@@ -554,7 +1253,7 @@ window.computeAndShowResults = function(){
   const wristTwist = 1;  // T1 고정
   const legS = legsUnsupported ? 2 : 1;
 
-  const fS = forceScore(weight, staticForce);
+  const fS = forceScore(loadLevel, staticForce);
   const mS = muscleStatic ? 1 : 0;
 
   const tableAEntry = TABLE_A[uaS-1][laS-1][wristS];
@@ -569,15 +1268,19 @@ window.computeAndShowResults = function(){
   const level = ACTION_LEVELS.find(l=> grand<=l.max);
 
   state.scores = { nS,tS,uaS,laS,wristS,wristTwist,legS,fS,mS,scoreA,scoreB,grand,level,
-                    weight, staticForce, muscleStatic, legsUnsupported,
+                    loadLevel, loadLabel:loadLabels[loadLevel], staticForce, muscleStatic, legsUnsupported,
                     neckAngle:w.neckAngle, trunkAngle:w.trunkAngle, upperArmAngle:w.upperArmAngle, elbowAngle:w.elbowAngle };
 
   renderResults();
+  saveDashboardSession();
   goStep(4);
 };
 
 function renderResults(){
   const s = state.scores;
+  const sourceLabel = state.sourceMode==='live' ? '실시간 카메라 측정' : '촬영 영상 업로드';
+  document.getElementById('analysisSourceOut').textContent =
+    `${sourceLabel}의 최고 위험 자세를 기준으로 동일한 RULA Table A / B / C를 적용했습니다. 유효 프레임 ${state.quality?.usableFrames??0}개.`;
   const cells = [
     {label:'목 (Neck)', score:s.nS, angle:s.neckAngle},
     {label:'몸통 (Trunk)', score:s.tS, angle:s.trunkAngle},
@@ -597,7 +1300,7 @@ function renderResults(){
     <tr><td>손목(Wrist) 점수 — 중립 고정</td><td>${s.wristS}</td></tr>
     <tr><td>Table A 기본값</td><td>${TABLE_A[s.uaS-1][s.laS-1][s.wristS][s.wristTwist-1]}</td></tr>
     <tr><td>근육사용(A) 가산</td><td>+${s.mS}</td></tr>
-    <tr><td>힘/부하(A) 가산 (${s.weight}kg)</td><td>+${s.fS}</td></tr>`;
+    <tr><td>힘/부하(A) 가산 (${s.loadLabel})</td><td>+${s.fS}</td></tr>`;
   document.getElementById('scoreAOut').textContent = 'Score A = '+s.scoreA;
 
   document.getElementById('groupBTable').innerHTML = `
@@ -615,6 +1318,40 @@ function renderResults(){
   document.getElementById('verdictGrade').textContent = s.level.label;
   document.getElementById('verdictAction').textContent = s.level.desc;
   document.getElementById('gscoreOut').textContent = s.grand;
+
+  const ai = state.aihubAnalysis;
+  const aiContent = document.getElementById('aihubComparisonContent');
+  if(!ai?.predictions){
+    aiContent.innerHTML = `
+      <p class="aihub-help">AI Hub 결과가 없습니다. 로컬 서버를 켜지 않았거나 모델 분석이 실패한 경우이며, 위 MediaPipe RULA 결과는 그대로 사용할 수 있습니다.</p>`;
+    return;
+  }
+
+  const bodyLabels = {
+    neck:'목',
+    trunk:'몸통',
+    upperarm:'위팔',
+    lowerarm:'아래팔',
+    legs:'다리'
+  };
+  const scoreHint = prediction=>{
+    if(prediction.rula_base_score!==null) return `RULA 기초점수 참고 ${prediction.rula_base_score}`;
+    if(prediction.rula_base_score_range) return `RULA 참고범위 ${prediction.rula_base_score_range.join('~')}`;
+    return 'MediaPipe 각도 계산 필요';
+  };
+  aiContent.innerHTML = `
+    <table>
+      ${Object.entries(ai.predictions).map(([key,prediction])=>`
+        <tr>
+          <td>${bodyLabels[key]||key} · ${prediction.label_ko}<br>
+            <span class="confidence ${prediction.confidence_percent<50?'low':''}">
+              ${prediction.class_id} · 신뢰도 ${prediction.confidence_percent}%
+            </span>
+          </td>
+          <td>${scoreHint(prediction)}</td>
+        </tr>`).join('')}
+    </table>
+    <p class="aihub-limit">손목 모델과 세부 각도·비틀림·지지 정보가 없으므로 AI Hub 결과만으로 Score A/B를 다시 계산하지 않습니다. 신뢰도 50% 미만 결과는 특히 재검토하세요.</p>`;
 }
 
 /* ---------- Step 5: 법정서식 렌더 ---------- */
@@ -625,6 +1362,11 @@ window.buildDocument = function(){
   const photoHtml = state.capturedPhoto
     ? `<img class="capture-photo" src="${state.capturedPhoto}" alt="분석 프레임 캡처">`
     : `<div style="color:#999;font-size:12px;">사진 없음</div>`;
+  const aiSummary = state.aihubAnalysis?.predictions
+    ? Object.values(state.aihubAnalysis.predictions)
+        .map(p=>`${p.class_id} ${p.label_ko}(${p.confidence_percent}%)`)
+        .join(' · ')
+    : 'AI Hub 비교 결과 없음';
 
   const html = `
     <div class="doc-title">유해요인조사표 (별지 제1호서식)</div>
@@ -644,6 +1386,8 @@ window.buildDocument = function(){
         <tr><th>부서명</th><td colspan="3">${sv.dept||'—'}</td></tr>
         <tr><th>작업공정명</th><td colspan="3">${sv.process||'—'}</td></tr>
         <tr><th>작업명</th><td colspan="3">${sv.jobName}</td></tr>
+        <tr><th>분석 방식</th><td colspan="3">${state.sourceMode==='live'?'실시간 카메라 측정':'촬영 영상 업로드'}</td></tr>
+        <tr><th>촬영·분석 동의</th><td colspan="3">${state.consent?.agreed ? '동의 완료 ('+new Date(state.consent.agreedAt).toLocaleString('ko-KR')+')' : '확인 필요'}</td></tr>
       </table>
     </div>
 
@@ -706,9 +1450,13 @@ window.buildDocument = function(){
       <div style="margin-top:10px;">${photoHtml}</div>
       <div class="rula-auto" style="margin-top:12px;">
         <b>MoveGuard 자동 산출 (RULA)</b><br>
-        평가도구: RULA &nbsp;|&nbsp; Score A(상지) = ${s?s.scoreA:'—'} &nbsp;|&nbsp; Score B(목·몸통·다리) = ${s?s.scoreB:'—'}<br>
+        분석 방식: ${state.sourceMode==='live'?'실시간 카메라 측정':'촬영 영상 업로드'} &nbsp;|&nbsp; 평가도구: RULA<br>
+        Score A(상지) = ${s?s.scoreA:'—'} &nbsp;|&nbsp; Score B(목·몸통·다리) = ${s?s.scoreB:'—'}<br>
         Grand Score = <b>${s?s.grand:'—'}</b> &nbsp;|&nbsp; 판정: <b>${s?s.level.label:'—'}</b><br>
-        <span style="font-size:12px;color:#555;">${s?s.level.desc:''}</span>
+        하중: ${s?s.loadLabel:'—'} &nbsp;|&nbsp; 유효 프레임: ${state.quality?.usableFrames??'—'}개 &nbsp;|&nbsp; 저신뢰 제외: ${state.quality?.rejectedFrames??'—'}개<br>
+        <span style="font-size:12px;color:#555;">${s?s.level.desc:''}</span><br>
+        <b>AI Hub 자세분류 비교:</b> ${aiSummary}<br>
+        <span style="font-size:11px;color:#777;">AI Hub 분류는 손목·세부각도 정보가 부족하여 위 RULA 점수를 덮어쓰지 않는 참고 결과입니다.</span>
       </div>
     </div>
 
