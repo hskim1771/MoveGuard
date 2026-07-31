@@ -1030,11 +1030,15 @@ startLiveBtn.addEventListener('click', async ()=>{
   liveLastDetectionAt = 0;
   liveStartedAtMs = Date.now();
 
+  // 후면 카메라 우선은 폰에서만 의미가 있음 — 노트북 웹캠에서 이 힌트 때문에
+  // 엉뚱한(가상) 카메라가 잡히는 사례가 있어 데스크톱에서는 아예 힌트를 안 준다.
+  const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+    (navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.userAgent));
   try{
     liveStream = await navigator.mediaDevices.getUserMedia({
       audio:false,
       video:{
-        facingMode:{ideal:'environment'},
+        ...(isMobileDevice ? {facingMode:{ideal:'environment'}} : {}),
         width:{ideal:1280},
         height:{ideal:720}
       }
