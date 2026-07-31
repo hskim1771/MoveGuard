@@ -11,7 +11,7 @@ import threading
 
 import cv2
 import mediapipe as mp
-from fastapi import Body, FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi import Body, Depends, FastAPI, File, Form, Header, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision as mp_vision
@@ -30,13 +30,30 @@ MODEL_PATH = os.environ.get("POSE_MODEL_PATH", os.path.join(os.path.dirname(__fi
 MIN_CONFIDENCE = 0.5   # 이 아래면 "인식 신뢰도 낮음" 프레임으로 취급, 전부 낮으면 재촬영 안내
 SAMPLE_FRAMES = 30
 
+# 배포된 프론트엔드 도메인만 쉼표로 구분해서 넣는다 (예: https://moveguard.onrender.com).
+# 안 넣으면(로컬 개발 단계) 아래 정규식만 적용돼서 localhost/사설망 IP에서는 계속 열려있다.
+_EXTRA_ORIGINS = [o.strip() for o in os.environ.get("MOVEGUARD_ALLOWED_ORIGINS", "").split(",") if o.strip()]
+# 로컬 테스트(팀원 각자 python http.server, 같은 와이파이 IP 접속)는 항상 허용
+_LOCAL_ORIGIN_REGEX = r"^https?://(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3})(:\d+)?$"
+
 app = FastAPI(title="MoveGuard Backend")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 배포 시 실제 프론트 도메인으로 좁힐 것
+    allow_origins=_EXTRA_ORIGINS,
+    allow_origin_regex=_LOCAL_ORIGIN_REGEX,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 프론트엔드가 공개되면 이 서버 주소도 페이지 소스에 그대로 보인다.
+# 완전한 보안은 아니지만(키도 프론트 코드에 있어 결국 보임), 무작위 봇/스캐너의
+# 자동 남용은 이걸로 충분히 막는다. MOVEGUARD_API_KEY 안 정해두면(로컬 개발) 검사 자체를 건너뛴다.
+_API_KEY = os.environ.get("MOVEGUARD_API_KEY")
+
+
+def require_api_key(x_moveguard_key: str | None = Header(default=None)):
+    if _API_KEY and x_moveguard_key != _API_KEY:
+        raise HTTPException(status_code=401, detail="유효하지 않은 API 키입니다.")
 
 # 영상 분석(mediapipe)과 AI Hub 분류(onnx)를 무료 서버 메모리 한도 안에서
 # 동시에 안 돌게 하려고 무거운 작업 전체를 이 락 하나로 순차 처리한다.
@@ -108,7 +125,7 @@ def health():
     return {"status": "ok", "firebase_connected": _firebase is not None, "aihub": classifier_status()}
 
 
-@app.post("/v1/analyze", response_model=AnalyzeResponse)
+@app.post("/v1/analyze", response_model=AnalyzeResponse, dependencies=[Depends(require_api_key)])
 def analyze_landmarks(payload: AnalyzeRequest) -> AnalyzeResponse:
     from time import perf_counter
 
@@ -121,7 +138,7 @@ def analyze_landmarks(payload: AnalyzeRequest) -> AnalyzeResponse:
     )
 
 
-@app.post("/v1/aihub/classify")
+@app.post("/v1/aihub/classify", dependencies=[Depends(require_api_key)])
 def classify_aihub_frame(
     request: Request,
     image: bytes = Body(..., media_type="image/jpeg"),
@@ -142,7 +159,7 @@ def classify_aihub_frame(
         raise HTTPException(status_code=503, detail=str(error)) from error
 
 
-@app.post("/analyze")
+@app.post("/analyze", dependencies=[Depends(require_api_key)])
 async def analyze(
     video: UploadFile = File(...),
     weight_kg: float = Form(0),
