@@ -817,10 +817,12 @@ const CONNECTIONS = [
 
 async function initModel(){
   modelStatus.textContent = 'MediaPipe Pose 모델 로딩 중... (최초 1회, 수 초 소요)';
+  // GPU 가속 모드는 일부 브라우저(특히 실시간 카메라 화면)에서 자세 인식은 정상 동작하면서
+  // <video> 화면만 검게 그려지는 충돌이 보고돼 CPU 모드를 우선 사용한다. 안정성 우선.
   try{
     const vision = await FilesetResolver.forVisionTasks("./mediapipe/wasm");
     poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
-      baseOptions:{ modelAssetPath:"./mediapipe/models/pose_landmarker_lite.task", delegate:"GPU" },
+      baseOptions:{ modelAssetPath:"./mediapipe/models/pose_landmarker_lite.task", delegate:"CPU" },
       runningMode:"VIDEO", numPoses:1
     });
     modelStatus.textContent = '✅ 모델 준비 완료. 실시간 측정이나 영상 분석을 시작하세요.';
@@ -830,10 +832,10 @@ async function initModel(){
     try{
       const vision = await FilesetResolver.forVisionTasks("./mediapipe/wasm");
       poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
-        baseOptions:{ modelAssetPath:"./mediapipe/models/pose_landmarker_lite.task", delegate:"CPU" },
+        baseOptions:{ modelAssetPath:"./mediapipe/models/pose_landmarker_lite.task", delegate:"GPU" },
         runningMode:"VIDEO", numPoses:1
       });
-      modelStatus.textContent = '✅ 모델 준비 완료 (CPU 모드). 실시간 측정이나 영상 분석을 시작하세요.';
+      modelStatus.textContent = '✅ 모델 준비 완료 (GPU 모드). 실시간 측정이나 영상 분석을 시작하세요.';
       analyzeBtn.disabled = false;
       startLiveBtn.disabled = false;
     }catch(e2){
