@@ -282,6 +282,7 @@
           <h3>현재 자세를 보면서 바로 측정합니다</h3>
           <p>측정 중에는 하중 입력 전 추정 RULA를 안내하고, 종료 후 최고 위험 자세로 최종 보고서를 만듭니다.</p>
         </div>
+        <button class="btn secondary" id="switchCameraBtn" type="button" hidden style="margin-right:8px;">전면 카메라로 전환</button>
         <button class="btn" id="startLiveBtn" type="button" disabled>카메라 켜고 측정 시작</button>
       </div>
 
@@ -574,6 +575,15 @@ const liveModePanel = document.getElementById('liveModePanel');
 const uploadZone = document.getElementById('dropZone');
 const startLiveBtn = document.getElementById('startLiveBtn');
 const stopLiveBtn = document.getElementById('stopLiveBtn');
+const switchCameraBtn = document.getElementById('switchCameraBtn');
+const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+  (navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.userAgent));
+let currentFacingMode = 'environment';
+if(isMobileDevice) switchCameraBtn.hidden = false;
+switchCameraBtn.addEventListener('click', ()=>{
+  currentFacingMode = currentFacingMode==='environment' ? 'user' : 'environment';
+  switchCameraBtn.textContent = currentFacingMode==='environment' ? '전면 카메라로 전환' : '후면 카메라로 전환';
+});
 const liveRisk = document.getElementById('liveRisk');
 const liveRiskLabel = document.getElementById('liveRiskLabel');
 const liveRiskScore = document.getElementById('liveRiskScore');
@@ -593,6 +603,7 @@ let liveStream = null;
 let liveMeasuring = false;
 let liveFrameRequest = null;
 let liveLastDetectionAt = 0;
+let lastLiveLandmarks = null;
 let liveFrames = [];
 let liveDetectedFrames = 0;
 let liveRejectedFrames = 0;
@@ -919,10 +930,9 @@ function computeFrameAngles(lm){
 }
 
 function drawSkeleton(lm){
-  // video 태그가 직접 화면에 그리는 걸 믿지 않고, 매 프레임 캔버스에 직접
-  // 영상을 그려서 보여준다 (일부 브라우저에서 MediaPipe가 video를 분석하기
-  // 시작하면 브라우저 자체의 video paint와 충돌해 화면이 까맣게 되는 문제 대응).
-  ctx.drawImage(video, 0, 0, overlay.width, overlay.height);
+  // video는 runLiveMeasurement의 매 프레임 루프에서 이미 그려졌으므로 여기서는
+  // 스켈레톤만 그 위에 얹는다 (여기서 다시 그리면 160ms 인식 주기 사이 프레임에
+  // video만 다시 그려지면서 스켈레톤이 바로 지워져 거의 안 보이게 되는 문제가 있었음).
   ctx.strokeStyle='#3fe0a0'; ctx.lineWidth=3;
   CONNECTIONS.forEach(([a,b])=>{
     const p1=lm[a], p2=lm[b];
@@ -989,8 +999,11 @@ async function runLiveMeasurement(timestamp){
   if(!liveMeasuring) return;
   // 자세 인식과 무관하게 매 프레임 영상은 캔버스에 계속 그려서 화면이 멈추거나
   // 까맣게 보이지 않게 한다 (인식 주기는 아래에서 160ms마다로 별도 제한됨).
+  // 스켈레톤은 마지막으로 인식된 좌표를 매 프레임 같이 얹어서, 인식 주기 사이에도
+  // 화면에서 사라지지 않고 계속 보이게 한다.
   if(video.readyState>=2){
     ctx.drawImage(video, 0, 0, overlay.width, overlay.height);
+    if(lastLiveLandmarks) drawSkeleton(lastLiveLandmarks);
   }
   if(video.readyState>=2 && timestamp-liveLastDetectionAt>=160){
     liveLastDetectionAt = timestamp;
@@ -999,6 +1012,7 @@ async function runLiveMeasurement(timestamp){
       if(result.landmarks?.length){
         const lm = result.landmarks[0];
         liveDetectedFrames++;
+        lastLiveLandmarks = lm;
         drawSkeleton(lm);
         const angles = computeFrameAngles(lm);
         const usable =
@@ -1056,17 +1070,16 @@ startLiveBtn.addEventListener('click', async ()=>{
   liveWorstScore = -1;
   liveWorstCanvas = null;
   liveLastDetectionAt = 0;
+  lastLiveLandmarks = null;
   liveStartedAtMs = Date.now();
 
-  // 후면 카메라 우선은 폰에서만 의미가 있음 — 노트북 웹캠에서 이 힌트 때문에
+  // 후면/전면 선호는 폰에서만 의미가 있음 — 노트북 웹캠에서 이 힌트 때문에
   // 엉뚱한(가상) 카메라가 잡히는 사례가 있어 데스크톱에서는 아예 힌트를 안 준다.
-  const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
-    (navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.userAgent));
   try{
     liveStream = await navigator.mediaDevices.getUserMedia({
       audio:false,
       video:{
-        ...(isMobileDevice ? {facingMode:{ideal:'environment'}} : {}),
+        ...(isMobileDevice ? {facingMode:{ideal:currentFacingMode}} : {}),
         width:{ideal:1280},
         height:{ideal:720}
       }
@@ -1086,6 +1099,7 @@ startLiveBtn.addEventListener('click', async ()=>{
     liveRiskGuide.textContent = '몸 전체가 화면에 들어오면 같은 RULA 계산 방식으로 실시간 안내가 시작됩니다.';
     liveMeasuring = true;
     startLiveBtn.disabled = true;
+    switchCameraBtn.disabled = true;
     stopLiveBtn.hidden = false;
     stopLiveBtn.disabled = false;
     modeButtons.forEach(button=>button.disabled=true);
@@ -1114,6 +1128,7 @@ stopLiveBtn.addEventListener('click', async ()=>{
   state.measurementEndedAt = new Date().toISOString();
   video.pause();
   stopLiveBtn.disabled = true;
+  switchCameraBtn.disabled = false;
   modeButtons.forEach(button=>button.disabled=false);
   const recordedBlob = await finishLiveRecording();
   if(recordedBlob?.size){
