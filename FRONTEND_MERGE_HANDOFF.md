@@ -34,6 +34,17 @@
 
 업로드 모드는 선택한 원본 영상을 전송합니다. 실시간 모드는 측정 중 브라우저가 임시 녹화한 영상을 전송합니다. 브라우저가 녹화를 지원하지 않거나 서버 분석에 실패하면 기존 브라우저 RULA 결과를 유지합니다.
 
+## AI Hub 분류 서버 소스
+
+- 소스 폴더: `aihub_server`
+- 배포 서버: `https://moveguard-analysis-api-4que.onrender.com`
+- 핵심 분류 코드: `aihub_server/app/aihub_classifier.py`
+- ONNX 모델: `aihub_server/aihub_models`
+- 실행 및 API 설명: `aihub_server/README.md`
+- 별도 인계 문서: `AIHUB_SERVER_HANDOFF.md`
+
+AI Hub 분류 서버는 팀 FastAPI RULA 백엔드와 별도 서비스입니다. 프론트는 대표 위험 프레임 1장을 `/v1/aihub/classify`로 보내 참고용 자세 분류 결과를 받고, 이 결과는 최종 RULA 점수를 덮어쓰지 않습니다.
+
 ## 병합 순서
 
 1. `frontend-features` 브랜치의 `moveguard_mvp.html`을 먼저 확인합니다.

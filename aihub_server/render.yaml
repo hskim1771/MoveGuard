@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: moveguard-analysis-api
+    runtime: python
+    plan: free
+    rootDir: aihub_server
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: AIHUB_ONNX_THREADS
+        value: "1"
+      - key: MOVEGUARD_ALLOWED_ORIGINS
+        value: "*"
