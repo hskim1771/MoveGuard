@@ -580,9 +580,38 @@ const isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
   (navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.userAgent));
 let currentFacingMode = 'environment';
 if(isMobileDevice) switchCameraBtn.hidden = false;
-switchCameraBtn.addEventListener('click', ()=>{
+switchCameraBtn.addEventListener('click', async ()=>{
   currentFacingMode = currentFacingMode==='environment' ? 'user' : 'environment';
   switchCameraBtn.textContent = currentFacingMode==='environment' ? '전면 카메라로 전환' : '후면 카메라로 전환';
+  if(!liveMeasuring) return; // 측정 시작 전이면 다음 시작 시 반영될 값만 바꾸고 끝
+
+  // 측정 중 전환: 기존 스트림/녹화를 정리하고 새 카메라로 다시 연결한다.
+  // RAF 인식 루프(liveFrameRequest)는 멈추지 않고 그대로 이어간다 — liveFrames 등
+  // 지금까지 쌓인 자세 데이터는 그대로 유지되고, 녹화 영상만 전환 시점부터 새로 시작된다.
+  switchCameraBtn.disabled = true;
+  try{
+    if(liveRecorder && liveRecorder.state!=='inactive') await finishLiveRecording();
+    if(liveStream) liveStream.getTracks().forEach(track=>track.stop());
+    liveStream = await navigator.mediaDevices.getUserMedia({
+      audio:false,
+      video:{
+        facingMode:{ideal:currentFacingMode},
+        width:{ideal:1280},
+        height:{ideal:720}
+      }
+    });
+    video.removeAttribute('src');
+    video.srcObject = liveStream;
+    await video.play();
+    startLiveRecording(liveStream);
+    overlay.width = video.videoWidth || overlay.width;
+    overlay.height = video.videoHeight || overlay.height;
+  }catch(error){
+    qualityNotice.className = 'quality-notice danger';
+    qualityNotice.textContent = '카메라 전환에 실패했습니다. 기존 카메라로 계속 측정해 주세요.';
+  }finally{
+    switchCameraBtn.disabled = false;
+  }
 });
 const liveRisk = document.getElementById('liveRisk');
 const liveRiskLabel = document.getElementById('liveRiskLabel');
@@ -1099,7 +1128,6 @@ startLiveBtn.addEventListener('click', async ()=>{
     liveRiskGuide.textContent = '몸 전체가 화면에 들어오면 같은 RULA 계산 방식으로 실시간 안내가 시작됩니다.';
     liveMeasuring = true;
     startLiveBtn.disabled = true;
-    switchCameraBtn.disabled = true;
     stopLiveBtn.hidden = false;
     stopLiveBtn.disabled = false;
     modeButtons.forEach(button=>button.disabled=true);
