@@ -919,7 +919,10 @@ function computeFrameAngles(lm){
 }
 
 function drawSkeleton(lm){
-  ctx.clearRect(0,0,overlay.width,overlay.height);
+  // video 태그가 직접 화면에 그리는 걸 믿지 않고, 매 프레임 캔버스에 직접
+  // 영상을 그려서 보여준다 (일부 브라우저에서 MediaPipe가 video를 분석하기
+  // 시작하면 브라우저 자체의 video paint와 충돌해 화면이 까맣게 되는 문제 대응).
+  ctx.drawImage(video, 0, 0, overlay.width, overlay.height);
   ctx.strokeStyle='#3fe0a0'; ctx.lineWidth=3;
   CONNECTIONS.forEach(([a,b])=>{
     const p1=lm[a], p2=lm[b];
@@ -984,6 +987,11 @@ function resetAnalysisState(sourceMode){
 
 async function runLiveMeasurement(timestamp){
   if(!liveMeasuring) return;
+  // 자세 인식과 무관하게 매 프레임 영상은 캔버스에 계속 그려서 화면이 멈추거나
+  // 까맣게 보이지 않게 한다 (인식 주기는 아래에서 160ms마다로 별도 제한됨).
+  if(video.readyState>=2){
+    ctx.drawImage(video, 0, 0, overlay.width, overlay.height);
+  }
   if(video.readyState>=2 && timestamp-liveLastDetectionAt>=160){
     liveLastDetectionAt = timestamp;
     try{
