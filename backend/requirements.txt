@@ -4,3 +4,6 @@ python-multipart
 opencv-python
 mediapipe
 firebase-admin
+numpy
+Pillow
+onnxruntime

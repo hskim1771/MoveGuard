@@ -7,15 +7,24 @@ MoveGuard 심화버전 백엔드 — 영상 업로드 → MediaPipe 분석 → R
 import base64
 import os
 import tempfile
+import threading
 
 import cv2
 import mediapipe as mp
-from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import Body, FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from mediapipe.tasks import python as mp_python
 from mediapipe.tasks.python import vision as mp_vision
 
 import rula
+from analyzer import analyze_request, highest_risk
+from models import AnalyzeRequest, AnalyzeResponse
+from aihub_classifier import (
+    InvalidImageError,
+    ModelUnavailableError,
+    classifier_status,
+    classify_image,
+)
 
 MODEL_PATH = os.environ.get("POSE_MODEL_PATH", os.path.join(os.path.dirname(__file__), "pose_landmarker_lite.task"))
 MIN_CONFIDENCE = 0.5   # 이 아래면 "인식 신뢰도 낮음" 프레임으로 취급, 전부 낮으면 재촬영 안내
@@ -28,6 +37,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 영상 분석(mediapipe)과 AI Hub 분류(onnx)를 무료 서버 메모리 한도 안에서
+# 동시에 안 돌게 하려고 무거운 작업 전체를 이 락 하나로 순차 처리한다.
+_heavy_op_lock = threading.Lock()
 
 _landmarker = None
 
@@ -92,7 +105,41 @@ _firebase = try_init_firebase()
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "firebase_connected": _firebase is not None}
+    return {"status": "ok", "firebase_connected": _firebase is not None, "aihub": classifier_status()}
+
+
+@app.post("/v1/analyze", response_model=AnalyzeResponse)
+def analyze_landmarks(payload: AnalyzeRequest) -> AnalyzeResponse:
+    from time import perf_counter
+
+    started_at = perf_counter()
+    people = analyze_request(payload)
+    return AnalyzeResponse(
+        people=people,
+        scene_risk=highest_risk([person.overall_risk for person in people]),
+        elapsed_ms=round((perf_counter() - started_at) * 1000, 2),
+    )
+
+
+@app.post("/v1/aihub/classify")
+def classify_aihub_frame(
+    request: Request,
+    image: bytes = Body(..., media_type="image/jpeg"),
+) -> dict:
+    content_type = request.headers.get("content-type", "").split(";", 1)[0]
+    if content_type not in {"image/jpeg", "image/png", "image/webp"}:
+        raise HTTPException(
+            status_code=415,
+            detail="Send a JPEG, PNG, or WebP image as the raw request body.",
+        )
+
+    try:
+        with _heavy_op_lock:
+            return classify_image(image)
+    except InvalidImageError as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error
+    except ModelUnavailableError as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
 
 
 @app.post("/analyze")
@@ -119,41 +166,42 @@ async def analyze(
         total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
         step = max(total_frames // SAMPLE_FRAMES, 1)
 
-        landmarker = get_landmarker()
         best = None          # 신뢰도 기준을 넘긴 프레임 중 가장 위험한(점수 높은) 것
         low_conf_count = 0
         checked_count = 0
         best_frame_image = None
 
-        idx = 0
-        while True:
-            cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
-            ok, frame = cap.read()
-            if not ok:
-                break
-            checked_count += 1
+        with _heavy_op_lock:
+            landmarker = get_landmarker()
+            idx = 0
+            while True:
+                cap.set(cv2.CAP_PROP_POS_FRAMES, idx)
+                ok, frame = cap.read()
+                if not ok:
+                    break
+                checked_count += 1
 
-            rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
-            result = landmarker.detect(mp_image)
+                rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
+                result = landmarker.detect(mp_image)
 
-            if result.pose_landmarks:
-                lm = [(p.x, p.y, p.visibility) for p in result.pose_landmarks[0]]
-                angles = rula.compute_frame_angles(lm)
+                if result.pose_landmarks:
+                    lm = [(p.x, p.y, p.visibility) for p in result.pose_landmarks[0]]
+                    angles = rula.compute_frame_angles(lm)
 
-                if angles["confidence"] < MIN_CONFIDENCE:
-                    low_conf_count += 1
-                else:
-                    total_score = (
-                        rula.neck_score(angles["neckAngle"]) + rula.trunk_score(angles["trunkAngle"])
-                        + rula.upper_arm_score(angles["upperArmAngle"]) + rula.lower_arm_score(angles["elbowAngle"])
-                    )
-                    if best is None or total_score > best["total_score"]:
-                        best = {"angles": angles, "total_score": total_score}
-                        best_frame_image = frame
-            idx += step
-            if idx >= total_frames:
-                break
+                    if angles["confidence"] < MIN_CONFIDENCE:
+                        low_conf_count += 1
+                    else:
+                        total_score = (
+                            rula.neck_score(angles["neckAngle"]) + rula.trunk_score(angles["trunkAngle"])
+                            + rula.upper_arm_score(angles["upperArmAngle"]) + rula.lower_arm_score(angles["elbowAngle"])
+                        )
+                        if best is None or total_score > best["total_score"]:
+                            best = {"angles": angles, "total_score": total_score}
+                            best_frame_image = frame
+                idx += step
+                if idx >= total_frames:
+                    break
 
         cap.release()
 
