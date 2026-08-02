@@ -1,0 +1,7365 @@
+{
+  "schema_version": "1.0",
+  "frames": [
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000000",
+      "frame_index": 0,
+      "timestamp_ms": 0.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000001",
+      "frame_index": 1,
+      "timestamp_ms": 125.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000002",
+      "frame_index": 2,
+      "timestamp_ms": 250.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000003",
+      "frame_index": 3,
+      "timestamp_ms": 375.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000004",
+      "frame_index": 4,
+      "timestamp_ms": 500.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000005",
+      "frame_index": 5,
+      "timestamp_ms": 625.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000006",
+      "frame_index": 6,
+      "timestamp_ms": 750.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000007",
+      "frame_index": 7,
+      "timestamp_ms": 875.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000008",
+      "frame_index": 8,
+      "timestamp_ms": 1000.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000009",
+      "frame_index": 9,
+      "timestamp_ms": 1125.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000010",
+      "frame_index": 10,
+      "timestamp_ms": 1250.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000011",
+      "frame_index": 11,
+      "timestamp_ms": 1375.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000012",
+      "frame_index": 12,
+      "timestamp_ms": 1500.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000013",
+      "frame_index": 13,
+      "timestamp_ms": 1625.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000014",
+      "frame_index": 14,
+      "timestamp_ms": 1750.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000015",
+      "frame_index": 15,
+      "timestamp_ms": 1875.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000016",
+      "frame_index": 16,
+      "timestamp_ms": 2000.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000017",
+      "frame_index": 17,
+      "timestamp_ms": 2125.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000018",
+      "frame_index": 18,
+      "timestamp_ms": 2250.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000019",
+      "frame_index": 19,
+      "timestamp_ms": 2375.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000020",
+      "frame_index": 20,
+      "timestamp_ms": 2500.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000021",
+      "frame_index": 21,
+      "timestamp_ms": 2625.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000022",
+      "frame_index": 22,
+      "timestamp_ms": 2750.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000023",
+      "frame_index": 23,
+      "timestamp_ms": 2875.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000024",
+      "frame_index": 24,
+      "timestamp_ms": 3000.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000025",
+      "frame_index": 25,
+      "timestamp_ms": 3125.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000026",
+      "frame_index": 26,
+      "timestamp_ms": 3250.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000027",
+      "frame_index": 27,
+      "timestamp_ms": 3375.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000028",
+      "frame_index": 28,
+      "timestamp_ms": 3500.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000029",
+      "frame_index": 29,
+      "timestamp_ms": 3625.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000030",
+      "frame_index": 30,
+      "timestamp_ms": 3750.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000031",
+      "frame_index": 31,
+      "timestamp_ms": 3875.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000032",
+      "frame_index": 32,
+      "timestamp_ms": 4000.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000033",
+      "frame_index": 33,
+      "timestamp_ms": 4125.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000034",
+      "frame_index": 34,
+      "timestamp_ms": 4250.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000035",
+      "frame_index": 35,
+      "timestamp_ms": 4375.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000036",
+      "frame_index": 36,
+      "timestamp_ms": 4500.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000037",
+      "frame_index": 37,
+      "timestamp_ms": 4625.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000038",
+      "frame_index": 38,
+      "timestamp_ms": 4750.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    },
+    {
+      "video_id": "test_clip",
+      "frame_id": "test_clip:000039",
+      "frame_index": 39,
+      "timestamp_ms": 4875.0,
+      "person_id": "person-1",
+      "width_px": 960,
+      "height_px": 540,
+      "coordinate_space": "image_normalized",
+      "metadata": {
+        "split": "test",
+        "annotator_id": "",
+        "reviewed_by": "",
+        "occlusion": "",
+        "camera_angle": "",
+        "distance": "",
+        "lighting": "",
+        "notes": ""
+      },
+      "joints": {
+        "head": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "neck": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "trunk": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_shoulder": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_elbow": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_wrist": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_hip": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_knee": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "left_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        },
+        "right_ankle": {
+          "x": null,
+          "y": null,
+          "z": null,
+          "visible": null,
+          "world_x": null,
+          "world_y": null,
+          "world_z": null
+        }
+      },
+      "angles_deg": {
+        "neck": null,
+        "trunk": null,
+        "left_upper_arm": null,
+        "right_upper_arm": null,
+        "left_lower_arm": null,
+        "right_lower_arm": null,
+        "left_wrist": null,
+        "right_wrist": null,
+        "left_knee": null,
+        "right_knee": null
+      },
+      "posture": {
+        "primary": null,
+        "labels": []
+      },
+      "rula": {
+        "final_score": null,
+        "risk_level": null,
+        "neck_score": null,
+        "trunk_score": null,
+        "upper_arm_score": null,
+        "lower_arm_score": null,
+        "wrist_score": null,
+        "leg_score": null,
+        "scored_side": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+﻿variant,average_latency_ms,p50_latency_ms,p95_latency_ms,fps,process_cpu_percent,memory_mb,gpu_usage_percent,memory_status,gpu_status
+baseline_v1,41.7856,38.8541,55.0049,23.9317,115.9191,122.2695,,measured,not_measurable
+hybrid_v2_available,65.3657,62.3622,115.7685,15.2985,100.3967,127.9297,,measured,not_measurable

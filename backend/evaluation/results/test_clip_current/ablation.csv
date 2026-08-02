@@ -1,0 +1,5 @@
+﻿id,configuration,available,evaluated_as,reason
+A,MediaPipe Pose + shared RULA,True,baseline_v1,
+B,MediaPipe Pose + MediaPipe Hand + shared RULA,True,hybrid_v2_available,
+C,RTMW-x + RTMPose Hand5 + shared RULA,False,,"RTMW-x/RTMPose Hand5 runtime, configs, and weights are not installed."
+D,RTMW-x + ViTPose-H + RTMPose Hand5 + shared RULA,False,,"ViTPose-H runtime, fusion adapter, and weights are not installed."

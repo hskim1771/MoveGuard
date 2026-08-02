@@ -72,5 +72,22 @@ $env:MOVEGUARD_OBJECT_DETECTOR="ultralytics"
 $env:OBJECT_DETECTOR_MODEL_PATH="C:\models\moveguard-objects.pt"
 ```
 
+## Baseline vs Hybrid 동일조건 평가
+
+`evaluation/`에는 동일 영상·동일 frame sampling·동일 각도/RULA 엔진으로
+Baseline과 Hybrid를 비교하는 도구가 있습니다. Ground Truth가 없으면
+confidence나 공식 AP를 accuracy로 바꾸지 않고 정확도 지표를
+`not_measurable`로 출력합니다.
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-evaluation.txt
+.\.venv\Scripts\python.exe -m evaluation.compare `
+  --video ..\test_clip.mp4 `
+  --output evaluation\results\test_clip_current
+```
+
+상세 지표 정의, annotation 방법, 전문 모델 fusion 위치는
+`evaluation/README.md`를 참고하세요.
+
 자세 분석 v2 구조와 향후 모델 교체 위치는 `analysis_v2/README.md`를
 참고하세요.

@@ -1,0 +1,7 @@
+﻿joint_angle,baseline_mae_deg,hybrid_mae_deg,improvement_deg,baseline_status,hybrid_status
+neck,,,,not_measurable,not_measurable
+trunk,,,,not_measurable,not_measurable
+shoulder,,,,not_measurable,not_measurable
+elbow,,,,not_measurable,not_measurable
+wrist,,,,not_measurable,not_measurable
+knee,,,,not_measurable,not_measurable

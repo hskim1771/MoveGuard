@@ -1,0 +1,1205 @@
+{
+  "schema_version": "1.0",
+  "experiment": {
+    "created_at": "2026-08-02T07:35:31.805356+00:00",
+    "videos": [
+      "C:\\Users\\Dabhin\\Documents\\Codex\\2026-07-31\\dnfl\\work\\hskim-moveguard-pose-analysis-v2\\test_clip.mp4"
+    ],
+    "sample_every_n_frames": 1,
+    "sampled_frames": 40,
+    "preprocessing": "OpenCV decode -> BGR-to-RGB only; no resize or crop",
+    "execution_order": "alternated per frame to reduce fixed order bias",
+    "warmup": {
+      "baseline_v1": {
+        "elapsed_ms": 1237.0599,
+        "issues": [],
+        "excluded_from_metrics": true,
+        "process_rss_after_mb": 171.8633,
+        "incremental_model_load_rss_mb": 122.2695,
+        "memory_definition": "Incremental process RSS while lazily loading and warming this variant."
+      },
+      "hybrid_v2_available": {
+        "elapsed_ms": 261.9157,
+        "issues": [],
+        "excluded_from_metrics": true,
+        "process_rss_after_mb": 299.793,
+        "incremental_model_load_rss_mb": 127.9297,
+        "memory_definition": "Incremental process RSS while lazily loading and warming this variant."
+      }
+    },
+    "angle_engine_shared": "analysis_v2.angle_calculator.calculate_joint_angles",
+    "rula_engine_shared": "analysis_v2.rula_engine.calculate_rula",
+    "python": "3.12.13",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "opencv": "5.0.0",
+    "ground_truth_path": null
+  },
+  "ground_truth": {
+    "provided": false,
+    "rows": 0,
+    "accuracy_fields_without_ground_truth": "not_measurable"
+  },
+  "variant_status": {
+    "baseline_v1": {
+      "variant_id": "baseline_v1",
+      "label": "MediaPipe Pose + shared RULA",
+      "available": true,
+      "pose": {
+        "name": "MediaPipePoseEstimator",
+        "configured": true,
+        "loaded": true,
+        "detail": null
+      },
+      "hand": {
+        "name": "NoHandEstimator",
+        "configured": true,
+        "loaded": true,
+        "detail": "Baseline intentionally uses pose landmarks only."
+      },
+      "rula_engine": "analysis_v2.rula_engine.calculate_rula",
+      "angle_engine": "analysis_v2.angle_calculator.calculate_joint_angles"
+    },
+    "hybrid_v2_available": {
+      "variant_id": "hybrid_v2_available",
+      "label": "MediaPipe Pose + MediaPipe Hand + shared RULA",
+      "available": true,
+      "pose": {
+        "name": "MediaPipePoseEstimator",
+        "configured": true,
+        "loaded": true,
+        "detail": null
+      },
+      "hand": {
+        "name": "MediaPipeHandEstimator",
+        "configured": true,
+        "loaded": true,
+        "detail": null
+      },
+      "rula_engine": "analysis_v2.rula_engine.calculate_rula",
+      "angle_engine": "analysis_v2.angle_calculator.calculate_joint_angles"
+    }
+  },
+  "variants": {
+    "baseline_v1": {
+      "joint_detection": {
+        "neck": {
+          "status": "measured",
+          "value": 97.5,
+          "unit": "%",
+          "n": 40,
+          "detected": 39
+        },
+        "trunk": {
+          "status": "measured",
+          "value": 97.5,
+          "unit": "%",
+          "n": 40,
+          "detected": 39
+        },
+        "shoulder": {
+          "status": "measured",
+          "value": 97.5,
+          "unit": "%",
+          "n": 80,
+          "detected": 78
+        },
+        "elbow": {
+          "status": "measured",
+          "value": 58.75,
+          "unit": "%",
+          "n": 80,
+          "detected": 47
+        },
+        "wrist": {
+          "status": "measured",
+          "value": 57.5,
+          "unit": "%",
+          "n": 80,
+          "detected": 46
+        },
+        "hip": {
+          "status": "measured",
+          "value": 97.5,
+          "unit": "%",
+          "n": 80,
+          "detected": 78
+        },
+        "knee": {
+          "status": "measured",
+          "value": 76.25,
+          "unit": "%",
+          "n": 80,
+          "detected": 61
+        },
+        "ankle": {
+          "status": "measured",
+          "value": 80.0,
+          "unit": "%",
+          "n": 80,
+          "detected": 64
+        },
+        "wrist_angle_ready": {
+          "status": "measured",
+          "value": 0.0,
+          "unit": "%",
+          "n": 80,
+          "detected": 0,
+          "definition": "Pose wrist plus hand axis available for wrist-angle calculation."
+        }
+      },
+      "joint_detection_overall": {
+        "status": "measured",
+        "value": 80.7143,
+        "unit": "%",
+        "n": 560,
+        "detected": 452
+      },
+      "joint_position": {
+        "neck": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "trunk": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "shoulder": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "elbow": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "wrist": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "hip": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "knee": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "ankle": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        }
+      },
+      "joint_position_overall": {
+        "pixel_error_mean": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "px",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "normalized_joint_error_mean": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "pck_at_0_2": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "mpjpe": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "mm",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        }
+      },
+      "joint_angles": {
+        "neck": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "trunk": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "shoulder": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "elbow": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "wrist": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "knee": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        }
+      },
+      "joint_angles_overall": {
+        "mae": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "rmse": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "median_absolute_error": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        }
+      },
+      "posture_classification": {
+        "accuracy": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "The current MoveGuard pipeline has no posture-classification output, or Ground Truth posture labels are absent."
+        },
+        "precision_macro": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "The current MoveGuard pipeline has no posture-classification output, or Ground Truth posture labels are absent."
+        },
+        "recall_macro": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "The current MoveGuard pipeline has no posture-classification output, or Ground Truth posture labels are absent."
+        },
+        "f1_macro": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "The current MoveGuard pipeline has no posture-classification output, or Ground Truth posture labels are absent."
+        },
+        "confusion_matrix": {}
+      },
+      "rula": {
+        "exact_accuracy": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "Expert RULA final scores are not provided."
+        },
+        "within_one_accuracy": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "Expert RULA final scores are not provided."
+        },
+        "mae": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "score",
+          "n": 0,
+          "reason": "Expert RULA final scores are not provided."
+        },
+        "risk": {
+          "accuracy": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert RULA risk levels are not provided."
+          },
+          "precision_macro": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert RULA risk levels are not provided."
+          },
+          "recall_macro": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert RULA risk levels are not provided."
+          },
+          "f1_macro": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert RULA risk levels are not provided."
+          },
+          "confusion_matrix": {}
+        },
+        "body_part_accuracy": {
+          "neck": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert neck RULA scores are not provided."
+          },
+          "trunk": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert trunk RULA scores are not provided."
+          },
+          "upper_arm": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert upper_arm RULA scores are not provided."
+          },
+          "lower_arm": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert lower_arm RULA scores are not provided."
+          },
+          "wrist": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert wrist RULA scores are not provided."
+          },
+          "leg": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert leg RULA scores are not provided."
+          }
+        }
+      },
+      "performance": {
+        "average_latency_ms": {
+          "status": "measured",
+          "value": 41.7856,
+          "unit": "ms",
+          "n": 40
+        },
+        "p50_latency_ms": {
+          "status": "measured",
+          "value": 38.8541,
+          "unit": "ms",
+          "n": 40
+        },
+        "p95_latency_ms": {
+          "status": "measured",
+          "value": 55.0049,
+          "unit": "ms",
+          "n": 40
+        },
+        "fps": {
+          "status": "measured",
+          "value": 23.9317,
+          "unit": "fps",
+          "n": 40
+        },
+        "process_cpu_percent": {
+          "status": "measured",
+          "value": 115.9191,
+          "unit": "%",
+          "n": 40,
+          "definition": "process CPU time divided by wall time; may exceed 100% with multithreading"
+        },
+        "memory_mb": {
+          "status": "measured",
+          "value": 122.2695,
+          "unit": "MB",
+          "n": 1,
+          "definition": "Incremental process RSS while lazily loading and warming this variant."
+        },
+        "gpu_usage_percent": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "NVML/GPU telemetry is not installed; no value was invented."
+        }
+      },
+      "subgroups": []
+    },
+    "hybrid_v2_available": {
+      "joint_detection": {
+        "neck": {
+          "status": "measured",
+          "value": 97.5,
+          "unit": "%",
+          "n": 40,
+          "detected": 39
+        },
+        "trunk": {
+          "status": "measured",
+          "value": 97.5,
+          "unit": "%",
+          "n": 40,
+          "detected": 39
+        },
+        "shoulder": {
+          "status": "measured",
+          "value": 97.5,
+          "unit": "%",
+          "n": 80,
+          "detected": 78
+        },
+        "elbow": {
+          "status": "measured",
+          "value": 58.75,
+          "unit": "%",
+          "n": 80,
+          "detected": 47
+        },
+        "wrist": {
+          "status": "measured",
+          "value": 57.5,
+          "unit": "%",
+          "n": 80,
+          "detected": 46
+        },
+        "hip": {
+          "status": "measured",
+          "value": 97.5,
+          "unit": "%",
+          "n": 80,
+          "detected": 78
+        },
+        "knee": {
+          "status": "measured",
+          "value": 76.25,
+          "unit": "%",
+          "n": 80,
+          "detected": 61
+        },
+        "ankle": {
+          "status": "measured",
+          "value": 80.0,
+          "unit": "%",
+          "n": 80,
+          "detected": 64
+        },
+        "wrist_angle_ready": {
+          "status": "measured",
+          "value": 0.0,
+          "unit": "%",
+          "n": 80,
+          "detected": 0,
+          "definition": "Pose wrist plus hand axis available for wrist-angle calculation."
+        }
+      },
+      "joint_detection_overall": {
+        "status": "measured",
+        "value": 80.7143,
+        "unit": "%",
+        "n": 560,
+        "detected": 452
+      },
+      "joint_position": {
+        "neck": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "trunk": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "shoulder": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "elbow": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "wrist": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "hip": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "knee": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "ankle": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        }
+      },
+      "joint_position_overall": {
+        "pixel_error_mean": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "px",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "normalized_joint_error_mean": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "pck_at_0_2": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        },
+        "mpjpe": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "mm",
+          "n": 0,
+          "reason": "Ground Truth joint coordinates are not provided."
+        }
+      },
+      "joint_angles": {
+        "neck": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "trunk": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "shoulder": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "elbow": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "wrist": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "knee": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        }
+      },
+      "joint_angles_overall": {
+        "mae": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "rmse": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        },
+        "median_absolute_error": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "deg",
+          "n": 0,
+          "reason": "Expert or Ground Truth joint angles are not provided."
+        }
+      },
+      "posture_classification": {
+        "accuracy": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "The current MoveGuard pipeline has no posture-classification output, or Ground Truth posture labels are absent."
+        },
+        "precision_macro": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "The current MoveGuard pipeline has no posture-classification output, or Ground Truth posture labels are absent."
+        },
+        "recall_macro": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "The current MoveGuard pipeline has no posture-classification output, or Ground Truth posture labels are absent."
+        },
+        "f1_macro": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "The current MoveGuard pipeline has no posture-classification output, or Ground Truth posture labels are absent."
+        },
+        "confusion_matrix": {}
+      },
+      "rula": {
+        "exact_accuracy": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "Expert RULA final scores are not provided."
+        },
+        "within_one_accuracy": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "Expert RULA final scores are not provided."
+        },
+        "mae": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "score",
+          "n": 0,
+          "reason": "Expert RULA final scores are not provided."
+        },
+        "risk": {
+          "accuracy": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert RULA risk levels are not provided."
+          },
+          "precision_macro": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert RULA risk levels are not provided."
+          },
+          "recall_macro": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert RULA risk levels are not provided."
+          },
+          "f1_macro": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert RULA risk levels are not provided."
+          },
+          "confusion_matrix": {}
+        },
+        "body_part_accuracy": {
+          "neck": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert neck RULA scores are not provided."
+          },
+          "trunk": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert trunk RULA scores are not provided."
+          },
+          "upper_arm": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert upper_arm RULA scores are not provided."
+          },
+          "lower_arm": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert lower_arm RULA scores are not provided."
+          },
+          "wrist": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert wrist RULA scores are not provided."
+          },
+          "leg": {
+            "status": "not_measurable",
+            "value": null,
+            "unit": "%",
+            "n": 0,
+            "reason": "Expert leg RULA scores are not provided."
+          }
+        }
+      },
+      "performance": {
+        "average_latency_ms": {
+          "status": "measured",
+          "value": 65.3657,
+          "unit": "ms",
+          "n": 40
+        },
+        "p50_latency_ms": {
+          "status": "measured",
+          "value": 62.3622,
+          "unit": "ms",
+          "n": 40
+        },
+        "p95_latency_ms": {
+          "status": "measured",
+          "value": 115.7685,
+          "unit": "ms",
+          "n": 40
+        },
+        "fps": {
+          "status": "measured",
+          "value": 15.2985,
+          "unit": "fps",
+          "n": 40
+        },
+        "process_cpu_percent": {
+          "status": "measured",
+          "value": 100.3967,
+          "unit": "%",
+          "n": 40,
+          "definition": "process CPU time divided by wall time; may exceed 100% with multithreading"
+        },
+        "memory_mb": {
+          "status": "measured",
+          "value": 127.9297,
+          "unit": "MB",
+          "n": 1,
+          "definition": "Incremental process RSS while lazily loading and warming this variant."
+        },
+        "gpu_usage_percent": {
+          "status": "not_measurable",
+          "value": null,
+          "unit": "%",
+          "n": 0,
+          "reason": "NVML/GPU telemetry is not installed; no value was invented."
+        }
+      },
+      "subgroups": []
+    }
+  },
+  "comparison": {
+    "joint_detection_rate": {
+      "status": "measured",
+      "value": 0.0,
+      "unit": "%",
+      "n": 560,
+      "raw_hybrid_minus_baseline": 0.0
+    },
+    "joint_position_pck": {
+      "status": "not_measurable",
+      "value": null,
+      "unit": "%",
+      "n": 0,
+      "reason": "Both variants must be measurable."
+    },
+    "joint_angle_mae": {
+      "status": "not_measurable",
+      "value": null,
+      "unit": "deg",
+      "n": 0,
+      "reason": "Both variants must be measurable."
+    },
+    "posture_classification_accuracy": {
+      "status": "not_measurable",
+      "value": null,
+      "unit": "%",
+      "n": 0,
+      "reason": "Both variants must be measurable."
+    },
+    "rula_exact_accuracy": {
+      "status": "not_measurable",
+      "value": null,
+      "unit": "%",
+      "n": 0,
+      "reason": "Both variants must be measurable."
+    },
+    "rula_within_one_accuracy": {
+      "status": "not_measurable",
+      "value": null,
+      "unit": "%",
+      "n": 0,
+      "reason": "Both variants must be measurable."
+    },
+    "rula_risk_accuracy": {
+      "status": "not_measurable",
+      "value": null,
+      "unit": "%",
+      "n": 0,
+      "reason": "Both variants must be measurable."
+    },
+    "average_latency_ms": {
+      "status": "measured",
+      "value": -23.5801,
+      "unit": "ms",
+      "n": 40,
+      "raw_hybrid_minus_baseline": 23.5801
+    },
+    "fps": {
+      "status": "measured",
+      "value": -8.6332,
+      "unit": "fps",
+      "n": 40,
+      "raw_hybrid_minus_baseline": -8.6332
+    }
+  },
+  "joint_comparison": {
+    "neck": {
+      "baseline_v1": {
+        "status": "measured",
+        "value": 97.5,
+        "unit": "%",
+        "n": 40,
+        "detected": 39
+      },
+      "hybrid_v2_available": {
+        "status": "measured",
+        "value": 97.5,
+        "unit": "%",
+        "n": 40,
+        "detected": 39
+      },
+      "improvement": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 40,
+        "raw_hybrid_minus_baseline": 0.0
+      }
+    },
+    "trunk": {
+      "baseline_v1": {
+        "status": "measured",
+        "value": 97.5,
+        "unit": "%",
+        "n": 40,
+        "detected": 39
+      },
+      "hybrid_v2_available": {
+        "status": "measured",
+        "value": 97.5,
+        "unit": "%",
+        "n": 40,
+        "detected": 39
+      },
+      "improvement": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 40,
+        "raw_hybrid_minus_baseline": 0.0
+      }
+    },
+    "shoulder": {
+      "baseline_v1": {
+        "status": "measured",
+        "value": 97.5,
+        "unit": "%",
+        "n": 80,
+        "detected": 78
+      },
+      "hybrid_v2_available": {
+        "status": "measured",
+        "value": 97.5,
+        "unit": "%",
+        "n": 80,
+        "detected": 78
+      },
+      "improvement": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 80,
+        "raw_hybrid_minus_baseline": 0.0
+      }
+    },
+    "elbow": {
+      "baseline_v1": {
+        "status": "measured",
+        "value": 58.75,
+        "unit": "%",
+        "n": 80,
+        "detected": 47
+      },
+      "hybrid_v2_available": {
+        "status": "measured",
+        "value": 58.75,
+        "unit": "%",
+        "n": 80,
+        "detected": 47
+      },
+      "improvement": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 80,
+        "raw_hybrid_minus_baseline": 0.0
+      }
+    },
+    "wrist": {
+      "baseline_v1": {
+        "status": "measured",
+        "value": 57.5,
+        "unit": "%",
+        "n": 80,
+        "detected": 46
+      },
+      "hybrid_v2_available": {
+        "status": "measured",
+        "value": 57.5,
+        "unit": "%",
+        "n": 80,
+        "detected": 46
+      },
+      "improvement": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 80,
+        "raw_hybrid_minus_baseline": 0.0
+      }
+    },
+    "hip": {
+      "baseline_v1": {
+        "status": "measured",
+        "value": 97.5,
+        "unit": "%",
+        "n": 80,
+        "detected": 78
+      },
+      "hybrid_v2_available": {
+        "status": "measured",
+        "value": 97.5,
+        "unit": "%",
+        "n": 80,
+        "detected": 78
+      },
+      "improvement": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 80,
+        "raw_hybrid_minus_baseline": 0.0
+      }
+    },
+    "knee": {
+      "baseline_v1": {
+        "status": "measured",
+        "value": 76.25,
+        "unit": "%",
+        "n": 80,
+        "detected": 61
+      },
+      "hybrid_v2_available": {
+        "status": "measured",
+        "value": 76.25,
+        "unit": "%",
+        "n": 80,
+        "detected": 61
+      },
+      "improvement": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 80,
+        "raw_hybrid_minus_baseline": 0.0
+      }
+    },
+    "ankle": {
+      "baseline_v1": {
+        "status": "measured",
+        "value": 80.0,
+        "unit": "%",
+        "n": 80,
+        "detected": 64
+      },
+      "hybrid_v2_available": {
+        "status": "measured",
+        "value": 80.0,
+        "unit": "%",
+        "n": 80,
+        "detected": 64
+      },
+      "improvement": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 80,
+        "raw_hybrid_minus_baseline": 0.0
+      }
+    },
+    "wrist_angle_ready": {
+      "baseline_v1": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 80,
+        "detected": 0,
+        "definition": "Pose wrist plus hand axis available for wrist-angle calculation."
+      },
+      "hybrid_v2_available": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 80,
+        "detected": 0,
+        "definition": "Pose wrist plus hand axis available for wrist-angle calculation."
+      },
+      "improvement": {
+        "status": "measured",
+        "value": 0.0,
+        "unit": "%",
+        "n": 80,
+        "raw_hybrid_minus_baseline": 0.0
+      }
+    }
+  },
+  "ablation": [
+    {
+      "id": "A",
+      "configuration": "MediaPipe Pose + shared RULA",
+      "available": true,
+      "evaluated_as": "baseline_v1"
+    },
+    {
+      "id": "B",
+      "configuration": "MediaPipe Pose + MediaPipe Hand + shared RULA",
+      "available": true,
+      "evaluated_as": "hybrid_v2_available"
+    },
+    {
+      "id": "C",
+      "configuration": "RTMW-x + RTMPose Hand5 + shared RULA",
+      "available": false,
+      "reason": "RTMW-x/RTMPose Hand5 runtime, configs, and weights are not installed."
+    },
+    {
+      "id": "D",
+      "configuration": "RTMW-x + ViTPose-H + RTMPose Hand5 + shared RULA",
+      "available": false,
+      "reason": "ViTPose-H runtime, fusion adapter, and weights are not installed."
+    }
+  ],
+  "conclusion": {
+    "accuracy_claim_allowed": false,
+    "recommended_configuration": null,
+    "reason": "Ground Truth is incomplete, so no accuracy winner or production model is recommended."
+  }
+}
