@@ -133,6 +133,6 @@ def default_pose_estimator() -> MediaPipePoseEstimator:
             "POSE_MODEL_PATH",
             str(backend_root / "pose_landmarker_lite.task"),
         ),
-        max_poses=int(os.getenv("MOVEGUARD_MAX_POSES", "1")),
+        max_poses=int(os.getenv("MOVEGUARD_MAX_POSES", "4")),
         min_confidence=float(os.getenv("MOVEGUARD_POSE_MIN_CONFIDENCE", "0.5")),
     )

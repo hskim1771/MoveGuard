@@ -1,6 +1,8 @@
 import unittest
 from unittest.mock import patch
 
+import cv2
+import numpy as np
 from analysis_v2.api import router
 from analysis_v2.domain import EstimatorStatus
 from analysis_v2.estimators.base import HandEstimator, ObjectDetector, PoseEstimator
@@ -35,6 +37,14 @@ class EmptyObjectDetector(ObjectDetector):
         return EstimatorStatus("EmptyObjectDetector", False, False)
 
 
+class EmptyPoseEstimator(PoseEstimator):
+    def estimate(self, image_rgb):
+        return []
+
+    def status(self):
+        return EstimatorStatus("EmptyPoseEstimator", True, False)
+
+
 class PostureApiTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -43,6 +53,9 @@ class PostureApiTests(unittest.TestCase):
         cls.client = TestClient(app)
         cls.pipeline = PostureAnalysisPipeline(
             UnusedPoseEstimator(), UnusedHandEstimator(), EmptyObjectDetector()
+        )
+        cls.image_pipeline = PostureAnalysisPipeline(
+            EmptyPoseEstimator(), UnusedHandEstimator(), EmptyObjectDetector()
         )
 
     def test_json_landmark_request_returns_v2_contract(self) -> None:
@@ -69,6 +82,23 @@ class PostureApiTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 415)
         self.assertIn("sampled image frames", response.json()["detail"])
+
+    def test_jpeg_frame_returns_normal_not_measurable_contract(self) -> None:
+        encoded, jpeg = cv2.imencode(".jpg", np.zeros((64, 64, 3), dtype=np.uint8))
+        self.assertTrue(encoded)
+
+        with patch("analysis_v2.api.get_pipeline", return_value=self.image_pipeline):
+            response = self.client.post(
+                "/api/analysis/posture?frame_id=browser-frame",
+                content=jpeg.tobytes(),
+                headers={"content-type": "image/jpeg"},
+            )
+
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        self.assertEqual(payload["frame_id"], "browser-frame")
+        self.assertEqual(payload["rula"]["risk_level"], "not_measurable")
+        self.assertFalse(payload["video_stored"])
 
 
 if __name__ == "__main__":
