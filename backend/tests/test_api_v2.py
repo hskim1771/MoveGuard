@@ -100,6 +100,22 @@ class PostureApiTests(unittest.TestCase):
         self.assertEqual(payload["rula"]["risk_level"], "not_measurable")
         self.assertFalse(payload["video_stored"])
 
+    def test_image_request_selects_rtmw_pipeline(self) -> None:
+        encoded, jpeg = cv2.imencode(".jpg", np.zeros((32, 32, 3), dtype=np.uint8))
+        self.assertTrue(encoded)
+
+        with patch(
+            "analysis_v2.api.get_pipeline", return_value=self.image_pipeline
+        ) as mocked:
+            response = self.client.post(
+                "/api/analysis/posture?model=rtmw",
+                content=jpeg.tobytes(),
+                headers={"content-type": "image/jpeg"},
+            )
+
+        self.assertEqual(response.status_code, 200)
+        mocked.assert_called_once_with("rtmw")
+
 
 if __name__ == "__main__":
     unittest.main()

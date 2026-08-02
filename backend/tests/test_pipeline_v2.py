@@ -73,6 +73,8 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(result["objects"][0]["label"], "box")
         self.assertEqual(result["object_relationships"][0]["closest_joint"], "left_wrist")
         self.assertIn("left_upper_arm", result["measurements"])
+        self.assertEqual(result["model"], "baseline")
+        self.assertEqual(result["joints"]["left_wrist"]["source_model"], "mediapipe_hand")
 
 
 if __name__ == "__main__":

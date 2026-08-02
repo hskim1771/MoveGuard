@@ -1,0 +1,3 @@
+-r requirements-evaluation.txt
+rtmlib==0.0.15
+nvidia-ml-py==13.590.48

@@ -1,0 +1,9 @@
+﻿metric,baseline,hybrid,improvement,unit,baseline_status,hybrid_status,reason
+Joint detection rate,80.7143,100.0,19.2857,%,measured,measured,
+RULA calculable rate,0.0,100.0,100.0,%,measured,measured,
+Joint position PCK@0.2,,,,%,not_measurable,not_measurable,Ground Truth joint coordinates are not provided.
+Joint angle MAE,,,,deg,not_measurable,not_measurable,Expert or Ground Truth joint angles are not provided.
+Posture classification accuracy,,,,%,not_measurable,not_measurable,"The current MoveGuard pipeline has no posture-classification output, or Ground Truth posture labels are absent."
+RULA exact accuracy,,,,%,not_measurable,not_measurable,Expert RULA final scores are not provided.
+RULA ±1 accuracy,,,,%,not_measurable,not_measurable,Expert RULA final scores are not provided.
+RULA risk level accuracy,,,,%,not_measurable,not_measurable,Expert RULA risk levels are not provided.

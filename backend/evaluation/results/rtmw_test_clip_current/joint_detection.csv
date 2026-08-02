@@ -1,0 +1,10 @@
+﻿joint,baseline_percent,hybrid_percent,improvement_pp,baseline_detected,hybrid_detected,expected
+neck,97.5,100.0,2.5,39,40,40
+trunk,97.5,100.0,2.5,39,40,40
+shoulder,97.5,100.0,2.5,78,80,80
+elbow,58.75,100.0,41.25,47,80,80
+wrist,57.5,100.0,42.5,46,80,80
+hip,97.5,100.0,2.5,78,80,80
+knee,76.25,100.0,23.75,61,80,80
+ankle,80.0,100.0,20.0,64,80,80
+wrist_angle_ready,0.0,100.0,100.0,0,80,80

@@ -1,0 +1,3 @@
+﻿id,configuration,available,evaluated_as,reason
+A,Existing MediaPipe Pose + MediaPipe Hand + shared RULA,True,baseline_mediapipe,
+B,RTMW-l 384x288 WholeBody + shared RULA,True,rtmw_l_384x288,

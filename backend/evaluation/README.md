@@ -1,4 +1,4 @@
-# MoveGuard Baseline vs Hybrid evaluation
+# MoveGuard Baseline vs RTMW-l A/B evaluation
 
 이 디렉터리는 같은 영상·같은 프레임·같은 각도 계산기·같은 RULA 엔진으로
 관절 추론 구성만 바꿔 비교한다. Ground Truth가 없으면 정확도 수치를 만들지
@@ -8,21 +8,21 @@
 
 | ID | 구성 | 현재 상태 |
 |---|---|---|
-| A / Baseline V1 | MediaPipe Pose → 공통 관절각 → 공통 RULA | 실행 가능 |
-| B / Hybrid-lite V2 | MediaPipe Pose + MediaPipe Hand → 공통 관절각 → 공통 RULA | 실행 가능 |
-| C | RTMW-x + RTMPose Hand5 → fusion → 공통 관절각 → 공통 RULA | 모델·런타임 미설치 |
-| D | RTMW-x + ViTPose-H + RTMPose Hand5 → fusion → 공통 관절각 → 공통 RULA | 모델·런타임 미설치 |
+| A / Baseline V1 | 기존 MediaPipe Pose + MediaPipe Hand → 공통 관절각 → 공통 RULA | 실행 가능 |
+| B / RTMW 후보 | 공식 RTMW-l WholeBody 384×288 → 공통 관절각 → 공통 RULA | 실행 가능 |
+| C / Hybrid-lite | MediaPipe Pose + MediaPipe Hand → 공통 관절각 → 공통 RULA | 선택 실행 가능 |
+| D / 향후 조합 | RTMW + 별도 Hand5/fusion → 공통 관절각 → 공통 RULA | 이번 범위에서 미구현 |
 
-현재 B는 최종 전문 모델 Hybrid가 아니라, 손 모델을 추가했을 때의 기여도를
-확인하는 ablation 단계다. C/D가 준비되기 전에는 B의 결과를 RTMW-x 또는
-ViTPose 성능이라고 부르면 안 된다.
+RTMW 후보는 `rtmlib==0.0.15`를 통해 OpenMMLab 공식 ONNX를 사용한다. 검출기는
+YOLOX-m, 자세 모델은 `RTMW-l 384×288 (133 whole-body keypoints)`로 고정한다.
+모델 파일은 사용자 캐시에 내려받으며 Git 저장소에는 포함하지 않는다.
 
 OpenMMLab 공식 MMPose는 whole-body 및 hand inference 진입점을 제공한다.
-실제 adapter를 설치할 때는 아래 공식 문서를 기준으로 config/checkpoint를
-고정하고, 버전과 해시를 실험 manifest에 기록한다.
+사용 모델과 추론 방식은 아래 공식 문서 및 구현을 기준으로 고정했다.
 
 - https://github.com/open-mmlab/mmpose/blob/main/docs/en/user_guides/inference.md
 - https://github.com/open-mmlab/mmpose
+- https://github.com/Tau-J/rtmlib
 
 공식 benchmark는 후보 모델 선정에만 사용하고 MoveGuard 정확도 결론에는
 사용하지 않는다.
@@ -32,10 +32,11 @@ OpenMMLab 공식 MMPose는 whole-body 및 hand inference 진입점을 제공한�
 ```powershell
 cd backend
 python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements-evaluation.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements-rtmw.txt
 .\.venv\Scripts\python.exe -m evaluation.compare `
   --video ..\test_clip.mp4 `
-  --output evaluation\results\test_clip_current `
+  --output evaluation\results\rtmw_test_clip_current `
+  --candidate rtmw `
   --sample-every 1
 ```
 
@@ -46,19 +47,20 @@ python -m venv .venv
 ```
 
 프레임 수를 제한하려면 `--max-frames`, 일정 간격으로 샘플링하려면
-`--sample-every`를 사용한다. Baseline과 Hybrid는 항상 동일한 샘플을 쓰며,
+`--sample-every`를 사용한다. Baseline과 RTMW는 항상 동일한 샘플을 쓰며,
 프레임별 실행 순서를 번갈아 고정 순서 편향을 줄인다. 첫 warm-up 결과는
 속도 통계에서 제외한다.
 
 ## 출력 파일
 
 - `report.json`: 전체 지표, 상태, 사유, 실험 환경
-- `per_frame.jsonl`: 동일 프레임의 Baseline/Hybrid/GT 결과
+- `per_frame.jsonl`: 동일 프레임의 Baseline/RTMW/GT 결과
 - `overall_metrics.csv`: 심사용 전체 성능표
 - `joint_detection.csv`: 관절별 검출 성공률
 - `joint_angle_accuracy.csv`: 각도 MAE 비교
 - `performance.csv`: 지연시간, FPS, CPU, 메모리, GPU 상태
 - `condition_analysis.csv`: 가림·촬영각·거리·조명 조건별 결과
+- `failure_recovery.csv`: Baseline 실패 중 RTMW 복구와 반대 방향 회귀
 - `ablation.csv`: A/B/C/D 실행 가능 여부와 결과 연결
 - `ground_truth_annotation.csv` / `.json`: 입력 프레임에 맞춘 라벨 템플릿
 
@@ -77,6 +79,12 @@ python -m venv .venv
 
 두 값을 분리해야 pose wrist confidence를 실제 손목 굽힘 정확도로 오해하지
 않는다.
+
+### 실패 복구율
+
+Baseline이 confidence 기준을 통과하지 못한 관절 중 후보가 검출에 성공한 수와
+비율을 계산한다. 반대로 Baseline 성공을 후보가 놓친 회귀 수도 함께 기록한다.
+이 지표도 좌표 오차를 검증하지 않으므로 정확도가 아니라 검출 가용성 지표다.
 
 ### 위치 정확도
 
@@ -153,20 +161,29 @@ classifier 출력이 없으므로 임의 규칙 라벨을 만들지 않는다.
 - RULA 표와 threshold
 - 결과 metric 계산
 
-## 현재 test_clip 실측 결과
+## 현재 test_clip RTMW 실측 결과
 
 Ground Truth가 없는 저장소의 `test_clip.mp4` 40 frame 전체를 측정한 결과:
 
-| Metric | Baseline | Hybrid-lite | 판단 |
+| Metric | Baseline | RTMW-l | 판단 |
 |---|---:|---:|---|
-| 공통 관절 검출률 | 80.71% | 80.71% | 차이 0.00%p |
-| 손목 좌표 검출률 | 57.50% | 57.50% | 차이 0.00%p |
-| 손목 각도 계산 가능률 | 0.00% | 0.00% | 손 모델 기여 확인 안 됨 |
-| 평균 latency | 41.79 ms | 65.37 ms | Hybrid-lite가 23.58 ms 느림 |
-| 처리속도 | 23.93 FPS | 15.30 FPS | Hybrid-lite가 8.63 FPS 낮음 |
-| 증분 모델 load RSS | 122.27 MB | 127.93 MB | 동일 프로세스 순차 warm-up 기준 |
+| 공통 관절 검출률 | 80.71% | 100.00% | +19.29%p |
+| 손목 좌표 검출률 | 57.50% | 100.00% | +42.50%p |
+| 손목 각도 계산 가능률 | 0.00% | 100.00% | +100.00%p |
+| RULA 계산 가능률 | 0.00% | 100.00% | 정확도가 아니라 계산 가능 여부 |
+| 평균 latency | 210.95 ms | 4,025.69 ms | CPU ONNX에서 약 19.1배 느림 |
+| 처리속도 | 4.74 FPS | 0.25 FPS | RTMW 실시간 적용 불가 |
+| 증분 모델 load RSS | 199.43 MB | 439.90 MB | 동일 프로세스 순차 warm-up 기준 |
 
-이 한 영상에서는 Hybrid-lite를 채택할 근거가 없다. 다만 GT가 없으므로
-“정확도가 같다/낮다”는 결론도 낼 수 없다. 최종 모델 추천은 C/D까지 같은
-조건으로 실행하고 전문가 GT 결과가 쌓인 뒤에만 가능하다.
+관절별 Baseline 실패는 목 1, 몸통 1, 어깨 2, 팔꿈치 33, 손목 34, 엉덩이 2,
+무릎 19, 발목 16건이었고 RTMW는 이 영상에서 전부 복구했다. Baseline 성공을
+RTMW가 실패한 회귀는 0건이었다. 이는 저장소의 단일 40-frame 영상에 대한
+검출/계산 가능 결과이며 관절 위치, 각도 또는 RULA 정확도가 아니다.
+
+실험은 CPU ONNX로 실행했다. GPU 사용률·메모리 샘플은 NVML 장치 전체 값이라
+MoveGuard 프로세스에만 귀속할 수 없고, 지연시간은 CPU 추론 결과로 해석해야
+한다. 성능값은 같은 PC의 시스템 부하·온도에 따라 변할 수 있으므로 배포 대상
+GPU에서 다시 측정해야 한다. 현재 운영 권고는 **C안: 실시간 Baseline 유지 + 대표/고위험 프레임을
+RTMW로 비동기 재분석**이다. 완전 전환은 GPU 배포 성능과 전문가 GT 정확도를
+추가 확인한 뒤 결정한다.
 

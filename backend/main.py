@@ -146,7 +146,13 @@ def health():
         "status": "ok",
         "firebase_connected": _firebase is not None,
         "aihub": classifier_status(),
-        "posture_analysis_v2": get_pipeline().status(),
+        "posture_analysis_v2": {
+            "default": get_pipeline().status(),
+            "models": {
+                "baseline": get_pipeline("baseline").status(),
+                "rtmw": get_pipeline("rtmw").status(),
+            },
+        },
     }
 
 

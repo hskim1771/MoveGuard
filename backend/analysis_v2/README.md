@@ -15,6 +15,8 @@ image frame
 - `estimators/base.py`: 모델 공통 인터페이스
 - `estimators/mediapipe_pose.py`: 현재 전신 모델 어댑터
 - `estimators/mediapipe_hand.py`: 손목 ROI별 21개 손 관절 어댑터
+- `estimators/rtmw_pose.py`: 공식 RTMW-l 384×288 whole-body ONNX 어댑터
+- `joint_mapper.py`: 모델별 출력을 공통 관절명과 source로 정규화
 - `estimators/object_detector.py`: 명시적 미설정 어댑터와 선택형 YOLO 어댑터
 - `angle_calculator.py`: 모델과 분리된 관절 각도 계산
 - `rula_engine.py`: 각도와 RULA 조견표 계산
@@ -23,10 +25,15 @@ image frame
 
 ## Model replacement
 
-향후 모델은 `estimators/base.py`의 인터페이스를 구현하고
-`estimators/factory.py`에 선택 분기만 추가합니다.
+현재 `baseline`과 `rtmw`를 `estimators/factory.py`에서 선택할 수 있습니다.
+두 모델은 같은 `angle_calculator`와 `rula_engine`을 사용합니다. RTMW-l의
+133개 keypoint는 MediaPipe 호환 33-slot과 공통 관절명으로 변환되고, 손목
+각도에는 같은 whole-body 출력의 손 keypoint를 사용합니다.
 
-- RTMW-x: `PoseEstimator` 구현으로 추가
+향후 모델도 `estimators/base.py`의 인터페이스를 구현하고 factory 분기만
+추가합니다.
+
+- 다른 RTMW/RTMPose: `PoseEstimator` 구현으로 추가
 - RTMPose Hand5 또는 HaMeR: `HandEstimator` 구현으로 추가
 - 다른 YOLO/RTMDet: `ObjectDetector` 구현으로 추가
 - MotionBERT: Pose 결과 뒤의 temporal/3D 보정 단계로 추가

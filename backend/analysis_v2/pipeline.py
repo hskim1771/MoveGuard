@@ -12,10 +12,11 @@ from .domain import HandDetection, ObjectDetection, PoseDetection
 from .errors import EstimatorUnavailable
 from .estimators.base import HandEstimator, ObjectDetector, PoseEstimator
 from .estimators.factory import (
-    build_hand_estimator,
+    build_model_estimators,
     build_object_detector,
-    build_pose_estimator,
+    normalize_pose_model,
 )
+from .joint_mapper import common_joint_schema
 from .rula_engine import RulaOptions, calculate_rula
 from .runtime import heavy_inference_lock
 
@@ -88,14 +89,22 @@ class PostureAnalysisPipeline:
         pose_estimator: PoseEstimator,
         hand_estimator: HandEstimator,
         object_detector: ObjectDetector,
+        *,
+        model_id: str = "baseline",
+        pose_source: str = "mediapipe_pose",
+        hand_source: str | None = "mediapipe_hand",
     ) -> None:
         self.pose_estimator = pose_estimator
         self.hand_estimator = hand_estimator
         self.object_detector = object_detector
+        self.model_id = model_id
+        self.pose_source = pose_source
+        self.hand_source = hand_source
         self._inference_lock = heavy_inference_lock
 
     def status(self) -> dict[str, Any]:
         return {
+            "model": self.model_id,
             "pose": self.pose_estimator.status().as_dict(),
             "hand": self.hand_estimator.status().as_dict(),
             "object": self.object_detector.status().as_dict(),
@@ -194,12 +203,14 @@ class PostureAnalysisPipeline:
             return {
                 "schema_version": "2.0",
                 "processor": "moveguard-pose-analysis-v2",
+                "model": self.model_id,
                 "frame_id": resolved_frame_id,
                 "timestamp_ms": timestamp_ms,
                 "worker_id": worker_id,
                 "measurement_id": measurement_id,
                 "analyzed_at": analyzed_at,
                 "pose": {"landmarks": [], "world_landmarks": None, "confidence": 0.0},
+                "joints": {},
                 "hands": {"left": None, "right": None},
                 "objects": [item.as_dict() for item in objects],
                 "object_relationships": [],
@@ -228,6 +239,12 @@ class PostureAnalysisPipeline:
         people: list[dict[str, Any]] = []
         for pose in poses:
             hands = hands_by_person.get(pose.person_id, {})
+            joints = common_joint_schema(
+                pose,
+                hands,
+                pose_source=self.pose_source,
+                hand_source=self.hand_source,
+            )
             measurements = calculate_joint_angles(pose, hands)
             rula = calculate_rula(measurements, rula_options)
             measurement_data = {
@@ -265,7 +282,9 @@ class PostureAnalysisPipeline:
             people.append(
                 {
                     "person_id": pose.person_id,
+                    "model": self.model_id,
                     "pose": _serialize_pose(pose),
+                    "joints": joints,
                     "hands": _serialize_hands(hands),
                     "joint_angles": joint_angles,
                     "measurements": measurement_data,
@@ -296,12 +315,14 @@ class PostureAnalysisPipeline:
         return {
             "schema_version": "2.0",
             "processor": "moveguard-pose-analysis-v2",
+            "model": self.model_id,
             "frame_id": resolved_frame_id,
             "timestamp_ms": timestamp_ms,
             "worker_id": worker_id,
             "measurement_id": measurement_id,
             "analyzed_at": analyzed_at,
             "pose": primary["pose"],
+            "joints": primary["joints"],
             "hands": primary["hands"],
             "objects": [item.as_dict() for item in objects],
             "object_relationships": primary["object_relationships"],
@@ -315,18 +336,26 @@ class PostureAnalysisPipeline:
         }
 
 
-_pipeline: PostureAnalysisPipeline | None = None
+_pipelines: dict[str, PostureAnalysisPipeline] = {}
 _pipeline_lock = threading.Lock()
 
 
-def get_pipeline() -> PostureAnalysisPipeline:
-    global _pipeline
-    if _pipeline is None:
+def get_pipeline(model: str | None = None) -> PostureAnalysisPipeline:
+    selected = normalize_pose_model(model)
+    if selected not in _pipelines:
         with _pipeline_lock:
-            if _pipeline is None:
-                _pipeline = PostureAnalysisPipeline(
-                    pose_estimator=build_pose_estimator(),
-                    hand_estimator=build_hand_estimator(),
+            if selected not in _pipelines:
+                model_id, pose_estimator, hand_estimator = build_model_estimators(selected)
+                _pipelines[selected] = PostureAnalysisPipeline(
+                    pose_estimator=pose_estimator,
+                    hand_estimator=hand_estimator,
                     object_detector=build_object_detector(),
+                    model_id=model_id,
+                    pose_source=(
+                        "mediapipe_pose" if model_id == "baseline" else "rtmw_l_384x288"
+                    ),
+                    hand_source=(
+                        "mediapipe_hand" if model_id == "baseline" else "rtmw_l_384x288"
+                    ),
                 )
-    return _pipeline
+    return _pipelines[selected]

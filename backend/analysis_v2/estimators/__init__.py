@@ -2,6 +2,7 @@ from .base import HandEstimator, ObjectDetector, PoseEstimator
 from .mediapipe_hand import MediaPipeHandEstimator
 from .mediapipe_pose import MediaPipePoseEstimator
 from .object_detector import NoopObjectDetector, UltralyticsObjectDetector
+from .rtmw_pose import RTMWCachedHandEstimator, RTMWPoseEstimator
 
 __all__ = [
     "HandEstimator",
@@ -10,5 +11,7 @@ __all__ = [
     "NoopObjectDetector",
     "ObjectDetector",
     "PoseEstimator",
+    "RTMWCachedHandEstimator",
+    "RTMWPoseEstimator",
     "UltralyticsObjectDetector",
 ]

@@ -19,7 +19,13 @@ from .ground_truth import (
     write_annotation_json,
 )
 from .metrics import build_report
-from .variants import LiveVariant, build_default_variants, planned_ablation_variants
+from .variants import (
+    LiveVariant,
+    build_default_variants,
+    build_rtmw_ab_variants,
+    planned_ablation_variants,
+    rtmw_ab_variants,
+)
 
 
 def _rss_mb() -> float | None:
@@ -59,6 +65,12 @@ def _overall_rows(report: dict[str, Any], baseline_id: str, hybrid_id: str) -> l
             baseline["joint_detection_overall"],
             hybrid["joint_detection_overall"],
             report["comparison"]["joint_detection_rate"],
+        ),
+        (
+            "RULA calculable rate",
+            baseline["rula_calculable_rate"],
+            hybrid["rula_calculable_rate"],
+            report["comparison"]["rula_calculable_rate"],
         ),
         (
             "Joint position PCK@0.2",
@@ -138,6 +150,7 @@ def write_outputs(
                 frame_id=record["frame_id"],
                 person_id=hybrid.canonical.person_id or baseline.canonical.person_id,
             )
+            candidate_key = "rtmw" if hybrid_id.startswith("rtmw") else "hybrid"
             handle.write(
                 json.dumps(
                     {
@@ -146,7 +159,7 @@ def write_outputs(
                         "frame_index": record["frame_index"],
                         "timestamp_ms": record["timestamp_ms"],
                         "baseline": baseline.as_dict(),
-                        "hybrid": hybrid.as_dict(),
+                        candidate_key: hybrid.as_dict(),
                         "ground_truth": gt_row,
                     },
                     ensure_ascii=False,
@@ -246,7 +259,12 @@ def write_outputs(
                 "fps": _metric_cell(perf["fps"]),
                 "process_cpu_percent": _metric_cell(perf["process_cpu_percent"]),
                 "memory_mb": _metric_cell(perf["memory_mb"]),
+                "average_process_rss_mb": _metric_cell(perf["average_process_rss_mb"]),
+                "peak_process_rss_mb": _metric_cell(perf["peak_process_rss_mb"]),
                 "gpu_usage_percent": _metric_cell(perf["gpu_usage_percent"]),
+                "peak_gpu_usage_percent": _metric_cell(perf["peak_gpu_usage_percent"]),
+                "average_gpu_memory_mb": _metric_cell(perf["average_gpu_memory_mb"]),
+                "peak_gpu_memory_mb": _metric_cell(perf["peak_gpu_memory_mb"]),
                 "memory_status": _metric_status(perf["memory_mb"]),
                 "gpu_status": _metric_status(perf["gpu_usage_percent"]),
             }
@@ -261,11 +279,43 @@ def write_outputs(
             "fps",
             "process_cpu_percent",
             "memory_mb",
+            "average_process_rss_mb",
+            "peak_process_rss_mb",
             "gpu_usage_percent",
+            "peak_gpu_usage_percent",
+            "average_gpu_memory_mb",
+            "peak_gpu_memory_mb",
             "memory_status",
             "gpu_status",
         ],
         performance_rows,
+    )
+
+    recovery_rows = []
+    for joint, values in report.get("failure_recovery", {}).items():
+        recovery_rows.append(
+            {
+                "joint": joint,
+                "baseline_failures": values["baseline_failures"],
+                "candidate_recoveries": values["candidate_recoveries"],
+                "recovery_rate_percent": _metric_cell(values["recovery_rate"]),
+                "baseline_successes": values["baseline_successes"],
+                "candidate_regressions": values["candidate_regressions"],
+                "regression_rate_percent": _metric_cell(values["regression_rate"]),
+            }
+        )
+    _write_csv(
+        output_dir / "failure_recovery.csv",
+        [
+            "joint",
+            "baseline_failures",
+            "candidate_recoveries",
+            "recovery_rate_percent",
+            "baseline_successes",
+            "candidate_regressions",
+            "regression_rate_percent",
+        ],
+        recovery_rows,
     )
 
     ablation_rows = [
@@ -362,8 +412,14 @@ def run_experiment(
     output_dir: Path,
     sample_every: int,
     max_frames: int,
+    candidate: str = "rtmw",
 ) -> dict[str, Any]:
-    baseline, hybrid = build_default_variants()
+    if candidate == "rtmw":
+        baseline, hybrid = build_rtmw_ab_variants()
+        ablation = rtmw_ab_variants()
+    else:
+        baseline, hybrid = build_default_variants()
+        ablation = planned_ablation_variants()
     baseline_id = baseline.variant_id
     hybrid_id = hybrid.variant_id
     ground_truth = load_ground_truth(ground_truth_path)
@@ -471,7 +527,7 @@ def run_experiment(
         ground_truth=ground_truth,
         experiment=experiment,
         variant_status=variant_status,
-        ablation=planned_ablation_variants(),
+        ablation=ablation,
     )
     for variant_id in (baseline_id, hybrid_id):
         memory = warmup[variant_id]["incremental_model_load_rss_mb"]
@@ -497,13 +553,19 @@ def run_experiment(
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Compare MoveGuard Baseline and available Hybrid on identical frames."
+        description="Compare MoveGuard Baseline and RTMW-l on identical frames."
     )
     parser.add_argument("--video", action="append", required=True, help="Input video path; repeat for multiple videos.")
     parser.add_argument("--ground-truth", help="Optional Ground Truth CSV or JSON.")
     parser.add_argument("--output", required=True, help="Output directory.")
     parser.add_argument("--sample-every", type=int, default=1, help="Sample every Nth frame.")
     parser.add_argument("--max-frames", type=int, default=0, help="Maximum sampled frames; 0 means all.")
+    parser.add_argument(
+        "--candidate",
+        choices=("rtmw", "hybrid-lite"),
+        default="rtmw",
+        help="Candidate model; RTMW is the default for this branch.",
+    )
     return parser.parse_args(argv)
 
 
@@ -523,6 +585,7 @@ def main(argv: list[str] | None = None) -> int:
         output_dir=Path(args.output).expanduser().resolve(),
         sample_every=args.sample_every,
         max_frames=max(0, args.max_frames),
+        candidate=args.candidate,
     )
     summary = {
         "output": str(Path(args.output).expanduser().resolve()),

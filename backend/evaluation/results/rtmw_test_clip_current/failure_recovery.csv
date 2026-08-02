@@ -1,0 +1,9 @@
+﻿joint,baseline_failures,candidate_recoveries,recovery_rate_percent,baseline_successes,candidate_regressions,regression_rate_percent
+neck,1,1,100.0,39,0,0.0
+trunk,1,1,100.0,39,0,0.0
+shoulder,2,2,100.0,78,0,0.0
+elbow,33,33,100.0,47,0,0.0
+wrist,34,34,100.0,46,0,0.0
+hip,2,2,100.0,78,0,0.0
+knee,19,19,100.0,61,0,0.0
+ankle,16,16,100.0,64,0,0.0

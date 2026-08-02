@@ -501,7 +501,12 @@ def performance_metrics(results: list[VariantResult]) -> dict[str, Any]:
             "fps": not_measurable(reason, unit="fps"),
             "process_cpu_percent": not_measurable(reason, unit="%"),
             "memory_mb": not_measurable("Total process memory instrumentation is unavailable.", unit="MB"),
+            "average_process_rss_mb": not_measurable(reason, unit="MB"),
+            "peak_process_rss_mb": not_measurable(reason, unit="MB"),
             "gpu_usage_percent": not_measurable("GPU telemetry is unavailable.", unit="%"),
+            "peak_gpu_usage_percent": not_measurable(reason, unit="%"),
+            "average_gpu_memory_mb": not_measurable(reason, unit="MB"),
+            "peak_gpu_memory_mb": not_measurable(reason, unit="MB"),
         }
     latencies = [result.latency_ms for result in results]
     cpu = [result.process_cpu_ms for result in results]
@@ -510,6 +515,15 @@ def performance_metrics(results: list[VariantResult]) -> dict[str, Any]:
     total_wall = sum(latencies)
     total_cpu = sum(cpu)
     average = statistics.fmean(latencies)
+    rss_values = [value for result in results if (value := result.process_rss_mb) is not None]
+    gpu_values = [
+        value
+        for result in results
+        if (value := result.gpu_utilization_percent) is not None
+    ]
+    gpu_memory_values = [
+        value for result in results if (value := result.gpu_memory_mb) is not None
+    ]
     return {
         "average_latency_ms": measured(average, unit="ms", n=len(results)),
         "p50_latency_ms": measured(statistics.median(latencies), unit="ms", n=len(results)),
@@ -522,12 +536,120 @@ def performance_metrics(results: list[VariantResult]) -> dict[str, Any]:
             definition="process CPU time divided by wall time; may exceed 100% with multithreading",
         ),
         "memory_mb": not_measurable(
-            "psutil/native allocator instrumentation is not installed; no value was invented.", unit="MB"
+            "Incremental model-load RSS is attached by the experiment runner.", unit="MB"
         ),
-        "gpu_usage_percent": not_measurable(
-            "NVML/GPU telemetry is not installed; no value was invented.", unit="%"
+        "average_process_rss_mb": (
+            measured(
+                statistics.fmean(rss_values),
+                unit="MB",
+                n=len(rss_values),
+                definition="Total process RSS sampled after each variant inference.",
+            )
+            if rss_values
+            else not_measurable("psutil process RSS is unavailable.", unit="MB")
+        ),
+        "peak_process_rss_mb": (
+            measured(
+                max(rss_values),
+                unit="MB",
+                n=len(rss_values),
+                definition="Peak of total process RSS samples after variant inference.",
+            )
+            if rss_values
+            else not_measurable("psutil process RSS is unavailable.", unit="MB")
+        ),
+        "gpu_usage_percent": (
+            measured(
+                statistics.fmean(gpu_values),
+                unit="%",
+                n=len(gpu_values),
+                definition="Mean NVML device-utilization samples taken after inference.",
+            )
+            if gpu_values
+            else not_measurable("NVML/GPU telemetry is unavailable; no zero was assumed.", unit="%")
+        ),
+        "peak_gpu_usage_percent": (
+            measured(max(gpu_values), unit="%", n=len(gpu_values))
+            if gpu_values
+            else not_measurable("NVML/GPU telemetry is unavailable.", unit="%")
+        ),
+        "average_gpu_memory_mb": (
+            measured(statistics.fmean(gpu_memory_values), unit="MB", n=len(gpu_memory_values))
+            if gpu_memory_values
+            else not_measurable("NVML/GPU memory telemetry is unavailable.", unit="MB")
+        ),
+        "peak_gpu_memory_mb": (
+            measured(max(gpu_memory_values), unit="MB", n=len(gpu_memory_values))
+            if gpu_memory_values
+            else not_measurable("NVML/GPU memory telemetry is unavailable.", unit="MB")
         ),
     }
+
+
+def failure_recovery_metrics(
+    records: list[dict[str, Any]],
+    baseline_id: str,
+    candidate_id: str,
+) -> dict[str, Any]:
+    """Count candidate recovery and regression for every expected joint occurrence."""
+
+    output: dict[str, Any] = {}
+    for group, joint_names in JOINT_GROUPS.items():
+        baseline_failures = 0
+        candidate_recoveries = 0
+        baseline_successes = 0
+        candidate_regressions = 0
+        for record in records:
+            baseline = record["results"][baseline_id]
+            candidate = record["results"][candidate_id]
+            for name in joint_names:
+                baseline_valid = bool(baseline.canonical.joints[name].valid)
+                candidate_valid = bool(candidate.canonical.joints[name].valid)
+                if baseline_valid:
+                    baseline_successes += 1
+                    candidate_regressions += int(not candidate_valid)
+                else:
+                    baseline_failures += 1
+                    candidate_recoveries += int(candidate_valid)
+        recovery_rate = (
+            measured(
+                100 * candidate_recoveries / baseline_failures,
+                unit="%",
+                n=baseline_failures,
+            )
+            if baseline_failures
+            else not_measurable("Baseline had no failures for this joint group.", unit="%")
+        )
+        regression_rate = (
+            measured(
+                100 * candidate_regressions / baseline_successes,
+                unit="%",
+                n=baseline_successes,
+            )
+            if baseline_successes
+            else not_measurable("Baseline had no successful detections for this joint group.", unit="%")
+        )
+        output[group] = {
+            "baseline_failures": baseline_failures,
+            "candidate_recoveries": candidate_recoveries,
+            "recovery_rate": recovery_rate,
+            "baseline_successes": baseline_successes,
+            "candidate_regressions": candidate_regressions,
+            "regression_rate": regression_rate,
+        }
+    return output
+
+
+def rula_calculable_rate(results: list[VariantResult]) -> dict[str, Any]:
+    expected = len(results)
+    calculable = sum(bool(result.rula.get("valid")) for result in results)
+    return measured(
+        100 * calculable / expected if expected else 0.0,
+        unit="%",
+        n=expected,
+        calculable=calculable,
+        definition="Frames where the shared RULA engine returned a complete final score.",
+    )
 
 
 def subgroup_metrics(
@@ -590,6 +712,9 @@ def build_report(
             "joint_angles_overall": angle_overall,
             "posture_classification": posture,
             "rula": rula,
+            "rula_calculable_rate": rula_calculable_rate(
+                _variant_results(records, variant_id)
+            ),
             "performance": performance,
             "subgroups": subgroup_metrics(records, variant_id, ground_truth),
         }
@@ -632,6 +757,11 @@ def build_report(
             hybrid["rula"]["risk"]["accuracy"],
             higher_is_better=True,
         ),
+        "rula_calculable_rate": _difference(
+            baseline["rula_calculable_rate"],
+            hybrid["rula_calculable_rate"],
+            higher_is_better=True,
+        ),
         "average_latency_ms": _difference(
             baseline["performance"]["average_latency_ms"],
             hybrid["performance"]["average_latency_ms"],
@@ -656,6 +786,8 @@ def build_report(
             ),
         }
 
+    failure_recovery = failure_recovery_metrics(records, baseline_id, hybrid_id)
+
     conclusion = {
         "accuracy_claim_allowed": ground_truth.available
         and hybrid["rula"]["exact_accuracy"]["status"] == "measured",
@@ -678,6 +810,7 @@ def build_report(
         "variants": variants,
         "comparison": comparison,
         "joint_comparison": joint_comparison,
+        "failure_recovery": failure_recovery,
         "ablation": ablation,
         "conclusion": conclusion,
     }

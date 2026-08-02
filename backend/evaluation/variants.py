@@ -10,6 +10,7 @@ from analysis_v2.errors import EstimatorUnavailable
 from analysis_v2.estimators.base import HandEstimator, PoseEstimator
 from analysis_v2.estimators.mediapipe_hand import default_hand_estimator
 from analysis_v2.estimators.mediapipe_pose import default_pose_estimator
+from analysis_v2.estimators.rtmw_pose import default_rtmw_estimators
 from analysis_v2.rula_engine import RulaOptions, calculate_rula
 
 from .canonical import CanonicalFrame, canonicalize
@@ -44,6 +45,9 @@ class VariantResult:
     rula: dict[str, Any]
     latency_ms: float
     process_cpu_ms: float
+    process_rss_mb: float | None
+    gpu_utilization_percent: float | None
+    gpu_memory_mb: float | None
     issues: tuple[str, ...]
     posture_labels: tuple[str, ...] | None = None
 
@@ -61,6 +65,11 @@ class VariantResult:
             "rula": self.rula,
             "latency_ms": round(self.latency_ms, 4),
             "process_cpu_ms": round(self.process_cpu_ms, 4),
+            "process_rss_mb": (
+                None if self.process_rss_mb is None else round(self.process_rss_mb, 4)
+            ),
+            "gpu_utilization_percent": self.gpu_utilization_percent,
+            "gpu_memory_mb": self.gpu_memory_mb,
             "issues": list(self.issues),
             "posture_labels": list(self.posture_labels) if self.posture_labels else None,
         }
@@ -152,6 +161,16 @@ class LiveVariant:
                 else None
             ),
         )
+        latency_ms = (perf_counter() - wall_started) * 1000
+        process_cpu_ms = (process_time() - cpu_started) * 1000
+        process_rss_mb: float | None = None
+        try:
+            import psutil
+
+            process_rss_mb = psutil.Process().memory_info().rss / (1024 * 1024)
+        except (ImportError, OSError):
+            pass
+        gpu_utilization, gpu_memory = _gpu_snapshot()
         return VariantResult(
             variant_id=self.variant_id,
             variant_label=self.label,
@@ -163,10 +182,68 @@ class LiveVariant:
             canonical=canonical,
             measurements=measurements,
             rula=rula,
-            latency_ms=(perf_counter() - wall_started) * 1000,
-            process_cpu_ms=(process_time() - cpu_started) * 1000,
+            latency_ms=latency_ms,
+            process_cpu_ms=process_cpu_ms,
+            process_rss_mb=process_rss_mb,
+            gpu_utilization_percent=gpu_utilization,
+            gpu_memory_mb=gpu_memory,
             issues=tuple(issues),
         )
+
+
+def _gpu_snapshot() -> tuple[float | None, float | None]:
+    """Read an actual NVML sample; return missing rather than inventing zero."""
+
+    try:
+        import pynvml
+
+        pynvml.nvmlInit()
+        handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        utilization = float(pynvml.nvmlDeviceGetUtilizationRates(handle).gpu)
+        memory = float(pynvml.nvmlDeviceGetMemoryInfo(handle).used) / (1024 * 1024)
+        return utilization, memory
+    except Exception:
+        return None, None
+
+
+def build_rtmw_ab_variants() -> tuple[LiveVariant, LiveVariant]:
+    """Build existing MediaPipe Baseline and official RTMW-l 384x288 candidate."""
+
+    baseline = LiveVariant(
+        variant_id="baseline_mediapipe",
+        label="Existing MediaPipe Pose + MediaPipe Hand + shared RULA",
+        pose_estimator=default_pose_estimator(),
+        hand_estimator=default_hand_estimator(),
+        pose_source="mediapipe_pose",
+        hand_source="mediapipe_hand",
+    )
+    rtmw_pose, rtmw_hands = default_rtmw_estimators()
+    candidate = LiveVariant(
+        variant_id="rtmw_l_384x288",
+        label="RTMW-l 384x288 WholeBody + shared RULA",
+        pose_estimator=rtmw_pose,
+        hand_estimator=rtmw_hands,
+        pose_source="rtmw_l_384x288",
+        hand_source="rtmw_l_384x288",
+    )
+    return baseline, candidate
+
+
+def rtmw_ab_variants() -> list[dict[str, Any]]:
+    return [
+        {
+            "id": "A",
+            "configuration": "Existing MediaPipe Pose + MediaPipe Hand + shared RULA",
+            "available": True,
+            "evaluated_as": "baseline_mediapipe",
+        },
+        {
+            "id": "B",
+            "configuration": "RTMW-l 384x288 WholeBody + shared RULA",
+            "available": True,
+            "evaluated_as": "rtmw_l_384x288",
+        },
+    ]
 
 
 def build_default_variants() -> tuple[LiveVariant, LiveVariant]:

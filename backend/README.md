@@ -37,10 +37,18 @@ python -m venv .venv
 영상 파일 자체는 받지 않습니다. 프런트에서 프레임을 샘플링해 이미지로
 전송하면 됩니다.
 
+`model` 쿼리로 기존 방식과 RTMW를 선택합니다. 기본값은 기존 동작을 보존하는
+`baseline`이며, `rtmw`를 사용하려면 선택 의존성을 설치해야 합니다.
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements-rtmw.txt
+$env:MOVEGUARD_RTMW_DEVICE="cpu"
+```
+
 ```powershell
 Invoke-WebRequest `
   -Method Post `
-  -Uri "http://127.0.0.1:8000/api/analysis/posture?worker_id=W-001&measurement_id=M-001" `
+  -Uri "http://127.0.0.1:8000/api/analysis/posture?model=rtmw&worker_id=W-001&measurement_id=M-001" `
   -ContentType "image/jpeg" `
   -InFile ".\frame.jpg"
 ```
@@ -48,6 +56,7 @@ Invoke-WebRequest `
 응답에는 다음 감사·검증용 필드가 포함됩니다.
 
 - `frame_id`, `timestamp_ms`, `worker_id`, `measurement_id`
+- 선택된 `model`과 공통 관절명 기준의 `joints`, 각 관절의 `source_model`
 - Pose/Hand landmark와 confidence
 - 객체 탐지 결과와 사람-객체 거리 관계
 - 관절 각도 원시값과 부위별 `valid`, `low_confidence`, `not_measurable`
@@ -56,6 +65,20 @@ Invoke-WebRequest `
 사람이 없거나 필요한 관절이 가려졌거나 손을 검출하지 못한 경우 임의 좌표나
 임의 최종 점수를 만들지 않습니다. 객체 전용 모델이 설정되지 않은 기본 상태도
 `objects: []`와 `configured: false`로 명시합니다.
+
+동일 이미지에서 두 모델을 함께 확인하려면 다음 A/B 엔드포인트를 사용합니다.
+
+```powershell
+Invoke-WebRequest `
+  -Method Post `
+  -Uri "http://127.0.0.1:8000/api/analysis/compare" `
+  -ContentType "image/jpeg" `
+  -InFile ".\frame.jpg"
+```
+
+이 응답은 관절 검출 수와 계산 가능 여부만 비교합니다. 전문가 Ground Truth가
+없는 단일 입력에서 정확도 수치를 만들지 않고 `accuracy.status`를
+`not_measurable`로 반환합니다.
 
 ## 테스트
 
@@ -80,10 +103,11 @@ confidence나 공식 AP를 accuracy로 바꾸지 않고 정확도 지표를
 `not_measurable`로 출력합니다.
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements-evaluation.txt
+.\.venv\Scripts\python.exe -m pip install -r requirements-rtmw.txt
 .\.venv\Scripts\python.exe -m evaluation.compare `
   --video ..\test_clip.mp4 `
-  --output evaluation\results\test_clip_current
+  --output evaluation\results\rtmw_test_clip_current `
+  --candidate rtmw
 ```
 
 상세 지표 정의, annotation 방법, 전문 모델 fusion 위치는

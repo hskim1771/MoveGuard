@@ -55,6 +55,7 @@ def _optional_bool(value: Any) -> bool | None:
 @router.post("/api/analysis/posture")
 async def analyze_posture(
     request: Request,
+    model: str = "baseline",
     worker_id: str | None = None,
     measurement_id: str | None = None,
     frame_id: str | None = None,
@@ -72,10 +73,14 @@ async def analyze_posture(
     """
 
     content_type = request.headers.get("content-type", "").split(";", 1)[0].lower()
-    pipeline = get_pipeline()
     try:
         if content_type == "application/json":
+            if model.strip().lower() not in {"baseline", "mediapipe", "v1"}:
+                raise InvalidAnalysisInput(
+                    "Model selection applies to image inference. Landmark JSON is already precomputed."
+                )
             payload = LandmarkPostureRequest.model_validate(await request.json())
+            pipeline = get_pipeline("baseline")
             return pipeline.analyze_landmarks(
                 payload.pose.to_domain(),
                 payload.domain_hands(),
@@ -98,6 +103,7 @@ async def analyze_posture(
             if upload_type not in SUPPORTED_IMAGE_TYPES:
                 raise InvalidAnalysisInput("Only JPEG, PNG, and WebP images are supported.")
             image_bytes = await upload.read()
+            model = str(form.get("model") or model)
             worker_id = str(form.get("worker_id") or worker_id or "") or None
             measurement_id = str(form.get("measurement_id") or measurement_id or "") or None
             frame_id = str(form.get("frame_id") or frame_id or "") or None
@@ -120,6 +126,7 @@ async def analyze_posture(
             )
 
         image_rgb = _decode_image(image_bytes)
+        pipeline = get_pipeline(model)
         return pipeline.analyze_image(
             image_rgb,
             worker_id=worker_id,
@@ -140,3 +147,113 @@ async def analyze_posture(
         raise HTTPException(status_code=400, detail=str(error)) from error
     except EstimatorUnavailable as error:
         raise HTTPException(status_code=503, detail=str(error)) from error
+
+
+async def _comparison_image(request: Request) -> Any:
+    content_type = request.headers.get("content-type", "").split(";", 1)[0].lower()
+    if content_type == "multipart/form-data":
+        form = await request.form()
+        upload = form.get("image") or form.get("frame")
+        if upload is None or not hasattr(upload, "read"):
+            raise InvalidAnalysisInput(
+                "Multipart request must include an 'image' or 'frame' file."
+            )
+        upload_type = str(getattr(upload, "content_type", "")).lower()
+        if upload_type not in SUPPORTED_IMAGE_TYPES:
+            raise InvalidAnalysisInput("Only JPEG, PNG, and WebP images are supported.")
+        return _decode_image(await upload.read())
+    if content_type in SUPPORTED_IMAGE_TYPES:
+        return _decode_image(await request.body())
+    raise HTTPException(
+        status_code=415,
+        detail="Use multipart/form-data or a raw JPEG/PNG/WebP body for A/B inference.",
+    )
+
+
+def _response_detection_summary(response: dict[str, Any]) -> dict[str, Any]:
+    joints = response.get("joints", {})
+    common_names = (
+        "neck",
+        "left_shoulder",
+        "right_shoulder",
+        "left_elbow",
+        "right_elbow",
+        "left_wrist",
+        "right_wrist",
+        "left_hip",
+        "right_hip",
+        "left_knee",
+        "right_knee",
+        "left_ankle",
+        "right_ankle",
+    )
+    detected = sum(bool(joints.get(name, {}).get("valid")) for name in common_names)
+    measurements = response.get("measurements", {})
+    wrist_ready = sum(
+        measurements.get(f"{side}_wrist", {}).get("status") == "valid"
+        for side in ("left", "right")
+    )
+    return {
+        "common_joint_detected": detected,
+        "common_joint_expected": len(common_names),
+        "common_joint_detection_percent": round(100 * detected / len(common_names), 2),
+        "wrist_angle_ready": wrist_ready,
+        "wrist_angle_expected": 2,
+        "rula_score": response.get("rula", {}).get("final_score"),
+        "risk_level": response.get("rula", {}).get("risk_level", "not_measurable"),
+        "elapsed_ms": response.get("elapsed_ms"),
+    }
+
+
+@router.post("/api/analysis/compare")
+async def compare_posture(
+    request: Request,
+    frame_id: str | None = None,
+    timestamp_ms: float | None = None,
+    weight_kg: float = 0.0,
+    static_force: bool = False,
+    muscle_static: bool = False,
+) -> dict[str, Any]:
+    """Run Baseline and RTMW-l on the same decoded image without inventing accuracy."""
+
+    try:
+        image_rgb = await _comparison_image(request)
+        options = RulaOptions(
+            weight_kg=weight_kg,
+            static_force=static_force,
+            muscle_static=muscle_static,
+        )
+        outputs: dict[str, Any] = {}
+        summaries: dict[str, Any] = {}
+        for model in ("baseline", "rtmw"):
+            try:
+                output = get_pipeline(model).analyze_image(
+                    image_rgb,
+                    frame_id=frame_id,
+                    timestamp_ms=timestamp_ms,
+                    rula_options=options,
+                )
+                outputs[model] = output
+                summaries[model] = _response_detection_summary(output)
+            except EstimatorUnavailable as error:
+                outputs[model] = {
+                    "model": model,
+                    "error": str(error),
+                    "quality": {"status": "server_error", "issues": [str(error)]},
+                }
+                summaries[model] = {"status": "unavailable", "reason": str(error)}
+        return {
+            "schema_version": "1.0",
+            "frame_id": frame_id,
+            "baseline": outputs["baseline"],
+            "rtmw": outputs["rtmw"],
+            "summary": summaries,
+            "accuracy": {
+                "status": "not_measurable",
+                "reason": "A/B API input has no expert Ground Truth.",
+            },
+        }
+    except HTTPException:
+        raise
+    except (InvalidAnalysisInput, ValueError) as error:
+        raise HTTPException(status_code=400, detail=str(error)) from error

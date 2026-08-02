@@ -5,7 +5,7 @@ from analysis_v2.estimators.base import HandEstimator, PoseEstimator
 from evaluation.canonical import canonicalize
 from evaluation.ground_truth import GroundTruthStore
 from evaluation.fusion import fuse_pose_detections, moveguard_specialist_profile
-from evaluation.metrics import build_report
+from evaluation.metrics import build_report, failure_recovery_metrics
 from evaluation.variants import LiveVariant, NoHandEstimator, planned_ablation_variants
 
 from tests.helpers import make_hand, make_pose
@@ -175,6 +175,44 @@ class EvaluationPipelineTests(unittest.TestCase):
         self.assertEqual(
             canonical.joints["left_wrist"].source_model, "rtmpose_hand5"
         )
+
+    def test_failure_recovery_counts_candidate_success_on_baseline_failures(self):
+        baseline = LiveVariant(
+            variant_id="baseline",
+            label="baseline",
+            pose_estimator=StaticPoseEstimator(),
+            hand_estimator=NoHandEstimator(),
+            pose_source="baseline",
+            hand_source=None,
+        )
+
+        class LowConfidencePose(StaticPoseEstimator):
+            def estimate(self, image_rgb):
+                return [make_pose(confidence=0.2)]
+
+        low = LiveVariant(
+            variant_id="low",
+            label="low",
+            pose_estimator=LowConfidencePose(),
+            hand_estimator=NoHandEstimator(),
+            pose_source="low",
+            hand_source=None,
+        )
+        record = {
+            "results": {
+                "baseline": low.analyze(
+                    object(), frame_id="clip:0", frame_index=0, timestamp_ms=0
+                ),
+                "candidate": baseline.analyze(
+                    object(), frame_id="clip:0", frame_index=0, timestamp_ms=0
+                ),
+            }
+        }
+        recovery = failure_recovery_metrics([record], "baseline", "candidate")
+
+        self.assertEqual(recovery["shoulder"]["baseline_failures"], 2)
+        self.assertEqual(recovery["shoulder"]["candidate_recoveries"], 2)
+        self.assertEqual(recovery["shoulder"]["recovery_rate"]["value"], 100.0)
 
 
 if __name__ == "__main__":
