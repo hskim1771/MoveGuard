@@ -7,6 +7,11 @@ export const metadata: Metadata = {
 };
 
 export default function VideoAnalysisPage() {
+  const analysisApiUrl = process.env.NEXT_PUBLIC_ANALYSIS_API_URL?.replace(/\/$/, "");
+  const frameSrc = analysisApiUrl
+    ? `/moveguard-mvp.html?embedded=1&api=${encodeURIComponent(analysisApiUrl)}`
+    : "/moveguard-mvp.html?embedded=1";
+
   return (
     <main className="video-analysis-page">
       <header className="topbar video-analysis-topbar">
@@ -33,7 +38,7 @@ export default function VideoAnalysisPage() {
 
       <iframe
         className="video-analysis-frame"
-        src="/moveguard-mvp.html?embedded=1"
+        src={frameSrc}
         title="MoveGuard 통합 RULA 측정"
         allow="camera"
       />

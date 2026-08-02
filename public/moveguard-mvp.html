@@ -88,6 +88,21 @@
   .status-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#f7f6f2;color:#666;padding:5px 8px;margin-top:10px;font-family:var(--mono);font-size:10.5px;}
   .status-chip.online{border-color:#9bc4ad;background:#eef7f0;color:var(--safe);}
   .status-chip.offline{border-color:#dccb98;background:#fff8e6;color:#7e641a;}
+  .model-picker{display:flex;align-items:center;justify-content:space-between;gap:18px;border:1px solid #cbdcf8;background:#f5f9ff;border-radius:15px;padding:15px 17px;margin:14px 0;flex-wrap:wrap;}
+  .model-picker label{margin:0;color:#324156;font-size:12px;letter-spacing:0;text-transform:none;}
+  .model-picker label strong{display:block;color:var(--ink);font-size:13px;margin-bottom:2px;}
+  .model-picker select{width:auto;min-width:238px;margin:0;}
+  .model-picker small{display:block;color:#718096;font-weight:400;line-height:1.45;}
+  .pose-result{display:none;margin-top:14px;border:1px solid #dbe3ef;background:#fff;border-radius:15px;padding:15px;}
+  .pose-result.visible{display:block;}
+  .pose-result-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
+  .pose-result-head strong{font-size:13px;}
+  .pose-result-head span{font-family:var(--mono);font-size:10px;color:#718096;}
+  .pose-result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+  .pose-result-item{background:#f8fafc;border:1px solid #edf1f6;border-radius:10px;padding:9px;}
+  .pose-result-item small{display:block;color:#8490a2;font-size:9.5px;}
+  .pose-result-item b{display:block;font-size:13px;margin-top:2px;word-break:break-word;}
+  .pose-result-note{color:#718096;font-size:10.5px;line-height:1.5;margin:10px 0 0;}
   .quality-notice{display:none;margin-top:14px;padding:12px 14px;border:1px solid var(--line);font-size:12.5px;}
   .quality-notice.good{display:block;border-color:#9bc4ad;background:#eef7f0;color:var(--safe);}
   .quality-notice.warning{display:block;border-color:#d8bd70;background:#fff8e6;color:#775d16;}
@@ -242,6 +257,7 @@
     .stepper .s{min-width:84px;}
     .panel{border-radius:18px;padding:21px;}
     .stage{flex-direction:column;}
+    .pose-result-grid{grid-template-columns:1fr 1fr;}
   }
 
   @media(max-width:620px){
@@ -296,7 +312,7 @@
       <p style="font-size:14px;">이 MVP는 <b>RULA(상지 중심 정밀평가도구)</b> 한 종류만 자동화합니다. REBA·OWAS 등 다른 도구는 이후 여유가 되면 추가할 계획이며, 지금은 RULA가 문제없이 끝까지 동작하는 것이 목표입니다.</p>
 
       <div class="notice">
-        <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. 자세 추출은 MediaPipe Pose를 실제로 호출하고, RULA Table A/B/C 조견표를 그대로 적용하지만, 손목 굽힘·비틀림은 카메라만으로 정확히 잡기 어려워 중립값으로 고정합니다. 실제 제출용으로는 전문가 검토가 반드시 필요합니다.
+        <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. Baseline MediaPipe와 RTMW-l 중 하나를 실제로 호출하고 RULA Table A/B/C 조견표를 동일하게 적용합니다. RTMW-l은 손목 굽힘을 추론하지만 단일 카메라의 손목 비틀림은 신뢰하기 어려워 중립 범위로 가정하며, 실제 제출용으로는 전문가 검토가 반드시 필요합니다.
         <br><br><b>MoveGuard 웹 안에서 바로 영상을 선택해 분석할 수 있습니다.</b> 로컬 AI 서버가 연결되지 않은 환경에서도 브라우저 RULA 분석은 계속 동작합니다.
       </div>
 
@@ -363,6 +379,17 @@
         <button class="mode-btn" id="uploadModeBtn" type="button" role="tab" aria-selected="false" data-mode="upload">촬영 영상 업로드</button>
       </div>
 
+      <div class="model-picker">
+        <label for="poseModelSelect">
+          <strong>자세 추론 모델 (개발 검증용)</strong>
+          <small>화면 구성과 RULA 공식은 그대로 두고, 관절을 찾는 모델만 바꿉니다.</small>
+        </label>
+        <select id="poseModelSelect" aria-label="자세 추론 모델 선택">
+          <option value="baseline">Baseline · MediaPipe Pose</option>
+          <option value="rtmw">RTMW-l · WholeBody 384×288</option>
+        </select>
+      </div>
+
       <div class="live-mode-card" id="liveModePanel">
         <div>
           <h3>현재 자세를 보면서 바로 측정합니다</h3>
@@ -393,6 +420,7 @@
             <small id="liveRiskGuide">하중·반복 작업 입력 전 자세만 반영한 안내입니다.</small>
           </div>
           <div class="status-chip" id="apiStatus">브라우저 분석 모드</div>
+          <div class="pose-result" id="poseResult" aria-live="polite"></div>
           <div style="margin-top:14px;display:flex;gap:10px;">
             <button class="btn" id="analyzeBtn" disabled hidden>업로드 영상 분석</button>
             <button class="btn" id="stopLiveBtn" type="button" hidden>측정 종료·RULA 분석</button>
@@ -463,12 +491,12 @@
 
       <div class="group-box aihub-box">
         <h3>AI Hub 학습모델 비교 — 결과 덮어쓰기 없음</h3>
-        <p class="aihub-help">AI Hub 71439 EfficientNet 모델이 같은 위험 프레임을 분류한 결과입니다. 기존 MediaPipe 각도 기반 RULA 점수는 그대로 유지됩니다.</p>
+        <p class="aihub-help">AI Hub 71439 EfficientNet 모델이 같은 위험 프레임을 분류한 결과입니다. 선택한 자세 추론 모델의 각도 기반 RULA 점수는 덮어쓰지 않습니다.</p>
         <div id="aihubComparisonContent">로컬 AI Hub 서버 결과가 없습니다.</div>
       </div>
 
-      <div class="notice" style="margin-top:16px;">
-        손목 굽힘·비틀림은 중립값(1점)으로 고정되어 계산되었습니다. 실제 손목 자세가 다르면 결과가 달라질 수 있습니다.
+      <div class="notice" id="wristResultNotice" style="margin-top:16px;">
+        손목 측정 방식과 단일 카메라 가정은 선택한 모델 결과에 맞춰 표시됩니다.
       </div>
 
       <div class="btn-row">
@@ -498,13 +526,15 @@
 <footer>MoveGuard MVP · 팀 아이디업 · 데모 목적으로만 사용하세요</footer>
 
 <script>
+const moveguardQuery = new URLSearchParams(window.location.search);
 window.MOVEGUARD_CONFIG = window.MOVEGUARD_CONFIG || {
   analysisApiUrl:
-    window.location.protocol === "file:" ||
+    moveguardQuery.get("api") ||
+    (window.location.protocol === "file:" ||
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1"
       ? "http://127.0.0.1:8000"
-      : "https://moveguard-analysis-api-4que.onrender.com"
+      : "https://moveguard-analysis-api-4que.onrender.com")
 };
 </script>
 <script type="module">
@@ -524,6 +554,8 @@ const state = {
   quality:null,
   serverAnalysis:null,
   aihubAnalysis:null,
+  poseModel:'baseline',
+  capturedBlob:null,
   sourceMode:'live',
   measurementStartedAt:null,
   measurementEndedAt:null,
@@ -657,6 +689,8 @@ const supplementBox = document.getElementById('supplementBox');
 const toResultsBtn = document.getElementById('toResultsBtn');
 const apiStatus = document.getElementById('apiStatus');
 const qualityNotice = document.getElementById('qualityNotice');
+const poseModelSelect = document.getElementById('poseModelSelect');
+const poseResult = document.getElementById('poseResult');
 
 let poseLandmarker = null;
 let analyzing = false;
@@ -730,11 +764,12 @@ async function checkApiHealth(){
     });
     if(!response.ok) throw new Error('health check failed');
     const health = await response.json();
+    const selectedStatus = health.posture_analysis_v2?.models?.[state.poseModel]?.pose;
     setApiStatus(
-      health.aihub?.configured
-        ? 'FastAPI · AI Hub 모델 준비됨'
-        : 'FastAPI 연결됨 · AI Hub 모델 확인 필요',
-      health.aihub?.configured ? 'online' : 'offline'
+      selectedStatus?.configured
+        ? `FastAPI 연결됨 · ${state.poseModel==='rtmw'?'RTMW-l':'MediaPipe'} 준비됨`
+        : `FastAPI 연결됨 · ${state.poseModel==='rtmw'?'RTMW-l':'MediaPipe'} 설치 확인 필요`,
+      selectedStatus?.configured ? 'online' : 'offline'
     );
   }catch{
     setApiStatus('서버 연결 실패 · 브라우저 분석 유지', 'offline');
@@ -743,37 +778,82 @@ async function checkApiHealth(){
   }
 }
 
-async function requestServerAnalysis(landmarks){
-  if(!ANALYSIS_API_URL || !landmarks) return null;
+function selectedModelLabel(){
+  return state.poseModel==='rtmw' ? 'RTMW-l 384×288' : 'MediaPipe Pose';
+}
+
+function renderPoseResult(result, errorMessage=''){
+  poseResult.classList.add('visible');
+  if(!result){
+    poseResult.innerHTML = `
+      <div class="pose-result-head"><strong>${selectedModelLabel()} 분석 결과</strong><span>SERVER ERROR</span></div>
+      <p class="pose-result-note">${errorMessage || '서버 응답을 받지 못했습니다. 브라우저 Baseline 결과는 그대로 유지합니다.'}</p>`;
+    return;
+  }
+  const expected = ['neck','left_shoulder','right_shoulder','left_elbow','right_elbow','left_wrist','right_wrist','left_hip','right_hip','left_knee','right_knee','left_ankle','right_ankle'];
+  const detected = expected.filter(name=>result.joints?.[name]?.valid).length;
+  const confidence = Math.round((result.pose?.confidence || 0)*1000)/10;
+  const rula = result.rula || {};
+  const wristReady = ['left_wrist','right_wrist'].filter(name=>result.measurements?.[name]?.status==='valid').length;
+  const qualityLabels = {valid:'분석 가능',low_confidence:'낮은 신뢰도',not_measurable:'측정 불가'};
+  const riskLabels = {low:'낮음',medium:'보통',high:'높음',very_high:'매우 높음',not_measurable:'측정 불가'};
+  poseResult.innerHTML = `
+    <div class="pose-result-head"><strong>${selectedModelLabel()} 실제 서버 결과</strong><span>${String(result.model||state.poseModel).toUpperCase()}</span></div>
+    <div class="pose-result-grid">
+      <div class="pose-result-item"><small>상태</small><b>${qualityLabels[result.quality?.status] || result.quality?.status || '확인 필요'}</b></div>
+      <div class="pose-result-item"><small>공통 관절</small><b>${detected} / ${expected.length}</b></div>
+      <div class="pose-result-item"><small>자세 신뢰도</small><b>${confidence}%</b></div>
+      <div class="pose-result-item"><small>손목 각도</small><b>${wristReady} / 2</b></div>
+      <div class="pose-result-item"><small>RULA</small><b>${rula.final_score ?? '측정 불가'}</b></div>
+      <div class="pose-result-item"><small>위험 수준</small><b>${riskLabels[rula.risk_level] || rula.risk_level || '측정 불가'}</b></div>
+    </div>
+    <p class="pose-result-note">처리시간 ${Math.round(result.elapsed_ms || 0)}ms · 정확도는 전문가 정답(Ground Truth)이 없으면 표시하지 않습니다.${result.quality?.issues?.length ? ` 확인: ${result.quality.issues.slice(0,2).join(', ')}` : ''}</p>`;
+}
+
+async function requestServerAnalysis(imageBlob, options={}){
+  if(!ANALYSIS_API_URL || !imageBlob) return null;
   const controller = new AbortController();
-  const timeout = setTimeout(()=>controller.abort(), 3500);
+  const timeout = setTimeout(()=>controller.abort(), 20000);
+  const query = new URLSearchParams({model:state.poseModel});
+  if(options.weightKg!==undefined) query.set('weight_kg', String(options.weightKg));
+  if(options.staticForce!==undefined) query.set('static_force', String(options.staticForce));
+  if(options.muscleStatic!==undefined) query.set('muscle_static', String(options.muscleStatic));
+  if(options.legsUnsupported!==undefined) query.set('legs_unsupported', String(options.legsUnsupported));
+  setApiStatus(`${selectedModelLabel()} 서버 분석 중...`);
   try{
-    const response = await fetch(`${ANALYSIS_API_URL}/v1/analyze`, {
+    const response = await fetch(`${ANALYSIS_API_URL}/api/analysis/posture?${query}`, {
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        timestamp_ms:Date.now(),
-        people:[{
-          person_id:'person-1',
-          landmarks,
-          world_landmarks:null
-        }]
-      }),
+      headers:{'Content-Type':'image/jpeg'},
+      body:imageBlob,
       signal:controller.signal
     });
-    if(!response.ok) throw new Error('analysis request failed');
+    if(!response.ok){
+      const failure = await response.json().catch(()=>null);
+      throw new Error(failure?.detail || `HTTP ${response.status}`);
+    }
     const result = await response.json();
     state.serverAnalysis = result;
-    setApiStatus('FastAPI 보조 분석 연결됨', 'online');
+    renderPoseResult(result);
+    setApiStatus(`${selectedModelLabel()} 분석 완료`, 'online');
     return result;
-  }catch{
+  }catch(error){
     state.serverAnalysis = null;
-    setApiStatus('서버 분석 실패 · 브라우저 결과 사용', 'offline');
+    const message = error?.name==='AbortError' ? '서버 응답 시간이 초과되었습니다.' : error?.message;
+    renderPoseResult(null, message);
+    setApiStatus('서버 분석 실패 · 브라우저 Baseline 유지', 'offline');
     return null;
   }finally{
     clearTimeout(timeout);
   }
 }
+
+poseModelSelect.addEventListener('change', ()=>{
+  state.poseModel = poseModelSelect.value;
+  state.serverAnalysis = null;
+  poseResult.classList.remove('visible');
+  poseResult.innerHTML = '';
+  checkApiHealth();
+});
 
 async function requestAihubAnalysis(imageBlob){
   if(!ANALYSIS_API_URL || !imageBlob) return null;
@@ -840,13 +920,9 @@ setMeasurementMode('live');
 videoInput.addEventListener('change', (e)=>{
   const file = e.target.files[0];
   if(!file) return;
-  state.sourceMode = 'upload';
+  resetAnalysisState('upload');
   state.measurementStartedAt = new Date().toISOString();
   state.measurementEndedAt = null;
-  state.dashboardSessionId = crypto.randomUUID();
-  state.dashboardSaved = false;
-  state.serverAnalysis = null;
-  state.aihubAnalysis = null;
   video.src = URL.createObjectURL(file);
   stage.style.display = 'flex';
   qualityNotice.className = 'quality-notice';
@@ -953,6 +1029,7 @@ function resetAnalysisState(sourceMode){
   state.worst = null;
   state.scores = null;
   state.capturedPhoto = null;
+  state.capturedBlob = null;
   state.quality = null;
   state.serverAnalysis = null;
   state.aihubAnalysis = null;
@@ -962,6 +1039,8 @@ function resetAnalysisState(sourceMode){
   toResultsBtn.disabled = true;
   qualityNotice.className = 'quality-notice';
   qualityNotice.textContent = '';
+  poseResult.classList.remove('visible');
+  poseResult.innerHTML = '';
 }
 
 async function runLiveMeasurement(timestamp){
@@ -1118,6 +1197,7 @@ stopLiveBtn.addEventListener('click', async ()=>{
   const capturedBlob = await new Promise(resolve=>
     captureCanvas.toBlob(resolve, 'image/jpeg', 0.85)
   );
+  state.capturedBlob = capturedBlob;
   const rejectedRatio = liveDetectedFrames
     ? liveRejectedFrames/liveDetectedFrames
     : 0;
@@ -1129,7 +1209,7 @@ stopLiveBtn.addEventListener('click', async ()=>{
   progressLine.textContent =
     `실시간 측정 완료 · 최고 위험 자세 선택 · AI Hub 학습모델 비교 중...`;
   await Promise.all([
-    requestServerAnalysis(worst.landmarks),
+    requestServerAnalysis(capturedBlob),
     requestAihubAnalysis(capturedBlob)
   ]);
   progressLine.textContent = state.aihubAnalysis
@@ -1226,6 +1306,7 @@ analyzeBtn.addEventListener('click', async ()=>{
   const capturedBlob = await new Promise(resolve=>
     capCanvas.toBlob(resolve, 'image/jpeg', 0.85)
   );
+  state.capturedBlob = capturedBlob;
 
   const rejectedRatio = detectedFrames ? rejectedFrames/detectedFrames : 0;
   qualityNotice.className = rejectedRatio>0.35 ? 'quality-notice warning' : 'quality-notice good';
@@ -1236,7 +1317,7 @@ analyzeBtn.addEventListener('click', async ()=>{
     ? `브라우저 분석 완료 — 유효 프레임 ${frames.length}개 · AI Hub 학습모델 비교 중...`
     : `✅ 분석 완료 — 유효 프레임 ${frames.length}개, 최고 위험 자세 기준으로 판정합니다.`;
   await Promise.all([
-    requestServerAnalysis(worst.landmarks),
+    requestServerAnalysis(capturedBlob),
     requestAihubAnalysis(capturedBlob)
   ]);
   progressLine.textContent = state.aihubAnalysis
@@ -1335,7 +1416,7 @@ async function saveDashboardSession(){
 }
 
 /* ---------- Step 4: RULA 결과 계산 & 렌더 ---------- */
-window.computeAndShowResults = function(){
+window.computeAndShowResults = async function(){
   const w = state.worst;
   if(!w){
     alert('먼저 품질 기준을 통과한 영상을 분석해 주세요.');
@@ -1350,6 +1431,66 @@ window.computeAndShowResults = function(){
   const staticForce = document.getElementById('fStaticForce').checked;
   const muscleStatic = document.getElementById('fMuscleStatic').checked;
   const legsUnsupported = document.getElementById('fLegsUnsupported').checked;
+
+  const weightByLevel = {light:0,medium:5,heavy:11};
+  let serverResult = state.serverAnalysis;
+  if(state.capturedBlob && ANALYSIS_API_URL){
+    toResultsBtn.disabled = true;
+    progressLine.textContent = `${selectedModelLabel()}로 하중·반복 조건을 반영한 최종 RULA 계산 중...`;
+    serverResult = await requestServerAnalysis(state.capturedBlob, {
+      weightKg:weightByLevel[loadLevel],
+      staticForce,
+      muscleStatic,
+      legsUnsupported
+    });
+    toResultsBtn.disabled = false;
+  }
+
+  const serverRula = serverResult?.rula;
+  if(serverRula?.valid){
+    const side = serverRula.scored_side;
+    const angles = serverResult.joint_angles || {};
+    const grand = serverRula.final_score;
+    state.scores = {
+      nS:serverRula.neck_score,
+      tS:serverRula.trunk_score,
+      uaS:serverRula.upper_arm_score,
+      laS:serverRula.lower_arm_score,
+      wristS:serverRula.wrist_score,
+      wristTwist:serverRula.wrist_twist_score,
+      legS:serverRula.leg_score,
+      fS:serverRula.force_score,
+      mS:serverRula.muscle_score,
+      scoreA:serverRula.score_a,
+      scoreB:serverRula.score_b,
+      grand,
+      level:ACTION_LEVELS.find(level=>grand<=level.max),
+      loadLevel,
+      loadLabel:loadLabels[loadLevel],
+      staticForce,
+      muscleStatic,
+      legsUnsupported,
+      neckAngle:angles.neck,
+      trunkAngle:angles.trunk,
+      upperArmAngle:angles[`${side}_upper_arm`],
+      elbowAngle:angles[`${side}_lower_arm`],
+      wristAngle:angles[`${side}_wrist`],
+      wristMeasured:true,
+      scoredSide:side,
+      analysisModel:serverResult.model
+    };
+    renderResults();
+    saveDashboardSession();
+    goStep(4);
+    return;
+  }
+
+  if(state.poseModel==='rtmw'){
+    qualityNotice.className = 'quality-notice danger';
+    qualityNotice.textContent = 'RTMW-l 결과가 측정 불가이거나 서버에 연결되지 않았습니다. Baseline 값으로 바꾸어 표시하지 않았습니다. 촬영 상태를 확인하거나 Baseline 모델을 선택해 주세요.';
+    progressLine.textContent = 'RTMW-l 최종 RULA 측정 불가';
+    return;
+  }
 
   const nS = neckScore(w.neckAngle);
   const tS = trunkScore(w.trunkAngle);
@@ -1375,7 +1516,8 @@ window.computeAndShowResults = function(){
 
   state.scores = { nS,tS,uaS,laS,wristS,wristTwist,legS,fS,mS,scoreA,scoreB,grand,level,
                     loadLevel, loadLabel:loadLabels[loadLevel], staticForce, muscleStatic, legsUnsupported,
-                    neckAngle:w.neckAngle, trunkAngle:w.trunkAngle, upperArmAngle:w.upperArmAngle, elbowAngle:w.elbowAngle };
+                    neckAngle:w.neckAngle, trunkAngle:w.trunkAngle, upperArmAngle:w.upperArmAngle, elbowAngle:w.elbowAngle,
+                    wristAngle:null, wristMeasured:false, scoredSide:null, analysisModel:'browser-baseline' };
 
   renderResults();
   saveDashboardSession();
@@ -1386,24 +1528,27 @@ function renderResults(){
   const s = state.scores;
   const sourceLabel = state.sourceMode==='live' ? '실시간 카메라 측정' : '촬영 영상 업로드';
   document.getElementById('analysisSourceOut').textContent =
-    `${sourceLabel}의 최고 위험 자세를 기준으로 동일한 RULA Table A / B / C를 적용했습니다. 유효 프레임 ${state.quality?.usableFrames??0}개.`;
+    `${sourceLabel}의 최고 위험 자세를 ${s.analysisModel==='rtmw'?'RTMW-l 384×288':s.analysisModel==='baseline'?'MediaPipe 서버':'브라우저 MediaPipe'}로 분석하고 동일한 RULA Table A / B / C를 적용했습니다. 유효 프레임 ${state.quality?.usableFrames??0}개.`;
+  document.getElementById('wristResultNotice').textContent = s.wristMeasured
+    ? '손목 굽힘은 관절 추론값을 반영했습니다. 단일 카메라로 신뢰하기 어려운 손목 비틀림만 중립 범위로 가정했습니다.'
+    : '서버에서 손목 각도를 계산하지 못해 브라우저 Baseline 대체값을 사용했습니다. 실제 손목 자세에 따라 결과가 달라질 수 있습니다.';
   const cells = [
     {label:'목 (Neck)', score:s.nS, angle:s.neckAngle},
     {label:'몸통 (Trunk)', score:s.tS, angle:s.trunkAngle},
     {label:'위팔 (Upper Arm)', score:s.uaS, angle:s.upperArmAngle},
     {label:'아래팔 (Lower Arm)', score:s.laS, angle:s.elbowAngle},
-    {label:'손목 (Wrist)', score:s.wristS, angle:null},
+    {label:'손목 (Wrist)', score:s.wristS, angle:s.wristAngle},
     {label:'다리 (Legs)', score:s.legS, angle:null},
   ];
   document.getElementById('scoreGrid').innerHTML = cells.map(c=>`
     <div class="score-cell"><div class="label">${c.label}</div><div class="value">${c.score}</div>
-    <div class="angle">${c.angle!==null? c.angle.toFixed(1)+'°' : (c.label.includes('손목')?'중립 고정':'수동 입력')}</div></div>
+    <div class="angle">${Number.isFinite(c.angle)? c.angle.toFixed(1)+'°' : (c.label.includes('손목')?'브라우저 대체값':'수동 입력')}</div></div>
   `).join('');
 
   document.getElementById('groupATable').innerHTML = `
     <tr><td>상완(Upper Arm) 점수</td><td>${s.uaS}</td></tr>
     <tr><td>하완(Lower Arm) 점수</td><td>${s.laS}</td></tr>
-    <tr><td>손목(Wrist) 점수 — 중립 고정</td><td>${s.wristS}</td></tr>
+    <tr><td>손목(Wrist) 점수 — ${s.wristMeasured?'관절 추론값':'브라우저 대체값'}</td><td>${s.wristS}</td></tr>
     <tr><td>Table A 기본값</td><td>${TABLE_A[s.uaS-1][s.laS-1][s.wristS][s.wristTwist-1]}</td></tr>
     <tr><td>근육사용(A) 가산</td><td>+${s.mS}</td></tr>
     <tr><td>힘/부하(A) 가산 (${s.loadLabel})</td><td>+${s.fS}</td></tr>`;
@@ -1492,7 +1637,7 @@ window.buildDocument = function(){
         <tr><th>부서명</th><td colspan="3">${sv.dept||'—'}</td></tr>
         <tr><th>작업공정명</th><td colspan="3">${sv.process||'—'}</td></tr>
         <tr><th>작업명</th><td colspan="3">${sv.jobName}</td></tr>
-        <tr><th>분석 방식</th><td colspan="3">${state.sourceMode==='live'?'실시간 카메라 측정':'촬영 영상 업로드'}</td></tr>
+        <tr><th>분석 방식</th><td colspan="3">${state.sourceMode==='live'?'실시간 카메라 측정':'촬영 영상 업로드'} · ${s.analysisModel==='rtmw'?'RTMW-l 384×288':s.analysisModel==='baseline'?'MediaPipe 서버':'브라우저 MediaPipe'}</td></tr>
         <tr><th>촬영·분석 동의</th><td colspan="3">${state.consent?.agreed ? '동의 완료 ('+new Date(state.consent.agreedAt).toLocaleString('ko-KR')+')' : '확인 필요'}</td></tr>
       </table>
     </div>

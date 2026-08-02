@@ -50,27 +50,60 @@ type DetectedPerson = {
 };
 
 type ServerStatus = "disabled" | "checking" | "online" | "offline";
+type AnalysisModel = "baseline" | "rtmw";
+type AnalysisRequestStatus =
+  | "idle"
+  | "loading"
+  | "success"
+  | "low_confidence"
+  | "not_measurable"
+  | "no_person"
+  | "server_error";
 
 type ServerPersonAnalysis = {
   person_id: string;
-  metrics: Record<
-    keyof Omit<Metrics, "confidence" | "fullBody">,
+  model: AnalysisModel;
+  pose: { confidence: number };
+  joints: Record<
+    string,
     {
-      angle: number | null;
-      risk: Risk;
-      experimental: boolean;
+      joint: string;
+      confidence: number;
+      source_model: string;
+      valid: boolean;
     }
   >;
-  confidence: number;
-  full_body: boolean;
-  overall_risk: Risk;
+  joint_angles: Record<string, number | null>;
+  measurements: Record<
+    string,
+    {
+      angle: number | null;
+      confidence: number;
+      status: "valid" | "low_confidence" | "not_measurable";
+      reason?: string | null;
+    }
+  >;
+  rula: {
+    final_score: number | null;
+    risk_level: "low" | "medium" | "high" | "very_high" | "not_measurable";
+    valid: boolean;
+    issues: string[];
+  };
+  quality: {
+    status: "valid" | "low_confidence" | "not_measurable";
+    pose_valid: boolean;
+    hand_valid: boolean;
+    issues: string[];
+  };
 };
 
 type ServerAnalysis = {
   schema_version: string;
   processor: string;
+  model: AnalysisModel;
   people: ServerPersonAnalysis[];
-  scene_risk: Risk;
+  rula: ServerPersonAnalysis["rula"];
+  quality: ServerPersonAnalysis["quality"];
   elapsed_ms: number;
   video_stored: boolean;
 };
@@ -382,6 +415,24 @@ function serverStatusCopy(status: ServerStatus) {
   return "Python 서버 배포 대기";
 }
 
+function analysisStatusCopy(status: AnalysisRequestStatus) {
+  if (status === "loading") return "분석 중";
+  if (status === "success") return "분석 성공";
+  if (status === "low_confidence") return "관절 신뢰도 낮음";
+  if (status === "not_measurable") return "측정 불가";
+  if (status === "no_person") return "사람 미검출";
+  if (status === "server_error") return "서버 오류";
+  return "분석 대기";
+}
+
+function serverRiskLabel(level: ServerPersonAnalysis["rula"]["risk_level"]) {
+  if (level === "low") return "낮음";
+  if (level === "medium") return "보통";
+  if (level === "high") return "높음";
+  if (level === "very_high") return "매우 높음";
+  return "측정 불가";
+}
+
 function personCenter(person: Omit<DetectedPerson, "metrics">) {
   const shoulderMid = midpoint(person.landmarks[11], person.landmarks[12]);
   const hipMid = midpoint(person.landmarks[23], person.landmarks[24]);
@@ -496,6 +547,7 @@ export default function CameraPrototype() {
   const lastUiUpdateRef = useRef(0);
   const lastServerAnalysisRef = useRef(0);
   const serverRequestRef = useRef<AbortController | null>(null);
+  const analysisModelRef = useRef<AnalysisModel>("baseline");
   const sessionRef = useRef<SessionAccumulator | null>(null);
 
   const [phase, setPhase] = useState<Phase>("idle");
@@ -511,6 +563,10 @@ export default function CameraPrototype() {
   const [serverAnalysis, setServerAnalysis] = useState<ServerAnalysis | null>(
     null,
   );
+  const [analysisModel, setAnalysisModel] = useState<AnalysisModel>("baseline");
+  const [serverRequestStatus, setServerRequestStatus] =
+    useState<AnalysisRequestStatus>("idle");
+  const [serverError, setServerError] = useState("");
 
   const hasPose = peopleMetrics.length > 0;
   const selectedMetrics = peopleMetrics[selectedPerson] ?? EMPTY_METRICS;
@@ -574,44 +630,77 @@ export default function CameraPrototype() {
     if (canvas && context) context.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  async function analyzeWithServer(
-    people: DetectedPerson[],
-    timestampMs: number,
-  ) {
+  async function analyzeWithServer(timestampMs: number) {
     if (!ANALYSIS_API_URL || serverRequestRef.current) return;
+    const video = videoRef.current;
+    if (!video || !video.videoWidth || !video.videoHeight) return;
 
     const controller = new AbortController();
     serverRequestRef.current = controller;
-    const timeout = window.setTimeout(() => controller.abort(), 2500);
-    const serializeLandmarks = (landmarks: Point3D[]) =>
-      landmarks.map((point) => ({
-        x: point.x,
-        y: point.y,
-        z: point.z,
-        visibility: point.visibility ?? 0,
-      }));
+    const selectedModel = analysisModelRef.current;
+    const timeout = window.setTimeout(
+      () => controller.abort(),
+      selectedModel === "rtmw" ? 20000 : 7000,
+    );
+    setServerRequestStatus("loading");
+    setServerError("");
+    let serverResponded = false;
 
     try {
-      const response = await fetch(`${ANALYSIS_API_URL}/v1/analyze`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        signal: controller.signal,
-        body: JSON.stringify({
-          timestamp_ms: timestampMs,
-          people: people.map((person, index) => ({
-            person_id: `person-${index + 1}`,
-            landmarks: serializeLandmarks(person.landmarks),
-            world_landmarks: serializeLandmarks(person.worldLandmarks),
-          })),
-        }),
+      const frameCanvas = document.createElement("canvas");
+      frameCanvas.width = video.videoWidth;
+      frameCanvas.height = video.videoHeight;
+      const context = frameCanvas.getContext("2d");
+      if (!context) throw new Error("카메라 프레임을 읽지 못했습니다.");
+      context.drawImage(video, 0, 0, frameCanvas.width, frameCanvas.height);
+      const frame = await new Promise<Blob>((resolve, reject) => {
+        frameCanvas.toBlob(
+          (blob) => (blob ? resolve(blob) : reject(new Error("프레임 변환 실패"))),
+          "image/jpeg",
+          0.86,
+        );
       });
-      if (!response.ok) throw new Error("analysis failed");
+      const url = new URL(`${ANALYSIS_API_URL}/api/analysis/posture`);
+      url.searchParams.set("model", selectedModel);
+      url.searchParams.set("timestamp_ms", String(timestampMs));
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "content-type": "image/jpeg" },
+        signal: controller.signal,
+        body: frame,
+      });
+      serverResponded = true;
+      if (!response.ok) {
+        const payload = (await response.json().catch(() => null)) as
+          | { detail?: string }
+          | null;
+        setServerStatus("online");
+        throw new Error(payload?.detail || `분석 서버 오류 (${response.status})`);
+      }
 
       const analysis = (await response.json()) as ServerAnalysis;
       setServerAnalysis(analysis);
       setServerStatus("online");
-    } catch {
-      if (!controller.signal.aborted) setServerStatus("offline");
+      if (analysis.people.length === 0) {
+        setServerRequestStatus("no_person");
+      } else if (analysis.quality.status === "low_confidence") {
+        setServerRequestStatus("low_confidence");
+      } else if (!analysis.rula.valid) {
+        setServerRequestStatus("not_measurable");
+      } else {
+        setServerRequestStatus("success");
+      }
+    } catch (error) {
+      setServerAnalysis(null);
+      setServerRequestStatus("server_error");
+      setServerError(
+        controller.signal.aborted
+          ? "분석 시간이 초과됐습니다. 다시 시도해 주세요."
+          : error instanceof Error
+            ? error.message
+            : "분석 서버에 연결하지 못했습니다.",
+      );
+      setServerStatus(serverResponded ? "online" : "offline");
     } finally {
       window.clearTimeout(timeout);
       if (serverRequestRef.current === controller) {
@@ -731,12 +820,11 @@ export default function CameraPrototype() {
           }
         }
 
-        if (
-          detectedPeople.length > 0 &&
-          now - lastServerAnalysisRef.current > 900
-        ) {
+        const serverInterval =
+          analysisModelRef.current === "rtmw" ? 2500 : 1000;
+        if (now - lastServerAnalysisRef.current > serverInterval) {
           lastServerAnalysisRef.current = now;
-          void analyzeWithServer(detectedPeople, now);
+          void analyzeWithServer(now);
         }
       } catch {
         setErrorMessage(
@@ -879,6 +967,8 @@ export default function CameraPrototype() {
     setPeopleMetrics([]);
     setSelectedPerson(0);
     setServerAnalysis(null);
+    setServerRequestStatus("idle");
+    setServerError("");
     sessionRef.current = null;
 
     if (!completed) {
@@ -910,6 +1000,17 @@ export default function CameraPrototype() {
     await connectCamera(deviceId);
   }
 
+  function handleAnalysisModelChange(model: AnalysisModel) {
+    analysisModelRef.current = model;
+    setAnalysisModel(model);
+    serverRequestRef.current?.abort();
+    serverRequestRef.current = null;
+    lastServerAnalysisRef.current = 0;
+    setServerAnalysis(null);
+    setServerRequestStatus("idle");
+    setServerError("");
+  }
+
   const isBusy = phase === "requesting" || phase === "loading" || isSaving;
   const mainMetrics = [
     selectedMetrics.neck,
@@ -923,6 +1024,17 @@ export default function CameraPrototype() {
     selectedMetrics.rightWristRotation,
   ];
   const selectedServerPerson = serverAnalysis?.people[selectedPerson] ?? null;
+  const detectedServerJoints = selectedServerPerson
+    ? Object.values(selectedServerPerson.joints).filter((joint) => joint.valid).length
+    : 0;
+  const serverAngles = selectedServerPerson
+    ? [
+        ["목", selectedServerPerson.joint_angles.neck],
+        ["몸통", selectedServerPerson.joint_angles.trunk],
+        ["왼손목", selectedServerPerson.joint_angles.left_wrist],
+        ["오른손목", selectedServerPerson.joint_angles.right_wrist],
+      ]
+    : [];
 
   function renderMetric(metric: Metric) {
     const visibleRisk = hasPose ? metric.risk : "idle";
@@ -976,7 +1088,7 @@ export default function CameraPrototype() {
         </nav>
         <div className="privacy-chip">
           <span className="privacy-dot" aria-hidden="true" />
-          영상 저장 없음 · 관절 좌표만 서버 전송
+          프레임 메모리 분석 · 원본 영상 저장 없음
         </div>
       </header>
 
@@ -1227,24 +1339,75 @@ export default function CameraPrototype() {
               </div>
               <span>{serverStatusCopy(serverStatus)}</span>
             </div>
-            {serverStatus === "online" && selectedServerPerson ? (
+            <div className="model-selector" role="group" aria-label="분석 모델 선택">
+              <button
+                className={analysisModel === "baseline" ? "selected" : ""}
+                onClick={() => handleAnalysisModelChange("baseline")}
+                type="button"
+              >
+                Baseline · MediaPipe
+              </button>
+              <button
+                className={analysisModel === "rtmw" ? "selected" : ""}
+                onClick={() => handleAnalysisModelChange("rtmw")}
+                type="button"
+              >
+                RTMW-l
+              </button>
+            </div>
+            <div className={`analysis-state state-${serverRequestStatus}`} aria-live="polite">
+              {analysisStatusCopy(serverRequestStatus)}
+            </div>
+            {serverRequestStatus === "loading" ? (
+              <p className="server-state-copy">
+                {analysisModel === "rtmw"
+                  ? "RTMW-l이 원본 프레임의 133개 전신 관절을 분석하고 있어요."
+                  : "MediaPipe 기준 프레임을 분석하고 있어요."}
+              </p>
+            ) : serverStatus === "online" && selectedServerPerson ? (
               <>
-                <p>
-                  선택한 사람 서버 판정{" "}
-                  <strong>{riskLabel(selectedServerPerson.overall_risk)}</strong>
-                </p>
+                <div className="server-result-grid">
+                  <div>
+                    <span>RULA</span>
+                    <strong>{selectedServerPerson.rula.final_score ?? "—"}</strong>
+                  </div>
+                  <div>
+                    <span>위험 수준</span>
+                    <strong>{serverRiskLabel(selectedServerPerson.rula.risk_level)}</strong>
+                  </div>
+                  <div>
+                    <span>관절 검출</span>
+                    <strong>{detectedServerJoints}개</strong>
+                  </div>
+                  <div>
+                    <span>검출 신뢰도</span>
+                    <strong>{Math.round(selectedServerPerson.pose.confidence * 100)}%</strong>
+                  </div>
+                </div>
+                <div className="server-angle-list">
+                  {serverAngles.map(([label, value]) => (
+                    <span key={String(label)}>
+                      {label} <strong>{typeof value === "number" ? `${value.toFixed(1)}°` : "측정 불가"}</strong>
+                    </span>
+                  ))}
+                </div>
                 <small>
-                  사람 {serverAnalysis?.people.length ?? 0}명 관절 좌표 재분석 ·{" "}
-                  {serverAnalysis?.elapsed_ms ?? 0}ms · 영상 저장 없음
+                  {analysisModel === "rtmw" ? "RTMW-l 384×288" : "MediaPipe Baseline"} ·{" "}
+                  {serverAnalysis?.elapsed_ms ?? 0}ms · 프레임 저장 없음
                 </small>
               </>
             ) : (
               <>
-                <p>
-                  기존 브라우저 측정은 서버와 관계없이 계속 사용할 수 있어요.
+                <p className="server-state-copy">
+                  {serverError ||
+                    (serverRequestStatus === "no_person"
+                      ? "화면에서 사람을 찾지 못했습니다. 전신이 보이게 조정해 주세요."
+                      : serverRequestStatus === "not_measurable"
+                        ? "RULA에 필요한 관절이 충분히 보이지 않습니다."
+                        : "카메라를 연결하면 선택한 서버 모델의 실제 결과를 표시합니다.")}
                 </p>
                 <small>
-                  서버가 연결되면 사람별 좌표를 약 1초 간격으로 다시 검증합니다.
+                  브라우저 표시값과 서버 결과는 분리되며, 서버 실패 시 임의 점수를 만들지 않습니다.
                 </small>
               </>
             )}

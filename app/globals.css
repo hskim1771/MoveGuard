@@ -1026,6 +1026,122 @@ select:focus-visible {
   line-height: 1.5;
 }
 
+.model-selector {
+  background: rgba(13, 37, 48, 0.07);
+  border-radius: 10px;
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 11px;
+  padding: 4px;
+}
+
+.model-selector button {
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  color: #6b7980;
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: 900;
+  min-height: 30px;
+  padding: 0 7px;
+}
+
+.model-selector button.selected {
+  background: var(--white);
+  box-shadow: 0 2px 7px rgba(13, 37, 48, 0.12);
+  color: var(--navy);
+}
+
+.model-selector button:focus-visible {
+  outline: 3px solid rgba(10, 143, 122, 0.25);
+  outline-offset: 1px;
+}
+
+.analysis-state {
+  background: #e8edf0;
+  border-radius: 999px;
+  color: #5f7078;
+  display: inline-flex;
+  font-size: 8px;
+  font-weight: 900;
+  margin-top: 10px;
+  padding: 5px 8px;
+}
+
+.analysis-state.state-success {
+  background: #d8f2e9;
+  color: #08725f;
+}
+
+.analysis-state.state-loading {
+  background: #e6edff;
+  color: #315ca8;
+}
+
+.analysis-state.state-low_confidence,
+.analysis-state.state-not_measurable,
+.analysis-state.state-no_person {
+  background: #fff0cf;
+  color: #8c5c05;
+}
+
+.analysis-state.state-server_error {
+  background: #fde3e3;
+  color: #a52e2e;
+}
+
+.server-state-copy {
+  color: #63737a;
+}
+
+.server-result-grid {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 9px 0;
+}
+
+.server-result-grid > div {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(13, 37, 48, 0.08);
+  border-radius: 9px;
+  display: grid;
+  gap: 3px;
+  padding: 8px;
+}
+
+.server-result-grid span {
+  color: #77858b;
+  font-size: 7px;
+  font-weight: 800;
+}
+
+.server-result-grid strong {
+  color: var(--navy);
+  font-size: 13px;
+}
+
+.server-angle-list {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 0 9px;
+}
+
+.server-angle-list span {
+  color: #718087;
+  display: flex;
+  font-size: 7px;
+  justify-content: space-between;
+}
+
+.server-angle-list strong {
+  color: var(--navy);
+  font-size: 8px;
+}
+
 .notice-card {
   align-items: flex-start;
   background: #f4f7f6;
