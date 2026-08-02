@@ -210,7 +210,7 @@
       <p style="font-size:14px;">이 MVP는 <b>RULA(상지 중심 정밀평가도구)</b> 한 종류만 자동화합니다. REBA·OWAS 등 다른 도구는 이후 여유가 되면 추가할 계획이며, 지금은 RULA가 문제없이 끝까지 동작하는 것이 목표입니다.</p>
 
       <div class="notice">
-        <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. 자세 추출은 MediaPipe Pose를 실제로 호출하고, RULA Table A/B/C 조견표를 그대로 적용하지만, 손목 굽힘·비틀림은 카메라만으로 정확히 잡기 어려워 중립값으로 고정합니다. 실제 제출용으로는 전문가 검토가 반드시 필요합니다.
+        <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. 자세 추출은 MediaPipe Pose를 실제로 호출하고, RULA Table A/B/C 조견표를 적용합니다. 손목 굽힘·비틀림은 손가락 랜드마크로 추정하며 가림이 있으면 정확도가 낮아질 수 있으므로 실제 제출용 결과는 전문가 검토가 필요합니다.
         <br><br><b>MoveGuard 웹 안에서 바로 영상을 선택해 분석할 수 있습니다.</b> 팀 서버가 연결되지 않은 환경에서도 브라우저 RULA 분석은 계속 동작합니다.
       </div>
 
@@ -280,7 +280,7 @@
       <div class="live-mode-card" id="liveModePanel">
         <div>
           <h3>현재 자세를 보면서 바로 측정합니다</h3>
-          <p>측정 중에는 하중 입력 전 추정 RULA를 안내하고, 종료 후 최고 위험 자세로 최종 보고서를 만듭니다.</p>
+          <p>측정 중에는 하중 입력 전 추정 RULA를 안내하고, 종료 후 순간 오검출을 제거한 지속적 고위험 자세로 최종 보고서를 만듭니다.</p>
         </div>
         <button class="btn secondary" id="switchCameraBtn" type="button" hidden style="margin-right:8px;">전면 카메라로 전환</button>
         <button class="btn" id="startLiveBtn" type="button" disabled>카메라 켜고 측정 시작</button>
@@ -338,6 +338,14 @@
           <div class="checkline"><input type="checkbox" id="fStaticForce"> <label for="fStaticForce" style="margin:0;text-transform:none;font-weight:400;">이 힘을 정적으로 유지하거나 반복적으로 가한다 (그렇지 않으면 간헐적으로 간주)</label></div>
           <div class="checkline"><input type="checkbox" id="fMuscleStatic"> <label for="fMuscleStatic" style="margin:0;text-transform:none;font-weight:400;">이 자세를 10분 이상 유지하거나, 분당 4회 이상 반복한다</label></div>
           <div class="checkline"><input type="checkbox" id="fLegsUnsupported"> <label for="fLegsUnsupported" style="margin:0;text-transform:none;font-weight:400;">다리가 불안정하거나 한쪽으로 치우친 자세다 (기본: 양다리 지지)</label></div>
+          <div class="checkline"><input type="checkbox" id="fShoulderRaised"> <label for="fShoulderRaised" style="margin:0;text-transform:none;font-weight:400;">작업 중 어깨가 올라간다</label></div>
+          <div class="checkline"><input type="checkbox" id="fArmAbducted"> <label for="fArmAbducted" style="margin:0;text-transform:none;font-weight:400;">위팔이 몸통 옆으로 벌어진다</label></div>
+          <div class="checkline"><input type="checkbox" id="fArmSupported"> <label for="fArmSupported" style="margin:0;text-transform:none;font-weight:400;">팔이 작업대나 팔걸이에 지지된다</label></div>
+          <div class="checkline"><input type="checkbox" id="fNeckExtended"> <label for="fNeckExtended" style="margin:0;text-transform:none;font-weight:400;">목이 뒤로 젖혀진다</label></div>
+          <div class="checkline"><input type="checkbox" id="fNeckSideBent"> <label for="fNeckSideBent" style="margin:0;text-transform:none;font-weight:400;">목이 옆으로 기울어진다</label></div>
+          <div class="checkline"><input type="checkbox" id="fTrunkSideBent"> <label for="fTrunkSideBent" style="margin:0;text-transform:none;font-weight:400;">몸통이 옆으로 기울어진다</label></div>
+          <div class="checkline"><input type="checkbox" id="fLowerArmOut"> <label for="fLowerArmOut" style="margin:0;text-transform:none;font-weight:400;">아래팔이 몸통 중앙을 가로지르거나 바깥쪽에서 작업한다</label></div>
+          <div class="checkline"><input type="checkbox" id="fWristDeviated"> <label for="fWristDeviated" style="margin:0;text-transform:none;font-weight:400;">손목이 좌우로 꺾인다</label></div>
         </div>
       </div>
 
@@ -352,7 +360,7 @@
   <section class="step" id="step-4">
     <div class="panel">
       <h2><span class="num">4</span>RULA 정밀평가 결과</h2>
-      <p class="sub" id="analysisSourceOut">가장 위험도가 높은 프레임을 기준으로 Table A / Table B / Table C를 그대로 적용한 결과입니다.</p>
+      <p class="sub" id="analysisSourceOut">시간축으로 안정화한 지속적 고위험 자세에 Table A / Table B / Table C를 적용한 결과입니다.</p>
 
       <div class="score-grid" id="scoreGrid"></div>
 
@@ -388,7 +396,7 @@
       </div>
 
       <div class="notice" style="margin-top:16px;">
-        손목 굽힘·비틀림은 중립값(1점)으로 고정되어 계산되었습니다. 실제 손목 자세가 다르면 결과가 달라질 수 있습니다.
+        손목 굽힘·비틀림은 손가락 랜드마크로 추정합니다. 손이 가려지거나 작게 촬영되면 전문가가 결과를 확인해 주세요.
       </div>
 
       <div class="btn-row">
@@ -522,6 +530,10 @@ const TABLE_A = [
   [ {1:[3,3],2:[4,4],3:[4,4],4:[5,5]}, {1:[3,4],2:[4,4],3:[4,4],4:[5,5]}, {1:[4,4],2:[4,4],3:[4,5],4:[5,5]} ],
   // upperArm 4
   [ {1:[4,4],2:[4,4],3:[4,5],4:[5,5]}, {1:[4,4],2:[4,4],3:[4,5],4:[5,5]}, {1:[4,4],2:[4,5],3:[5,5],4:[6,6]} ],
+  // upperArm 5
+  [ {1:[5,5],2:[5,5],3:[5,6],4:[6,7]}, {1:[5,6],2:[6,6],3:[6,7],4:[7,7]}, {1:[6,6],2:[6,7],3:[7,7],4:[7,8]} ],
+  // upperArm 6
+  [ {1:[7,7],2:[7,7],3:[7,8],4:[8,9]}, {1:[8,8],2:[8,8],3:[8,9],4:[9,9]}, {1:[9,9],2:[9,9],3:[9,9],4:[9,9]} ],
 ];
 // Table B[neck-1][trunk-1] = {leg1, leg2}
 const TABLE_B = [
@@ -553,14 +565,29 @@ const ACTION_LEVELS = [
 function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
 
 /* ---------- 각도 → RULA 점수 ---------- */
-function neckScore(a){ if(a<=10) return 1; if(a<=20) return 2; return 3; }
-function trunkScore(a){ if(a<=5) return 1; if(a<=20) return 2; if(a<=60) return 3; return 4; }
-function upperArmScore(a){ if(a<=20) return 1; if(a<=45) return 2; if(a<=90) return 3; return 4; }
-function lowerArmScore(a){ return (a>=60 && a<=100) ? 1 : 2; }
+function neckScore(a, rotated=false, sideBent=false, extended=false){
+  const base = extended ? 4 : a<=10 ? 1 : a<=20 ? 2 : 3;
+  return clamp(base + Number(rotated||sideBent), 1, 6);
+}
+function trunkScore(a, rotated=false, sideBent=false){
+  const base = a<=5 ? 1 : a<=20 ? 2 : a<=60 ? 3 : 4;
+  return clamp(base + Number(rotated||sideBent), 1, 6);
+}
+function upperArmScore(a, shoulderRaised=false, armAbducted=false, armSupported=false){
+  const base = a<=20 ? 1 : a<=45 ? 2 : a<=90 ? 3 : 4;
+  return clamp(base+Number(shoulderRaised)+Number(armAbducted)-Number(armSupported),1,6);
+}
+function lowerArmScore(a,outToSide=false){
+  return clamp(((a>=60 && a<=100) ? 1 : 2)+Number(outToSide),1,3);
+}
+function wristScore(a,deviated=false){
+  const base=a<=5 ? 1 : a<=15 ? 2 : 3;
+  return clamp(base+Number(deviated),1,4);
+}
 
 function forceScore(loadLevel, staticOrRepetitive){
-  if(loadLevel === 'light') return staticOrRepetitive ? 1 : 0;
-  if(loadLevel === 'medium') return 2;
+  if(loadLevel === 'light') return 0;
+  if(loadLevel === 'medium') return staticOrRepetitive ? 2 : 1;
   return 3;
 }
 
@@ -767,7 +794,15 @@ async function requestTeamBackendAnalysis({
   loadLevel,
   staticForce,
   muscleStatic,
-  legsUnsupported
+  legsUnsupported,
+  shoulderRaised,
+  armAbducted,
+  armSupported,
+  neckExtended,
+  neckSideBent,
+  trunkSideBent,
+  lowerArmOut,
+  wristDeviated
 }){
   state.teamBackendError = null;
   if(!TEAM_BACKEND_URL){
@@ -790,6 +825,14 @@ async function requestTeamBackendAnalysis({
   form.append('static_force', String(staticForce));
   form.append('muscle_static', String(muscleStatic));
   form.append('legs_unsupported', String(legsUnsupported));
+  form.append('shoulder_raised', String(shoulderRaised));
+  form.append('arm_abducted', String(armAbducted));
+  form.append('arm_supported', String(armSupported));
+  form.append('neck_extended', String(neckExtended));
+  form.append('neck_side_bent', String(neckSideBent));
+  form.append('trunk_side_bent', String(trunkSideBent));
+  form.append('lower_arm_out', String(lowerArmOut));
+  form.append('wrist_deviated', String(wristDeviated));
   form.append('job_name', state.survey.jobName || '');
   setApiStatus('팀 FastAPI에서 영상 최종 분석 중...');
   try{
@@ -919,14 +962,21 @@ videoInput.addEventListener('change', (e)=>{
 resetBtn.addEventListener('click', ()=>{ location.reload(); });
 
 function angleBetween(v1,v2){
-  const dot=v1.x*v2.x+v1.y*v2.y, m1=Math.hypot(v1.x,v1.y), m2=Math.hypot(v2.x,v2.y);
+  const dot=v1.x*v2.x+v1.y*v2.y+(v1.z||0)*(v2.z||0);
+  const m1=Math.hypot(v1.x,v1.y,v1.z||0), m2=Math.hypot(v2.x,v2.y,v2.z||0);
   if(m1===0||m2===0) return 0;
   let cos = Math.max(-1, Math.min(1, dot/(m1*m2)));
   return Math.acos(cos)*180/Math.PI;
 }
-function vec(a,b){ return {x:b.x-a.x, y:b.y-a.y}; }
+function vec(a,b){ return {x:b.x-a.x, y:b.y-a.y, z:(b.z||0)-(a.z||0)}; }
+function midpoint3(a,b){ return {x:(a.x+b.x)/2,y:(a.y+b.y)/2,z:((a.z||0)+(b.z||0))/2}; }
+function pairRotation(a,b){
+  const depth=Math.abs((a.z||0)-(b.z||0));
+  const visible=Math.hypot(a.x-b.x,a.y-b.y);
+  return depth||visible ? Math.atan2(depth,visible)*180/Math.PI : 0;
+}
 
-function computeFrameAngles(lm){
+function computeFrameAngles(lm,worldLm){
   const leftVis=(lm[11].visibility+lm[13].visibility+lm[15].visibility+lm[23].visibility)/4;
   const rightVis=(lm[12].visibility+lm[14].visibility+lm[16].visibility+lm[24].visibility)/4;
   const fullBodyIndexes=[11,12,23,24,25,26,27,28];
@@ -935,23 +985,39 @@ function computeFrameAngles(lm){
     const point=lm[index];
     return point.visibility>=0.4 && point.x>=0.015 && point.x<=0.985 && point.y>=0.015 && point.y<=0.985;
   });
-  const side = rightVis>=leftVis ? {sh:12,el:14,wr:16,hip:24} : {sh:11,el:13,wr:15,hip:23};
-  const shoulder=lm[side.sh], elbow=lm[side.el], wrist=lm[side.wr], nose=lm[0];
-  const shoulderMid={x:(lm[11].x+lm[12].x)/2,y:(lm[11].y+lm[12].y)/2};
-  const hipMid={x:(lm[23].x+lm[24].x)/2,y:(lm[23].y+lm[24].y)/2};
-  const vertical={x:0,y:-1};
+  const side = rightVis>=leftVis
+    ? {sh:12,el:14,wr:16,index:20,pinky:18,hip:24}
+    : {sh:11,el:13,wr:15,index:19,pinky:17,hip:23};
+  const points=worldLm?.length>=33 ? worldLm : lm;
+  const shoulder=points[side.sh], elbow=points[side.el], wrist=points[side.wr];
+  const shoulderMid=midpoint3(points[11],points[12]);
+  const hipMid=midpoint3(points[23],points[24]);
+  const earMid=midpoint3(points[7],points[8]);
+  const handMid=midpoint3(points[side.index],points[side.pinky]);
+  const vertical={x:0,y:-1,z:0};
   const trunkVec=vec(hipMid,shoulderMid);
   const trunkAngle=angleBetween(trunkVec,vertical);
-  const neckVec=vec(shoulderMid,nose);
+  const neckVec=vec(shoulderMid,earMid);
   const neckAngle=angleBetween(neckVec,trunkVec);
   const upperArmVec=vec(shoulder,elbow);
-  const upperArmAngle=angleBetween(upperArmVec,trunkVec);
+  const upperArmAngle=angleBetween(upperArmVec,vec(shoulder,points[side.hip]));
   const elbowAngle=angleBetween(vec(elbow,shoulder),vec(elbow,wrist));
+  const wristAngle=Math.abs(180-angleBetween(vec(wrist,elbow),vec(wrist,handMid)));
+  const shoulderRotation=pairRotation(points[11],points[12]);
+  const headRotation=Math.abs(pairRotation(points[7],points[8])-shoulderRotation);
+  const trunkRotation=Math.abs(shoulderRotation-pairRotation(points[23],points[24]));
+  const wristRotation=Math.abs(pairRotation(points[side.index],points[side.pinky])-shoulderRotation);
   return {
     neckAngle,
     trunkAngle,
     upperArmAngle,
     elbowAngle,
+    wristAngle,
+    neckRotated:headRotation>=25,
+    neckSideBent:false,
+    trunkRotated:trunkRotation>=20,
+    trunkSideBent:false,
+    wristTwisted:wristRotation>=45,
     confidence:Math.max(leftVis,rightVis),
     fullBodyConfidence,
     fullBodyInFrame
@@ -981,18 +1047,43 @@ function snapshotLandmarks(lm){
 }
 
 function provisionalRula(frame){
-  const nS = neckScore(frame.neckAngle);
-  const tS = trunkScore(frame.trunkAngle);
+  const nS = neckScore(frame.neckAngle,frame.neckRotated,frame.neckSideBent);
+  const tS = trunkScore(frame.trunkAngle,frame.trunkRotated,frame.trunkSideBent);
   const uaS = upperArmScore(frame.upperArmAngle);
   const laS = lowerArmScore(frame.elbowAngle);
-  const scoreA = clamp(TABLE_A[uaS-1][laS-1][1][0], 1, 8);
+  const wristS = wristScore(frame.wristAngle||0);
+  const wristTwist = frame.wristTwisted ? 2 : 1;
+  const scoreA = clamp(TABLE_A[uaS-1][laS-1][wristS][wristTwist-1], 1, 8);
   const scoreB = clamp(TABLE_B[nS-1][tS-1][0], 1, 7);
   const grand = TABLE_C[scoreA-1][scoreB-1];
   const level = ACTION_LEVELS.find(item=>grand<=item.max);
   return {
-    nS,tS,uaS,laS,scoreA,scoreB,grand,level,
+    nS,tS,uaS,laS,wristS,wristTwist,scoreA,scoreB,grand,level,
     levelIndex:ACTION_LEVELS.indexOf(level)+1
   };
+}
+
+function median(values){
+  const ordered=[...values].sort((a,b)=>a-b);
+  const middle=Math.floor(ordered.length/2);
+  return ordered.length%2 ? ordered[middle] : (ordered[middle-1]+ordered[middle])/2;
+}
+
+function selectRepresentativeRiskFrame(frames){
+  const angleKeys=['neckAngle','trunkAngle','upperArmAngle','elbowAngle','wristAngle'];
+  const flagKeys=['neckRotated','neckSideBent','trunkRotated','trunkSideBent','wristTwisted'];
+  const stabilized=frames.map((frame,index)=>{
+    const window=frames.slice(Math.max(0,index-1),Math.min(frames.length,index+2));
+    const next={...frame};
+    angleKeys.forEach(key=>{ next[key]=median(window.map(item=>Number(item[key])||0)); });
+    flagKeys.forEach(key=>{ next[key]=window.filter(item=>item[key]).length>window.length/2; });
+    const preview=provisionalRula(next);
+    next.provisionalGrand=preview.grand;
+    next.total=preview.grand*10+preview.nS+preview.tS+preview.uaS+preview.laS+preview.wristS;
+    return next;
+  });
+  stabilized.sort((a,b)=>a.total-b.total || a.confidence-b.confidence);
+  return stabilized[Math.max(0,Math.floor((stabilized.length-1)*0.9))];
 }
 
 function captureCurrentVideoFrame(){
@@ -1043,7 +1134,7 @@ async function runLiveMeasurement(timestamp){
         liveDetectedFrames++;
         lastLiveLandmarks = lm;
         drawSkeleton(lm);
-        const angles = computeFrameAngles(lm);
+        const angles = computeFrameAngles(lm,result.worldLandmarks?.[0]);
         const usable =
           angles.confidence>=MIN_FRAME_CONFIDENCE &&
           angles.fullBodyConfidence>=MIN_FRAME_CONFIDENCE &&
@@ -1186,9 +1277,7 @@ stopLiveBtn.addEventListener('click', async ()=>{
     return;
   }
 
-  const worst = liveFrames.reduce((current,frame)=>
-    !current || frame.total>current.total ? frame : current
-  , null);
+  const worst = selectRepresentativeRiskFrame(liveFrames);
   state.frames = liveFrames;
   state.worst = worst;
   state.quality = {
@@ -1236,7 +1325,7 @@ analyzeBtn.addEventListener('click', async ()=>{
   const frames = [];
   const duration = video.duration;
   const step = Math.max(duration/30, 0.1);
-  let t=0, idx=0, worstFrameTime=0, worstTotal=-1;
+  let t=0, idx=0;
   let detectedFrames=0, rejectedFrames=0;
 
   while(t < duration){
@@ -1247,7 +1336,7 @@ analyzeBtn.addEventListener('click', async ()=>{
       const lm = result.landmarks[0];
       detectedFrames++;
       drawSkeleton(lm);
-      const a = computeFrameAngles(lm);
+      const a = computeFrameAngles(lm,result.worldLandmarks?.[0]);
       const usable = a.confidence>=MIN_FRAME_CONFIDENCE && a.fullBodyConfidence>=MIN_FRAME_CONFIDENCE && a.fullBodyInFrame;
       if(usable){
         const frame = {
@@ -1262,7 +1351,6 @@ analyzeBtn.addEventListener('click', async ()=>{
         frame.provisionalGrand = preview.grand;
         frame.total = total;
         frames.push(frame);
-        if(total > worstTotal){ worstTotal = total; worstFrameTime = t; }
       }else{
         rejectedFrames++;
       }
@@ -1287,17 +1375,14 @@ analyzeBtn.addEventListener('click', async ()=>{
     return;
   }
 
-  const worst = frames.reduce((acc,f)=>{
-    if(!acc || f.total>acc.total) return f;
-    return acc;
-  }, null);
+  const worst = selectRepresentativeRiskFrame(frames);
 
   state.frames = frames;
   state.worst = worst;
   state.quality = {detectedFrames,rejectedFrames,usableFrames:frames.length};
 
   // 최악 프레임 사진 캡처 (법정서식용)
-  video.currentTime = worstFrameTime;
+  video.currentTime = worst.time;
   await new Promise(r=> video.onseeked = r);
   const capCanvas = document.createElement('canvas');
   capCanvas.width = video.videoWidth; capCanvas.height = video.videoHeight;
@@ -1426,13 +1511,21 @@ window.computeAndShowResults = async function(){
   const staticForce = document.getElementById('fStaticForce').checked;
   const muscleStatic = document.getElementById('fMuscleStatic').checked;
   const legsUnsupported = document.getElementById('fLegsUnsupported').checked;
+  const shoulderRaised = document.getElementById('fShoulderRaised').checked;
+  const armAbducted = document.getElementById('fArmAbducted').checked;
+  const armSupported = document.getElementById('fArmSupported').checked;
+  const neckExtended = document.getElementById('fNeckExtended').checked;
+  const neckSideBent = document.getElementById('fNeckSideBent').checked;
+  const trunkSideBent = document.getElementById('fTrunkSideBent').checked;
+  const lowerArmOut = document.getElementById('fLowerArmOut').checked;
+  const wristDeviated = document.getElementById('fWristDeviated').checked;
 
-  const nS = neckScore(w.neckAngle);
-  const tS = trunkScore(w.trunkAngle);
-  const uaS = upperArmScore(w.upperArmAngle);
-  const laS = lowerArmScore(w.elbowAngle);
-  const wristS = 1;      // 손목: 카메라만으로 측정 불가 → 중립 고정
-  const wristTwist = 1;  // T1 고정
+  const nS = neckScore(w.neckAngle,w.neckRotated,w.neckSideBent||neckSideBent,neckExtended);
+  const tS = trunkScore(w.trunkAngle,w.trunkRotated,w.trunkSideBent||trunkSideBent);
+  const uaS = upperArmScore(w.upperArmAngle,shoulderRaised,armAbducted,armSupported);
+  const laS = lowerArmScore(w.elbowAngle,lowerArmOut);
+  const wristS = wristScore(w.wristAngle||0,wristDeviated);
+  const wristTwist = w.wristTwisted ? 2 : 1;
   const legS = legsUnsupported ? 2 : 1;
 
   const fS = forceScore(loadLevel, staticForce);
@@ -1451,7 +1544,10 @@ window.computeAndShowResults = async function(){
 
   state.scores = { nS,tS,uaS,laS,wristS,wristTwist,legS,fS,mS,scoreA,scoreB,grand,level,
                     loadLevel, loadLabel:loadLabels[loadLevel], staticForce, muscleStatic, legsUnsupported,
+                    shoulderRaised, armAbducted, armSupported,
+                    neckExtended, neckSideBent, trunkSideBent, lowerArmOut, wristDeviated,
                     neckAngle:w.neckAngle, trunkAngle:w.trunkAngle, upperArmAngle:w.upperArmAngle, elbowAngle:w.elbowAngle,
+                    wristAngle:w.wristAngle,
                     resultSource:'browser' };
 
   const originalButtonText = toResultsBtn.textContent;
@@ -1462,7 +1558,15 @@ window.computeAndShowResults = async function(){
       loadLevel,
       staticForce,
       muscleStatic,
-      legsUnsupported
+      legsUnsupported,
+      shoulderRaised,
+      armAbducted,
+      armSupported,
+      neckExtended,
+      neckSideBent,
+      trunkSideBent,
+      lowerArmOut,
+      wristDeviated
     });
     const r = teamResult?.rula;
     if(r){
@@ -1490,6 +1594,7 @@ window.computeAndShowResults = async function(){
         trunkAngle:angles.trunkAngle ?? w.trunkAngle,
         upperArmAngle:angles.upperArmAngle ?? w.upperArmAngle,
         elbowAngle:angles.elbowAngle ?? w.elbowAngle,
+        wristAngle:angles.wristAngle ?? w.wristAngle,
         resultSource:'team-backend'
       };
       if(teamResult.photoBase64){
@@ -1521,24 +1626,24 @@ function renderResults(){
   const sourceLabel = state.sourceMode==='live' ? '실시간 카메라 측정' : '촬영 영상 업로드';
   const resultSourceLabel = s.resultSource==='team-backend' ? '팀 FastAPI 최종 분석' : '브라우저 임시 분석';
   document.getElementById('analysisSourceOut').textContent =
-    `${sourceLabel} · ${resultSourceLabel}. 최고 위험 자세를 기준으로 RULA Table A / B / C를 적용했습니다. 유효 프레임 ${state.quality?.usableFrames??0}개.`;
+    `${sourceLabel} · ${resultSourceLabel}. 시간축으로 안정화한 지속적 고위험 자세에 RULA Table A / B / C를 적용했습니다. 유효 프레임 ${state.quality?.usableFrames??0}개.`;
   const cells = [
     {label:'목 (Neck)', score:s.nS, angle:s.neckAngle},
     {label:'몸통 (Trunk)', score:s.tS, angle:s.trunkAngle},
     {label:'위팔 (Upper Arm)', score:s.uaS, angle:s.upperArmAngle},
     {label:'아래팔 (Lower Arm)', score:s.laS, angle:s.elbowAngle},
-    {label:'손목 (Wrist)', score:s.wristS, angle:null},
+    {label:'손목 (Wrist)', score:s.wristS, angle:s.wristAngle??null},
     {label:'다리 (Legs)', score:s.legS, angle:null},
   ];
   document.getElementById('scoreGrid').innerHTML = cells.map(c=>`
     <div class="score-cell"><div class="label">${c.label}</div><div class="value">${c.score}</div>
-    <div class="angle">${c.angle!==null? c.angle.toFixed(1)+'°' : (c.label.includes('손목')?'중립 고정':'수동 입력')}</div></div>
+    <div class="angle">${c.angle!==null? c.angle.toFixed(1)+'°' : '수동 입력'}</div></div>
   `).join('');
 
   document.getElementById('groupATable').innerHTML = `
     <tr><td>상완(Upper Arm) 점수</td><td>${s.uaS}</td></tr>
     <tr><td>하완(Lower Arm) 점수</td><td>${s.laS}</td></tr>
-    <tr><td>손목(Wrist) 점수 — 중립 고정</td><td>${s.wristS}</td></tr>
+    <tr><td>손목(Wrist) 추정 점수</td><td>${s.wristS}</td></tr>
     <tr><td>Table A 기본값</td><td>${TABLE_A[s.uaS-1][s.laS-1][s.wristS][s.wristTwist-1]}</td></tr>
     <tr><td>근육사용(A) 가산</td><td>+${s.mS}</td></tr>
     <tr><td>힘/부하(A) 가산 (${s.loadLabel})</td><td>+${s.fS}</td></tr>`;
