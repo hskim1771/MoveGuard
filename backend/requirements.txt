@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+python-multipart
+opencv-python
+mediapipe==0.10.35
+firebase-admin
+numpy
+Pillow
+onnxruntime
