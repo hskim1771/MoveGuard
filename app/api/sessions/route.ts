@@ -10,6 +10,7 @@ import {
 } from "../../../lib/measurements";
 
 export const runtime = "edge";
+const localFallbackSessions: MeasurementSession[] = [];
 
 function isFiniteNonNegative(value: unknown): value is number {
   return typeof value === "number" && Number.isFinite(value) && value >= 0;
@@ -54,6 +55,9 @@ function parseMetricValues(value: string): MetricValues {
     const parsed = JSON.parse(value);
     return isMetricValues(parsed) ? parsed : fallbackMetricValues();
   } catch {
+    if (process.env.NODE_ENV !== "production") {
+      return NextResponse.json({ sessions: localFallbackSessions });
+    }
     return fallbackMetricValues();
   }
 }
@@ -87,6 +91,9 @@ export async function GET() {
 
     return NextResponse.json({ sessions });
   } catch {
+    if (process.env.NODE_ENV !== "production") {
+      return NextResponse.json({ sessions: localFallbackSessions });
+    }
     return NextResponse.json(
       { message: "측정 기록을 불러오지 못했습니다." },
       { status: 503 },
@@ -95,15 +102,14 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const body: unknown = await request.json().catch(() => null);
+  if (!isSessionInput(body)) {
+    return NextResponse.json(
+      { message: "저장할 측정 결과의 형식이 올바르지 않습니다." },
+      { status: 400 },
+    );
+  }
   try {
-    const body: unknown = await request.json();
-    if (!isSessionInput(body)) {
-      return NextResponse.json(
-        { message: "저장할 측정 결과의 형식이 올바르지 않습니다." },
-        { status: 400 },
-      );
-    }
-
     const createdAt = new Date().toISOString();
     await getDb()
       .insert(measurementSessions)
@@ -118,6 +124,14 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true, createdAt }, { status: 201 });
   } catch {
+    if (process.env.NODE_ENV !== "production") {
+      const createdAt = new Date().toISOString();
+      localFallbackSessions.unshift({ ...body, createdAt });
+      return NextResponse.json(
+        { ok: true, createdAt, storage: "local-memory" },
+        { status: 201 },
+      );
+    }
     return NextResponse.json(
       { message: "측정 결과를 저장하지 못했습니다." },
       { status: 503 },
