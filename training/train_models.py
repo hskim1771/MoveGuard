@@ -49,7 +49,7 @@ def train_mlp(x,y,train_mask,seed):
 def main():
     p=argparse.ArgumentParser(); p.add_argument("--features",type=Path,required=True); p.add_argument("--output",type=Path,required=True); p.add_argument("--seed",type=int,default=20260803); a=p.parse_args(); a.output.mkdir(parents=True,exist_ok=True)
     x,y,s=load(a.features); tr=s=="train"; va=s=="validation"; te=s=="test"
-    candidates={"linear":make_pipeline(StandardScaler(),LogisticRegression(max_iter=1000,class_weight="balanced",random_state=a.seed)),"gradient_boosting":HistGradientBoostingClassifier(random_state=a.seed)}
+    candidates={"linear":make_pipeline(StandardScaler(),LogisticRegression(max_iter=1000,class_weight="balanced",random_state=a.seed)),"gradient_boosting":HistGradientBoostingClassifier(random_state=a.seed, early_stopping=False)}
     validation={}
     for name,model in candidates.items():
         model.fit(x[tr],y[tr]); validation[name]=metrics(model,x[va],y[va]); joblib.dump(model,a.output/f"{name}.joblib")
