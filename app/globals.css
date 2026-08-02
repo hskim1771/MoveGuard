@@ -2139,3 +2139,5 @@ body {
     padding: 9px 8px;
   }
 }
+.dashboard-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+.dashboard-card select { margin-top: 12px; min-width: 240px; padding: 12px 14px; border: 1px solid #d9e0e7; border-radius: 10px; background: white; }

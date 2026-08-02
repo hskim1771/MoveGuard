@@ -1,0 +1,9 @@
+fastapi>=0.115,<1
+uvicorn[standard]>=0.34,<1
+python-multipart>=0.0.20,<1
+mediapipe>=1.0.0,<2
+numpy>=2.2,<3
+pillow>=11,<13
+psutil>=6,<8
+scikit-learn>=1.6,<2
+torch>=2.6,<3

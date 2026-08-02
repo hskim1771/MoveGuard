@@ -1305,7 +1305,7 @@ export default function CameraPrototype() {
 
           <div className="quality-card">
             <div className="quality-row">
-              <span>선택한 사람 인식 신뢰도</span>
+              <span>관절 검출 신뢰도 · 참고값</span>
               <strong>
                 {hasPose ? `${selectedMetrics.confidence}%` : "—"}
               </strong>
@@ -1380,8 +1380,8 @@ export default function CameraPrototype() {
                     <strong>{detectedServerJoints}개</strong>
                   </div>
                   <div>
-                    <span>검출 신뢰도</span>
-                    <strong>{Math.round(selectedServerPerson.pose.confidence * 100)}%</strong>
+                    <span>관절 검출 신뢰도 · 참고값</span>
+                    <strong>{Math.min(99.9, Math.floor(selectedServerPerson.pose.confidence * 1000) / 10)}%</strong>
                   </div>
                 </div>
                 <div className="server-angle-list">

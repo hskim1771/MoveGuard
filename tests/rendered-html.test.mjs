@@ -61,8 +61,20 @@ test("renders the analytics dashboard shell", async () => {
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, /측정 결과를 한눈에 확인하세요/i);
-  assert.match(html, /새 측정 시작/i);
+  assert.match(html, /작업장 전체 대시보드/i);
+  assert.match(html, /새 분석 시작/i);
+  assert.match(html, /개인 분석 기록/i);
+  assert.match(html, /부위별 위험도 모니터/i);
   assert.match(html, /측정 기록을 불러오고 있어요/i);
   assert.match(html, /수치만 저장/i);
+});
+
+test("separates worker history from workplace statistics", async () => {
+  const response = await render("/history");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /작업자별 분석 기록/i);
+  assert.match(html, /작업자 이름을 선택하세요/i);
+  assert.match(html, /개인별 RULA 결과/i);
+  assert.match(html, /작업장 전체 통계와 분리/i);
 });

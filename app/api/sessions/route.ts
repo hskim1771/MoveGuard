@@ -29,6 +29,11 @@ function isSessionInput(value: unknown): value is MeasurementSessionInput {
     typeof session.id === "string" &&
     session.id.length > 0 &&
     session.id.length <= 100 &&
+    typeof session.workerName === "string" &&
+    session.workerName.length > 0 && session.workerName.length <= 100 &&
+    typeof session.jobName === "string" &&
+    session.jobName.length > 0 && session.jobName.length <= 200 &&
+    (session.rulaScore === null || isFiniteNonNegative(session.rulaScore)) &&
     typeof session.startedAt === "string" &&
     typeof session.endedAt === "string" &&
     isFiniteNonNegative(session.durationSeconds) &&

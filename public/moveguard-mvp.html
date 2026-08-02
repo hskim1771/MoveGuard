@@ -337,6 +337,13 @@
       <h2><span class="num">2</span>조사 개요</h2>
       <p class="sub">유해요인조사표(별지 제1호서식) 가목에 해당하는 기본 정보입니다. 아는 만큼만 채우고 나중에 수정해도 됩니다.</p>
 
+      <label>1. 작업자 선택 <span style="color:var(--risk);">*</span></label>
+      <input type="text" id="fWorkerName" list="workerNameOptions" placeholder="예: 김작업자" autocomplete="name">
+      <datalist id="workerNameOptions"><option value="미지정 작업자"></option></datalist>
+      <p class="help">개인 분석 기록과 작업장 전체 통계를 분리하기 위한 작업자 식별값입니다.</p>
+
+      <h3>2. 분석 설정</h3>
+
       <label>조사 구분</label>
       <div class="cbgroup">
         <label><input type="checkbox" id="chkRegular" checked> 정기조사</label>
@@ -597,9 +604,12 @@ window.startSurvey = function(){
 document.getElementById('fSurveyDate').valueAsDate = new Date();
 
 window.validateStep2 = function(){
+  const workerName = document.getElementById('fWorkerName').value.trim();
   const jobName = document.getElementById('fJobName').value.trim();
+  if(!workerName){ alert('분석할 작업자를 선택하거나 이름을 입력해 주세요.'); return; }
   if(!jobName){ alert('작업명은 최소한 입력해 주세요.'); return; }
   state.survey = {
+    workerName: workerName,
     regular: document.getElementById('chkRegular').checked,
     sick: document.getElementById('chkSick').checked,
     newEquip: document.getElementById('chkNew').checked,
@@ -792,7 +802,7 @@ function renderPoseResult(result, errorMessage=''){
   }
   const expected = ['neck','left_shoulder','right_shoulder','left_elbow','right_elbow','left_wrist','right_wrist','left_hip','right_hip','left_knee','right_knee','left_ankle','right_ankle'];
   const detected = expected.filter(name=>result.joints?.[name]?.valid).length;
-  const confidence = Math.round((result.pose?.confidence || 0)*1000)/10;
+  const confidence = Math.min(99.9, Math.floor((result.pose?.confidence || 0)*1000)/10);
   const rula = result.rula || {};
   const wristReady = ['left_wrist','right_wrist'].filter(name=>result.measurements?.[name]?.status==='valid').length;
   const qualityLabels = {valid:'분석 가능',low_confidence:'낮은 신뢰도',not_measurable:'측정 불가'};
@@ -802,7 +812,7 @@ function renderPoseResult(result, errorMessage=''){
     <div class="pose-result-grid">
       <div class="pose-result-item"><small>상태</small><b>${qualityLabels[result.quality?.status] || result.quality?.status || '확인 필요'}</b></div>
       <div class="pose-result-item"><small>공통 관절</small><b>${detected} / ${expected.length}</b></div>
-      <div class="pose-result-item"><small>자세 신뢰도</small><b>${confidence}%</b></div>
+      <div class="pose-result-item"><small>관절 검출 신뢰도 · 참고값</small><b>${confidence}%</b></div>
       <div class="pose-result-item"><small>손목 각도</small><b>${wristReady} / 2</b></div>
       <div class="pose-result-item"><small>RULA</small><b>${rula.final_score ?? '측정 불가'}</b></div>
       <div class="pose-result-item"><small>위험 수준</small><b>${riskLabels[rula.risk_level] || rula.risk_level || '측정 불가'}</b></div>
@@ -1381,6 +1391,9 @@ function buildDashboardSession(){
   );
   return {
     id:state.dashboardSessionId || crypto.randomUUID(),
+    workerName:state.survey.workerName || '미지정 작업자',
+    jobName:state.survey.jobName || '미지정 작업',
+    rulaScore:state.scores?.grand ?? null,
     startedAt,
     endedAt,
     durationSeconds,
