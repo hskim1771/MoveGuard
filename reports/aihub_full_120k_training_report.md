@@ -54,6 +54,22 @@
 - 전문가 총점 정답이 없으면 정확 일치율, ±1, MAE, Weighted Kappa, 부위별 일치율은 모두 `평가 불가`로 표시한다.
 - 모델 confidence를 RULA 정확도로 표시하지 않는다.
 
+### AI-Hub 인간 검수 라벨 기반 자세 전용 RULA 일치도
+
+- 검증 스크립트: `training/evaluate_rula_agreement.py`
+- 평가 대상: 독립 test 그룹 중 MediaPipe 검출 성공 14,744프레임
+- 기준값: AI-Hub 사람이 검수한 목·몸통·위팔·아래팔·다리 및 부가 자세 라벨을 공식 Table A/B/C에 입력한 파생 점수
+- 양쪽 공통 고정 조건: 하중/힘 0, 근육·반복 사용 0. 다리 지지는 동일한 AI-Hub 인간 라벨 사용.
+- MoveGuard 손목: 단일 RGB MediaPipe에서 확정하지 않고 중립값 사용.
+- 최종점수 정확 일치율: 24.29%
+- ±1점 이내 일치율: 72.26%
+- 평균 절대 오차: 1.09점
+- Quadratic Weighted Cohen's Kappa: 0.248
+- 조치수준 일치율: 43.76%
+- 조치수준 Quadratic Weighted Kappa: 0.142
+- 부위별 정확 일치율: 목 32.10%, 몸통 35.66%, 위팔 25.70%, 아래팔 19.86%
+- 이 결과는 전문가가 확정한 최종 RULA 총점과의 임상/현장 검증이 아니다. 원본 JSON에 전문가 최종점수, 하중, 반복·근육 사용 정답이 없으므로 `AI-Hub 인간 검수 라벨 기반 자세 전용 RULA 일치도`로만 보고한다.
+
 ## 프론트엔드 연결 테스트
 
 - `NEXT_PUBLIC_ANALYSIS_API_URL` 사용: 확인
