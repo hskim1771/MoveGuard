@@ -1,13 +1,13 @@
 # MoveGuard MediaPipe + AI-Hub 전체 학습 통합 보고서
 
-> 상태: 데이터 감사 및 학습 진행 중. 확인되지 않은 수치는 기입하지 않는다.
+> 상태: 108,000장 전체 감사·전처리, 모델 학습, 독립 테스트 및 백엔드 연결 완료.
 
 ## 기준 소스
 
 - 프론트엔드 기준 브랜치: `feature/figma-ui-rtmw-integration`
 - 프론트엔드 기준 커밋: `17eb855cc5274ce511fa66545630c616d734ba19`
 - 통합 브랜치: `feature/mediapipe-aihub-120k-integration`
-- 백엔드 커밋: 최종 커밋 후 기록
+- 백엔드 커밋: 이 보고서와 함께 통합 브랜치에 커밋
 - `main` merge: 수행하지 않음
 
 ## AI-Hub 실제 데이터
@@ -39,14 +39,29 @@
 - 원본 프레임 0.3 임계값: 사람 81.0%, 전신 51.4%, 9.46장/초, peak 1.16GB.
 - AI-Hub bbox + 15% 문맥, 0.3 임계값: 사람 96.9%, 10.40장/초, peak 1.03GB, 전체 예상 2.89시간.
 - bbox 점검에서 전신 8관절 visibility ≥0.3은 전체의 66.3%였다.
-- 전체 검출률 및 실패 사례: 실행 완료 후 실제 수치 기록
+- 전체 108,000장 처리 결과: 94,776장 검출 성공, 13,224장 실패(`no_person`).
+- 사람 검출률: 87.76%, 전신 8개 핵심 관절 visibility ≥0.3 비율: 35.49%.
+- 실제 처리시간: 23,022초(6.40시간), 4.69장/초, peak RSS 1.09GB.
+- 검출 성공 후 실제 학습 분할: train 66,250 / validation 13,782 / test 14,744.
 
 ## 모델 비교
 
-- 선형 기준 모델: 실행 완료 후 실제 지표 기록
-- Gradient Boosting: 실행 완료 후 실제 지표 기록
-- PyTorch MLP: 실행 완료 후 실제 지표 기록
+- 관절 특징의 결합 자세 클래스 기준 validation: 선형 Accuracy 9.98% / Macro F1 2.70%, Gradient Boosting 7.07% / 0.33%, PyTorch MLP 28.07% / 3.12%.
+- validation으로 선택한 PyTorch MLP의 독립 test: Accuracy 33.68%, Macro F1 4.09%, Weighted F1 27.79%.
+- 결합 클래스가 지나치게 세분화되고 희소해 33.68%를 MoveGuard RULA 정확도로 사용하지 않는다.
 - 테스트 세트는 validation 기반 모델 선택이 끝난 뒤 한 번만 평가한다.
+
+### 신규 이미지 + 관절 멀티헤드 모델
+
+- 모델: 경량 CNN 이미지 분기 + MediaPipe 33관절·파생각도 MLP 분기 + 특성 결합 후 부위별 출력 헤드.
+- 입력: 사람 crop 원본 이미지와 정규화된 MediaPipe 특징. 출력: 목·몸통·위팔·아래팔·다리 범주 및 14개 자세 보정 플래그.
+- 학습 데이터: MediaPipe 성공 94,776장 전부. seed `20260803`, MPS, 8 epoch, 417초.
+- 모델 선택: validation의 RULA ±1점 이내 일치율만 사용. 최고 모델은 epoch 5, 80.21%.
+- 독립 test 부위별 Accuracy / Macro F1: 목 55.66% / 46.97%, 몸통 88.30% / 84.83%, 위팔 70.57% / 45.12%, 아래팔 87.91% / 58.58%, 다리 56.16% / 36.27%.
+- 독립 test 자세 전용 RULA: 정확 일치 35.26%, ±1점 79.62%, MAE 0.90점, 조치수준 일치 65.84%.
+- 기존 각도 규칙 기준(24.29%, 72.26%, MAE 1.09, 조치수준 43.76%)보다 개선됐다.
+- 배포 체크포인트: `backend/models/multimodal_rula_v1.pt`, 1,012,965 bytes.
+- 모델 출력 확률은 실제 정확도가 아닌 참고 신뢰도라고 API에 명시한다.
 
 ## RULA 검증
 
@@ -81,6 +96,7 @@
 - 브라우저 콘솔 오류: 없음(검증 시점)
 - FastAPI `/health`: 통과
 - AI-Hub 실제 이미지 → MediaPipe 33관절 응답: 통과
+- AI-Hub 실제 이미지 → 이미지·관절 모델 → 공식 RULA 최종점수 응답: 통과(테스트 샘플 3점)
 - 카메라·업로드·결과 저장 전체 클릭 테스트: 진행 중
 
 ## 재실행 및 resume
@@ -90,6 +106,8 @@
 .venv/bin/python training/preprocess_mediapipe.py --manifest artifacts/aihub/audit/split_manifest.jsonl --output artifacts/aihub/pilot --limit 1000
 .venv/bin/python training/preprocess_mediapipe.py --manifest artifacts/aihub/audit/split_manifest.jsonl --output artifacts/aihub/full
 .venv/bin/python training/train_models.py --features artifacts/aihub/full/features.jsonl --output artifacts/aihub/models --seed 20260803
+.venv/bin/python training/cache_aihub_crops.py --manifest artifacts/aihub/audit/split_manifest.jsonl --features artifacts/aihub/full/features.jsonl --output artifacts/aihub/image_cache_128 --image-size 128 --workers 4
+.venv/bin/python training/train_multimodal_rula.py --manifest artifacts/aihub/audit/split_manifest.jsonl --features artifacts/aihub/full/features.jsonl --image-cache artifacts/aihub/image_cache_128 --output artifacts/aihub/multimodal_full --epochs 8 --batch-size 64 --image-size 128 --seed 20260803
 .venv/bin/uvicorn backend.app:app --host 127.0.0.1 --port 8000
 NEXT_PUBLIC_ANALYSIS_API_URL=http://127.0.0.1:8000 pnpm dev
 ```
@@ -99,4 +117,6 @@ NEXT_PUBLIC_ANALYSIS_API_URL=http://127.0.0.1:8000 pnpm dev
 - 실제 데이터는 120,000장이 아니라 현재 ZIP 기준 108,000장이다.
 - 단일 RGB 카메라의 손목 비틀림·하중·반복 여부는 관절 추출만으로 확정할 수 없다.
 - 전문가 RULA 정답이 없으면 RULA 정확도를 평가할 수 없다.
+- 신규 모델의 RULA 일치도도 AI-Hub 인체검수 자세 라벨에서 파생한 자세 전용 점수와의 비교이며, 전문가 최종 RULA 정확도가 아니다.
+- `upperarm_raised`, `trunk_supported`처럼 양성 표본이 거의 없거나 없는 항목은 높은 Accuracy와 무관하게 양성 F1이 0이므로 현장 전문가 데이터 보강이 필요하다.
 - 개인 기록은 작업자 이름 입력 이후 생성된 세션부터 분리된다.
