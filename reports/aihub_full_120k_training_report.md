@@ -44,6 +44,21 @@
 - 실제 처리시간: 23,022초(6.40시간), 4.69장/초, peak RSS 1.09GB.
 - 검출 성공 후 실제 학습 분할: train 66,250 / validation 13,782 / test 14,744.
 
+### 독립 테스트 관절 좌표 정확성
+
+- 평가 스크립트: `training/evaluate_keypoint_accuracy.py`
+- 평가 데이터: 그룹 분리된 독립 test 전체 16,210장. 모델 선택이나 튜닝에는 사용하지 않음.
+- AI-Hub 공식 가이드의 27개 관절 순서를 확인한 뒤 MediaPipe와 대응되는 26개를 비교했다. MediaPipe에 직접 대응점이 없는 정수리 1점은 제외했다.
+- 목·척추·골반중앙은 좌우 어깨·엉덩이의 중간점으로 산출했다.
+- 사람/관절 검출 성공: 14,744 / 16,210, **90.96%**. 실패 1,466장, 처리 오류 0장.
+- AI-Hub에서 보임(`visibility=2`)으로 표시된 관절: 평균 픽셀 오차 69.90px, bbox 대각선 정규화 평균 오차 5.03%, PCK@0.05 73.40%, **PCK@0.10 89.96%**, PCK@0.20 96.01%.
+- RULA 핵심 관절(목·어깨·팔꿈치·손목·엉덩이·무릎·발목): 정규화 평균 오차 4.68%, PCK@0.10 **91.19%**, PCK@0.20 96.29%.
+- 상체 핵심 관절 PCK@0.10 92.91%, 하체 핵심 관절 PCK@0.10 89.33%.
+- 가림을 포함한 모든 라벨 관절: PCK@0.10 85.28%, PCK@0.20 94.05%.
+- PCK는 AI-Hub 작업자 bbox 대각선 대비 좌표 오차로 계산했다. AI-Hub 논문의 HRNet `AP@0.5`와 공식이 다르므로 직접적인 우열 비교 수치가 아니다.
+- 이 평가는 AI-Hub 정답 bbox로 사람을 crop한 조건부 관절 정확성이다. 실제 카메라 전체 프레임 성능은 별도 현장 영상 검증이 필요하다.
+- 상세 관절별 결과: `reports/aihub_keypoint_accuracy_report.json`
+
 ## 모델 비교
 
 - 관절 특징의 결합 자세 클래스 기준 validation: 선형 Accuracy 9.98% / Macro F1 2.70%, Gradient Boosting 7.07% / 0.33%, PyTorch MLP 28.07% / 3.12%.
@@ -108,6 +123,7 @@
 .venv/bin/python training/train_models.py --features artifacts/aihub/full/features.jsonl --output artifacts/aihub/models --seed 20260803
 .venv/bin/python training/cache_aihub_crops.py --manifest artifacts/aihub/audit/split_manifest.jsonl --features artifacts/aihub/full/features.jsonl --output artifacts/aihub/image_cache_128 --image-size 128 --workers 4
 .venv/bin/python training/train_multimodal_rula.py --manifest artifacts/aihub/audit/split_manifest.jsonl --features artifacts/aihub/full/features.jsonl --image-cache artifacts/aihub/image_cache_128 --output artifacts/aihub/multimodal_full --epochs 8 --batch-size 64 --image-size 128 --seed 20260803
+.venv/bin/python training/evaluate_keypoint_accuracy.py --manifest artifacts/aihub/audit/split_manifest.jsonl --output artifacts/aihub/keypoint_full --split test --workers 8
 .venv/bin/uvicorn backend.app:app --host 127.0.0.1 --port 8000
 NEXT_PUBLIC_ANALYSIS_API_URL=http://127.0.0.1:8000 pnpm dev
 ```
