@@ -24,6 +24,9 @@ artifacts/
 data/human_pose_3d_sample/
 checkpoints/human_pose_3d_v1/
 checkpoints/human_pose_3d_5k_wrist_v1/
+checkpoints/wrist_refiner_20k_v1/
+checkpoints/wrist_refiner_50k_v1/
+data/human_pose_3d_sample/mediapipe_cache_50k_v1/
 *.zip
 .venv/
 __pycache__/
@@ -50,6 +53,11 @@ next-env.d.ts
 /outputs/
 /work/
 results/**/run.log
+results/**/*eval*.log
+results/**/*export.log
+results/**/progress.json
+results/**/industrial_refiner_errors.jsonl*
+results/**/*.invalid_index_mapping
 /backend/.venv/
 venv/
 __pycache__/
