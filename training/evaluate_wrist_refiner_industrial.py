@@ -154,6 +154,8 @@ def main():
         "refiner_20k": root/"checkpoints/wrist_refiner_20k_v1/best.pt",
         "refiner_50k": root/"checkpoints/wrist_refiner_50k_v1/best.pt",
     }
+    joint=root/"checkpoints/wrist_refiner_joint_domain_v1/best.pt"
+    if joint.exists(): checkpoints["refiner_joint_domain"]=joint
     missing = [str(x) for x in checkpoints.values() if not x.exists()]
     if missing: raise FileNotFoundError(f"Train models before transfer evaluation: {missing}")
     records = [json.loads(x) for x in args.manifest.read_text().splitlines() if x]
@@ -163,7 +165,8 @@ def main():
     if detail.exists():
         for line in detail.read_text().splitlines():
             row=json.loads(line); done[row["id"]]=row
-    pending = [x for x in records if x["id"] not in done]
+    required={"mediapipe",*checkpoints.keys()}
+    pending = [x for x in records if x["id"] not in done or {e["model"] for e in done[x["id"]].get("errors",[])}!=required]
     from multiprocessing import get_context
     with get_context("spawn").Pool(args.workers, init_worker, (str(args.model), {k:str(v) for k,v in checkpoints.items()})) as pool, detail.open("a") as out:
         for n, row in enumerate(pool.imap_unordered(evaluate, pending, chunksize=8), 1):

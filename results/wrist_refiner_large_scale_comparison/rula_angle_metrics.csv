@@ -31,3 +31,11 @@ refiner_5k,right_elbow,14744,25.902636409241026,17.539474033557674,59.4690670692
 refiner_5k,right_shoulder,14744,16.544907891390935,11.90090359902197,36.29219644348694,0.5497151383613673,2D proxy; wrist twist/pronation/supination is not evaluated
 refiner_5k,right_wrist,14744,16.164387457820492,8.243750093543497,37.838105567132146,0.6249321758003256,2D proxy; wrist twist/pronation/supination is not evaluated
 refiner_5k,trunk,14744,8.660280860993321,6.587466018882477,17.596743448753156,0.6053988062940857,2D proxy; wrist twist/pronation/supination is not evaluated
+refiner_joint_domain,left_elbow,14744,22.78355841642306,13.450059228299796,56.00117001451648,0.782555615843733,2D proxy; wrist twist/pronation/supination is not evaluated
+refiner_joint_domain,left_shoulder,14744,13.97539679061988,9.300302896051528,31.988611574286537,0.6296120455778622,2D proxy; wrist twist/pronation/supination is not evaluated
+refiner_joint_domain,left_wrist,14744,39.39215047985632,23.994095645160073,103.70822614809252,0.4847395550732501,2D proxy; wrist twist/pronation/supination is not evaluated
+refiner_joint_domain,neck_proxy,14744,45.01088409463241,39.40437411384582,83.08193377730062,0.9827726532826913,2D proxy; wrist twist/pronation/supination is not evaluated
+refiner_joint_domain,right_elbow,14744,22.534340866952054,14.673281197390793,52.44709709732217,0.7263971785132936,2D proxy; wrist twist/pronation/supination is not evaluated
+refiner_joint_domain,right_shoulder,14744,15.569347440512075,10.183690305135412,35.30055702490184,0.5774552360282149,2D proxy; wrist twist/pronation/supination is not evaluated
+refiner_joint_domain,right_wrist,14744,62.39362160339263,39.81519159892024,155.71106272680495,0.4153553988062941,2D proxy; wrist twist/pronation/supination is not evaluated
+refiner_joint_domain,trunk,14744,6.666133735906132,4.38611461216854,14.140405004381135,0.6983179598480738,2D proxy; wrist twist/pronation/supination is not evaluated

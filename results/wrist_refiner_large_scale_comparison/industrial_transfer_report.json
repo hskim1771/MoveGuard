@@ -823,6 +823,193 @@
       "confidence": "not stored; do not interpret PCK as confidence"
     },
     {
+      "model": "refiner_joint_domain",
+      "joint": "left_ankle",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 135.0380379416992,
+      "mean_normalized_error": 0.11221343755013372,
+      "pck_0_05": 0.6302224633749322,
+      "pck_0_10": 0.8055480195333695,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "left_elbow",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 58.70821811777158,
+      "mean_normalized_error": 0.0437969031867698,
+      "pck_0_05": 0.7663456321215409,
+      "pck_0_10": 0.9080982094411286,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "left_foot",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 210.84479289121035,
+      "mean_normalized_error": 0.17739802697260343,
+      "pck_0_05": 0.5521568095496473,
+      "pck_0_10": 0.7441671188279978,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "left_hip",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 53.80919960546483,
+      "mean_normalized_error": 0.039301400196185006,
+      "pck_0_05": 0.7936109603906674,
+      "pck_0_10": 0.9299376017362995,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "left_knee",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 80.4645104908447,
+      "mean_normalized_error": 0.06206867608911113,
+      "pck_0_05": 0.696825827455236,
+      "pck_0_10": 0.8395957677699403,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "left_shoulder",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 47.29813295700836,
+      "mean_normalized_error": 0.0347759461567511,
+      "pck_0_05": 0.8364758545849159,
+      "pck_0_10": 0.9467580032555616,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "left_wrist",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 81.64778288741029,
+      "mean_normalized_error": 0.06148349176909708,
+      "pck_0_05": 0.646093326098752,
+      "pck_0_10": 0.8389853499728703,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "neck",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 35.412630059205895,
+      "mean_normalized_error": 0.02620711500161996,
+      "pck_0_05": 0.9224769397721106,
+      "pck_0_10": 0.962561041779707,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "pelvis_center",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 48.14558723252735,
+      "mean_normalized_error": 0.035336245590982716,
+      "pck_0_05": 0.8265735214324471,
+      "pck_0_10": 0.9411964188822571,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "right_ankle",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 125.0159998996353,
+      "mean_normalized_error": 0.10237138267722284,
+      "pck_0_05": 0.6652197504069451,
+      "pck_0_10": 0.8560092240911558,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "right_elbow",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 65.17812703195436,
+      "mean_normalized_error": 0.046293004671894414,
+      "pck_0_05": 0.7288388497015735,
+      "pck_0_10": 0.9071486706456864,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "right_foot",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 195.98849469268848,
+      "mean_normalized_error": 0.16188555695721665,
+      "pck_0_05": 0.5697911014650027,
+      "pck_0_10": 0.7973412913727618,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "right_hip",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 54.160433426795635,
+      "mean_normalized_error": 0.03968242452713936,
+      "pck_0_05": 0.7948317959848074,
+      "pck_0_10": 0.9294628323385784,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "right_knee",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 69.46803488448838,
+      "mean_normalized_error": 0.05416996652620901,
+      "pck_0_05": 0.7238876831253391,
+      "pck_0_10": 0.8780520889853499,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "right_shoulder",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 44.58217679416722,
+      "mean_normalized_error": 0.032635115776126454,
+      "pck_0_05": 0.8698453608247423,
+      "pck_0_10": 0.9508952794357026,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "right_wrist",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 82.96798807324288,
+      "mean_normalized_error": 0.05861767045741421,
+      "pck_0_05": 0.6108247422680413,
+      "pck_0_10": 0.8468529571351058,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "spine",
+      "valid_gt_count": 14744,
+      "prediction_count": 14744,
+      "mean_pixel_error": 45.40786556765531,
+      "mean_normalized_error": 0.032622742813810036,
+      "pck_0_05": 0.8475311991318503,
+      "pck_0_10": 0.9590341833966359,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
       "model": "mediapipe",
       "joint": "OVERALL_STRICT_COMMON",
       "valid_gt_count": 250648,
@@ -864,6 +1051,17 @@
       "mean_normalized_error": 0.08099568353258325,
       "pck_0_05": 0.6222511250837829,
       "pck_0_10": 0.8624365644250104,
+      "confidence": "not stored; do not interpret PCK as confidence"
+    },
+    {
+      "model": "refiner_joint_domain",
+      "joint": "OVERALL_STRICT_COMMON",
+      "valid_gt_count": 250648,
+      "prediction_count": 250648,
+      "mean_pixel_error": 84.36105956198648,
+      "mean_normalized_error": 0.06593288864236982,
+      "pck_0_05": 0.7342089304522678,
+      "pck_0_10": 0.8848025916823593,
       "confidence": "not stored; do not interpret PCK as confidence"
     }
   ],

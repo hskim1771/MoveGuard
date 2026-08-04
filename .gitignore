@@ -27,6 +27,11 @@ checkpoints/human_pose_3d_5k_wrist_v1/
 checkpoints/wrist_refiner_20k_v1/
 checkpoints/wrist_refiner_50k_v1/
 data/human_pose_3d_sample/mediapipe_cache_50k_v1/
+data/human_pose_3d_sample/industrial_raw_cache_v1/
+checkpoints/wrist_refiner_joint_domain_v1/
+results/wrist_refiner_joint_domain_v1/run.log
+results/wrist_refiner_large_scale_comparison/joint_domain_cache.log
+results/wrist_refiner_large_scale_comparison/joint_domain_independent_test.log
 *.zip
 .venv/
 __pycache__/
