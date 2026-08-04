@@ -21,6 +21,9 @@
 # misc
 .DS_Store
 artifacts/
+data/human_pose_3d_sample/
+checkpoints/human_pose_3d_v1/
+*.zip
 .venv/
 __pycache__/
 *.pem
