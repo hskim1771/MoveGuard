@@ -1,0 +1,2 @@
+status,existing_claim,actual_previous_metric,map_50,map_50_95,precision,recall,f1,reason
+NOT_EVALUABLE,approximately 91%,not traceable in repository,,,,,,"No object detector checkpoint, object GT manifest, class schema, or evaluation code was found; no value fabricated."

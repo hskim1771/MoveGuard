@@ -1,0 +1,168 @@
+{
+  "configuration": {
+    "seed": 20260804,
+    "learning_rate": 0.001,
+    "batch_size": 128,
+    "max_epochs": 80,
+    "optimizer": "AdamW",
+    "scheduler": null,
+    "loss": "SmoothL1 beta=0.02",
+    "augmentation": null,
+    "early_stopping_patience": 12,
+    "device": "mps"
+  },
+  "counts": {
+    "train": 20000,
+    "validation": 545,
+    "test": 627,
+    "detected_train": 19286,
+    "detected_validation": 539,
+    "detected_test": 615
+  },
+  "best_epoch": 14,
+  "best_val_loss": 0.004114799166563899,
+  "test": {
+    "images": 615,
+    "detection_rate": 0.9808612440191388,
+    "left_pck_0_05": 0.8341463414634146,
+    "right_pck_0_05": 0.808130081300813,
+    "mean_pck_0_05": 0.8211382113821138,
+    "left_pck_0_10": 0.943089430894309,
+    "right_pck_0_10": 0.943089430894309,
+    "mean_pck_0_10": 0.943089430894309,
+    "mean_normalized_error": 0.035463880747556686
+  },
+  "epochs": [
+    {
+      "epoch": 1,
+      "train_loss": 0.004297027170090683,
+      "val_loss": 0.00485224025323987
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.003503625726771374,
+      "val_loss": 0.004662485769949853
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.0029687882980812858,
+      "val_loss": 0.004611366102471948
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.0025235604994393738,
+      "val_loss": 0.0046755402814596895
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.0023480013756093797,
+      "val_loss": 0.004630902083590627
+    },
+    {
+      "epoch": 6,
+      "train_loss": 0.0021596763680830893,
+      "val_loss": 0.004524056927766651
+    },
+    {
+      "epoch": 7,
+      "train_loss": 0.0020798888991876746,
+      "val_loss": 0.0047593382885679604
+    },
+    {
+      "epoch": 8,
+      "train_loss": 0.0019629822414837135,
+      "val_loss": 0.004553660203237086
+    },
+    {
+      "epoch": 9,
+      "train_loss": 0.0018972153243429909,
+      "val_loss": 0.0046215524314902725
+    },
+    {
+      "epoch": 10,
+      "train_loss": 0.0018278428758895457,
+      "val_loss": 0.004789263755083084
+    },
+    {
+      "epoch": 11,
+      "train_loss": 0.0017607665353991239,
+      "val_loss": 0.004566242243163288
+    },
+    {
+      "epoch": 12,
+      "train_loss": 0.0017163231506302262,
+      "val_loss": 0.0042984542553313075
+    },
+    {
+      "epoch": 13,
+      "train_loss": 0.0016913211014775546,
+      "val_loss": 0.0042910226853564385
+    },
+    {
+      "epoch": 14,
+      "train_loss": 0.0016102952927363333,
+      "val_loss": 0.004114799166563899
+    },
+    {
+      "epoch": 15,
+      "train_loss": 0.001566761444301178,
+      "val_loss": 0.004565062711481005
+    },
+    {
+      "epoch": 16,
+      "train_loss": 0.0015492606815567475,
+      "val_loss": 0.004404865379910916
+    },
+    {
+      "epoch": 17,
+      "train_loss": 0.0015406816972678664,
+      "val_loss": 0.004505885788239539
+    },
+    {
+      "epoch": 18,
+      "train_loss": 0.0014984662781796412,
+      "val_loss": 0.004484602494630963
+    },
+    {
+      "epoch": 19,
+      "train_loss": 0.0015167714041096486,
+      "val_loss": 0.004590617376379669
+    },
+    {
+      "epoch": 20,
+      "train_loss": 0.0014845889589027656,
+      "val_loss": 0.0046201505581848325
+    },
+    {
+      "epoch": 21,
+      "train_loss": 0.0014562026095662932,
+      "val_loss": 0.004616835399065167
+    },
+    {
+      "epoch": 22,
+      "train_loss": 0.001433070501565489,
+      "val_loss": 0.004346302209887654
+    },
+    {
+      "epoch": 23,
+      "train_loss": 0.0014113844831054722,
+      "val_loss": 0.004329729557503015
+    },
+    {
+      "epoch": 24,
+      "train_loss": 0.0013925848430059603,
+      "val_loss": 0.004667449335101992
+    },
+    {
+      "epoch": 25,
+      "train_loss": 0.0013827274554248726,
+      "val_loss": 0.004644855950027704
+    },
+    {
+      "epoch": 26,
+      "train_loss": 0.0013762994222990576,
+      "val_loss": 0.004692089301533997
+    }
+  ],
+  "checkpoint": "/Users/admin/Documents/Codex/2026-08-02/ao/work/MoveGuard/checkpoints/wrist_refiner_20k_v1/best.pt"
+}

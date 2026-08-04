@@ -1,0 +1,8 @@
+{
+  "seed": 20260804,
+  "input": "MediaPipe 33 normalized landmarks + 33 world landmarks (full-body context)",
+  "output": "24 joints x 3 global AI-Hub coordinates",
+  "split_rule": "reuse original 2D actor+action groups",
+  "coordinate_interpretation": "global JSON units; values strongly consistent with millimetres, official unit not explicit",
+  "test_not_used_for_selection": true
+}

@@ -140,11 +140,11 @@ export default function Dashboard() {
           </div>
         </a>
         <nav className="product-nav" aria-label="MoveGuard 주요 메뉴">
-          <a href="/">실시간 측정</a>
-          <a href="/video-analysis">영상 분석</a>
-          <a className="active" href="/dashboard" aria-current="page">
-            분석 대시보드
-          </a>
+          <a className="active" href="/dashboard" aria-current="page">대시보드</a>
+          <a href="/">실시간 분석</a>
+          <a href="/history">작업자 관리</a>
+          <a href="/history">분석 기록</a>
+          <a href="/history">리포트</a>
         </nav>
         <div className="privacy-chip">
           <span className="privacy-dot" aria-hidden="true" />
@@ -156,16 +156,30 @@ export default function Dashboard() {
         <div className="dashboard-hero">
           <div>
             <p className="eyebrow">POSTURE ANALYTICS</p>
-            <h1>측정 결과를 한눈에 확인하세요</h1>
+            <h1>작업장 전체 대시보드</h1>
             <p>
               측정을 종료하면 시간, 위험 자세 비율, 부위별 최대 각도가 자동으로
               기록됩니다.
             </p>
           </div>
-          <a className="button button-primary dashboard-cta" href="/">
-            새 측정 시작
-          </a>
+          <div className="dashboard-actions">
+            <a className="button button-secondary dashboard-cta" href="/history">개인 분석 기록</a>
+            <a className="button button-primary dashboard-cta" href="/">새 분석 시작</a>
+          </div>
         </div>
+
+        {(!latest || loadState !== "ready") && (
+          <section className="latest-grid" aria-label="작업장 전체 위험도 빈 상태">
+            <article className="dashboard-card metric-overview-card">
+              <div className="dashboard-card-heading"><div><p className="panel-kicker">WORKPLACE MONITOR</p><h2>작업장 전체 부위별 위험도 모니터</h2></div></div>
+              <p>분석 결과가 저장되면 부위별 위험도가 이곳에 표시됩니다.</p>
+            </article>
+            <article className="dashboard-card risk-overview-card">
+              <div className="dashboard-card-heading"><div><p className="panel-kicker">EXPOSURE TREND</p><h2>작업장 전체 부위별 위험 노출률</h2></div></div>
+              <p>최근 7일 부위별 추이는 분석 기록이 생성된 뒤 표시됩니다.</p>
+            </article>
+          </section>
+        )}
 
         {loadState === "loading" && (
           <div className="dashboard-loading" aria-live="polite">
@@ -209,12 +223,12 @@ export default function Dashboard() {
           <>
             <section className="summary-grid" aria-label="전체 측정 요약">
               <article className="summary-card">
-                <span className="summary-label">전체 측정</span>
+                <span className="summary-label">오늘 분석 인원</span>
                 <strong>{sessions.length}<small>회</small></strong>
                 <p>저장된 측정 세션 수</p>
               </article>
               <article className="summary-card">
-                <span className="summary-label">누적 측정 시간</span>
+                <span className="summary-label">총 분석 시간</span>
                 <strong className="summary-value-small">
                   {formatDuration(summary.totalSeconds)}
                 </strong>
@@ -223,12 +237,12 @@ export default function Dashboard() {
               <article
                 className={`summary-card ${summary.warningRate >= 30 ? "summary-warning" : ""}`}
               >
-                <span className="summary-label">주의·위험 비율</span>
+                <span className="summary-label">위험 이벤트</span>
                 <strong>{summary.warningRate}<small>%</small></strong>
                 <p>전체 인식 구간 중 위험 비율</p>
               </article>
               <article className="summary-card">
-                <span className="summary-label">가장 잦은 위험 부위</span>
+                <span className="summary-label">고위험 작업자</span>
                 <strong className="summary-value-small">
                   {summary.mainMetricWarnings > 0
                     ? METRIC_LABELS[summary.mainMetric]
@@ -307,7 +321,7 @@ export default function Dashboard() {
                 <div className="dashboard-card-heading">
                   <div>
                     <p className="panel-kicker">AVERAGE &amp; MAXIMUM ANGLES</p>
-                    <h2>최근 측정 부위별 평균·최대값</h2>
+                    <h2>작업장 전체 부위별 위험도 모니터</h2>
                   </div>
                   <span className="estimate-chip">평균 + 최대</span>
                 </div>
@@ -369,7 +383,7 @@ export default function Dashboard() {
               <div className="dashboard-card-heading">
                 <div>
                   <p className="panel-kicker">SESSION HISTORY</p>
-                  <h2>최근 측정 기록</h2>
+                  <h2>작업장 전체 부위별 위험 노출률 · 최근 7일 부위별 추이</h2>
                 </div>
                 <span className="history-count">최근 {sessions.length}회</span>
               </div>

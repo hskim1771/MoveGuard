@@ -106,6 +106,12 @@ type ServerAnalysis = {
   quality: ServerPersonAnalysis["quality"];
   elapsed_ms: number;
   video_stored: boolean;
+  pose_refiner?: {
+    active: boolean;
+    model: string | null;
+    purpose: string;
+    rula_accuracy_claimed: boolean;
+  };
 };
 
 type SessionAccumulator = {
@@ -1305,7 +1311,7 @@ export default function CameraPrototype() {
 
           <div className="quality-card">
             <div className="quality-row">
-              <span>선택한 사람 인식 신뢰도</span>
+              <span>관절 검출 신뢰도 · 참고값</span>
               <strong>
                 {hasPose ? `${selectedMetrics.confidence}%` : "—"}
               </strong>
@@ -1380,8 +1386,8 @@ export default function CameraPrototype() {
                     <strong>{detectedServerJoints}개</strong>
                   </div>
                   <div>
-                    <span>검출 신뢰도</span>
-                    <strong>{Math.round(selectedServerPerson.pose.confidence * 100)}%</strong>
+                    <span>관절 검출 신뢰도 · 참고값</span>
+                    <strong>{Math.min(99.9, Math.floor(selectedServerPerson.pose.confidence * 1000) / 10)}%</strong>
                   </div>
                 </div>
                 <div className="server-angle-list">
@@ -1392,7 +1398,11 @@ export default function CameraPrototype() {
                   ))}
                 </div>
                 <small>
-                  {analysisModel === "rtmw" ? "RTMW-l 384×288" : "MediaPipe Baseline"} ·{" "}
+                  {analysisModel === "rtmw"
+                    ? "RTMW-l 384×288"
+                    : serverAnalysis?.pose_refiner?.active
+                      ? "MediaPipe + 산업현장 관절 좌표 보정"
+                      : "MediaPipe Baseline"} ·{" "}
                   {serverAnalysis?.elapsed_ms ?? 0}ms · 프레임 저장 없음
                 </small>
               </>
