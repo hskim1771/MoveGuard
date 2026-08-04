@@ -23,6 +23,7 @@
 artifacts/
 data/human_pose_3d_sample/
 checkpoints/human_pose_3d_v1/
+checkpoints/human_pose_3d_5k_wrist_v1/
 *.zip
 .venv/
 __pycache__/
@@ -48,6 +49,7 @@ next-env.d.ts
 /.codex-runtime/
 /outputs/
 /work/
+results/**/run.log
 /backend/.venv/
 venv/
 __pycache__/
