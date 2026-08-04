@@ -36,3 +36,23 @@ was not used for model or epoch selection.
 - The 3-D `3d_rot` vector exists, but its components are not explicitly named roll/pitch/yaw in the JSON.
 - A separate 3-D coordinate experiment is required before claiming 3-D wrist accuracy.
 - Camera footage and additional workers must be evaluated before production deployment.
+
+## Wrist rotation pilot
+
+The 3,819 image-to-3D-label links were evaluated separately. Actor + action groups
+were kept wholly inside train, validation, or test (2,726 / 519 / 574 images).
+MediaPipe normalized and world landmarks were used to predict the left and right
+`3d_rot` three-component vectors.
+
+| Model | Mean circular error | Within 5 | Within 10 | Within 15 |
+|---|---:|---:|---:|---:|
+| Training-set mean | 4.18 | 72.97% | 87.77% | 95.39% |
+| Ridge | 4.86 | 66.23% | 86.02% | 94.75% |
+| MLP | 4.44 | 68.56% | 88.50% | 95.77% |
+
+The MLP did not beat the constant baseline on mean error and improved the within-10
+rate by only 0.73 percentage points. It is therefore rejected for production RULA
+wrist scoring. AI-Hub describes these values as roll, pitch, and yaw, but the JSON
+does not explicitly name the order of the three array elements. Axis semantics and
+neutral-angle calibration must be confirmed before flexion/extension or twist scores
+can be derived.
