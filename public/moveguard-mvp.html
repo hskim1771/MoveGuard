@@ -817,7 +817,7 @@ function renderPoseResult(result, errorMessage=''){
       <div class="pose-result-item"><small>RULA</small><b>${rula.final_score ?? '측정 불가'}</b></div>
       <div class="pose-result-item"><small>위험 수준</small><b>${riskLabels[rula.risk_level] || rula.risk_level || '측정 불가'}</b></div>
     </div>
-    <p class="pose-result-note">처리시간 ${Math.round(result.elapsed_ms || 0)}ms · 정확도는 전문가 정답(Ground Truth)이 없으면 표시하지 않습니다.${result.quality?.issues?.length ? ` 확인: ${result.quality.issues.slice(0,2).join(', ')}` : ''}</p>`;
+    <p class="pose-result-note">${result.pose_refiner?.active ? 'MediaPipe + 산업현장 관절 좌표 보정 · ' : ''}처리시간 ${Math.round(result.elapsed_ms || 0)}ms · 좌표 보정 성능과 RULA 정확도는 서로 다른 지표입니다.${result.quality?.issues?.length ? ` 확인: ${result.quality.issues.slice(0,2).join(', ')}` : ''}</p>`;
 }
 
 async function requestServerAnalysis(imageBlob, options={}){

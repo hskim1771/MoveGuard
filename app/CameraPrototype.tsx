@@ -106,6 +106,12 @@ type ServerAnalysis = {
   quality: ServerPersonAnalysis["quality"];
   elapsed_ms: number;
   video_stored: boolean;
+  pose_refiner?: {
+    active: boolean;
+    model: string | null;
+    purpose: string;
+    rula_accuracy_claimed: boolean;
+  };
 };
 
 type SessionAccumulator = {
@@ -1392,7 +1398,11 @@ export default function CameraPrototype() {
                   ))}
                 </div>
                 <small>
-                  {analysisModel === "rtmw" ? "RTMW-l 384×288" : "MediaPipe Baseline"} ·{" "}
+                  {analysisModel === "rtmw"
+                    ? "RTMW-l 384×288"
+                    : serverAnalysis?.pose_refiner?.active
+                      ? "MediaPipe + 산업현장 관절 좌표 보정"
+                      : "MediaPipe Baseline"} ·{" "}
                   {serverAnalysis?.elapsed_ms ?? 0}ms · 프레임 저장 없음
                 </small>
               </>
