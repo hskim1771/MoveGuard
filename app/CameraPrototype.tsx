@@ -50,7 +50,7 @@ type DetectedPerson = {
 };
 
 type ServerStatus = "disabled" | "checking" | "online" | "offline";
-type AnalysisModel = "baseline" | "rtmw";
+type AnalysisModel = "baseline" | "rtmw" | "industrial_clean_aug";
 type AnalysisRequestStatus =
   | "idle"
   | "loading"
@@ -1360,6 +1360,13 @@ export default function CameraPrototype() {
               >
                 RTMW-l
               </button>
+              <button
+                className={analysisModel === "industrial_clean_aug" ? "selected" : ""}
+                onClick={() => handleAnalysisModelChange("industrial_clean_aug")}
+                type="button"
+              >
+                산업현장 정제·증강
+              </button>
             </div>
             <div className={`analysis-state state-${serverRequestStatus}`} aria-live="polite">
               {analysisStatusCopy(serverRequestStatus)}
@@ -1368,6 +1375,8 @@ export default function CameraPrototype() {
               <p className="server-state-copy">
                 {analysisModel === "rtmw"
                   ? "RTMW-l이 원본 프레임의 133개 전신 관절을 분석하고 있어요."
+                  : analysisModel === "industrial_clean_aug"
+                    ? "MediaPipe 관절을 산업현장 정제·증강 모델로 보정하고 있어요."
                   : "MediaPipe 기준 프레임을 분석하고 있어요."}
               </p>
             ) : serverStatus === "online" && selectedServerPerson ? (
@@ -1400,6 +1409,8 @@ export default function CameraPrototype() {
                 <small>
                   {analysisModel === "rtmw"
                     ? "RTMW-l 384×288"
+                    : analysisModel === "industrial_clean_aug"
+                      ? "MediaPipe + 산업현장 정제·증강 보정"
                     : serverAnalysis?.pose_refiner?.active
                       ? "MediaPipe + 산업현장 관절 좌표 보정"
                       : "MediaPipe Baseline"} ·{" "}

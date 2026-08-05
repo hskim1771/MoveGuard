@@ -60,6 +60,7 @@ next-env.d.ts
 results/**/run.log
 results/**/*eval*.log
 results/**/*export.log
+results/*_run.log
 results/**/progress.json
 results/**/industrial_refiner_errors.jsonl*
 results/**/*.invalid_index_mapping
@@ -70,3 +71,12 @@ __pycache__/
 /.pytest_cache/
 Sample.zip
 Sample/
+
+# Local pose/RULA evaluation caches and review artifacts (may contain source paths/keypoints)
+experiments/**/independent_test_pose_cache.jsonl
+experiments/**/frame_metrics.jsonl
+experiments/**/manual_review_queue.jsonl
+experiments/**/expert_manual_review_template.csv
+experiments/**/*.log
+experiments/industrial_clean_aug_v1/clean_train_manifest.jsonl
+tsconfig.tsbuildinfo

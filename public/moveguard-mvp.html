@@ -312,7 +312,7 @@
       <p style="font-size:14px;">이 MVP는 <b>RULA(상지 중심 정밀평가도구)</b> 한 종류만 자동화합니다. REBA·OWAS 등 다른 도구는 이후 여유가 되면 추가할 계획이며, 지금은 RULA가 문제없이 끝까지 동작하는 것이 목표입니다.</p>
 
       <div class="notice">
-        <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. Baseline MediaPipe와 RTMW-l 중 하나를 실제로 호출하고 RULA Table A/B/C 조견표를 동일하게 적용합니다. RTMW-l은 손목 굽힘을 추론하지만 단일 카메라의 손목 비틀림은 신뢰하기 어려워 중립 범위로 가정하며, 실제 제출용으로는 전문가 검토가 반드시 필요합니다.
+        <b>MVP 안내.</b> 이 화면은 실제 현장 판정용이 아니라 개념검증(PoC) 데모입니다. Baseline MediaPipe, 산업현장 정제·증강 보정, RTMW-l 중 하나를 실제로 호출하고 RULA Table A/B/C 조견표를 동일하게 적용합니다. 단일 카메라의 손목 비틀림은 신뢰하기 어려워 중립 범위로 가정하며, 실제 제출용으로는 전문가 검토가 반드시 필요합니다.
         <br><br><b>MoveGuard 웹 안에서 바로 영상을 선택해 분석할 수 있습니다.</b> 로컬 AI 서버가 연결되지 않은 환경에서도 브라우저 RULA 분석은 계속 동작합니다.
       </div>
 
@@ -393,6 +393,7 @@
         </label>
         <select id="poseModelSelect" aria-label="자세 추론 모델 선택">
           <option value="baseline">Baseline · MediaPipe Pose</option>
+          <option value="industrial_clean_aug">산업현장 정제·증강 · MediaPipe 보정</option>
           <option value="rtmw">RTMW-l · WholeBody 384×288</option>
         </select>
       </div>
@@ -777,8 +778,8 @@ async function checkApiHealth(){
     const selectedStatus = health.posture_analysis_v2?.models?.[state.poseModel]?.pose;
     setApiStatus(
       selectedStatus?.configured
-        ? `FastAPI 연결됨 · ${state.poseModel==='rtmw'?'RTMW-l':'MediaPipe'} 준비됨`
-        : `FastAPI 연결됨 · ${state.poseModel==='rtmw'?'RTMW-l':'MediaPipe'} 설치 확인 필요`,
+        ? `FastAPI 연결됨 · ${selectedModelLabel()} 준비됨`
+        : `FastAPI 연결됨 · ${selectedModelLabel()} 설치 확인 필요`,
       selectedStatus?.configured ? 'online' : 'offline'
     );
   }catch{
@@ -789,7 +790,9 @@ async function checkApiHealth(){
 }
 
 function selectedModelLabel(){
-  return state.poseModel==='rtmw' ? 'RTMW-l 384×288' : 'MediaPipe Pose';
+  if(state.poseModel==='rtmw') return 'RTMW-l 384×288';
+  if(state.poseModel==='industrial_clean_aug') return '산업현장 정제·증강 모델';
+  return 'MediaPipe Pose';
 }
 
 function renderPoseResult(result, errorMessage=''){
@@ -1498,10 +1501,10 @@ window.computeAndShowResults = async function(){
     return;
   }
 
-  if(state.poseModel==='rtmw'){
+  if(state.poseModel!=='baseline'){
     qualityNotice.className = 'quality-notice danger';
-    qualityNotice.textContent = 'RTMW-l 결과가 측정 불가이거나 서버에 연결되지 않았습니다. Baseline 값으로 바꾸어 표시하지 않았습니다. 촬영 상태를 확인하거나 Baseline 모델을 선택해 주세요.';
-    progressLine.textContent = 'RTMW-l 최종 RULA 측정 불가';
+    qualityNotice.textContent = `${selectedModelLabel()} 결과가 측정 불가이거나 서버에 연결되지 않았습니다. Baseline 값으로 바꾸어 표시하지 않았습니다. 촬영 상태를 확인하거나 Baseline 모델을 선택해 주세요.`;
+    progressLine.textContent = `${selectedModelLabel()} 최종 RULA 측정 불가`;
     return;
   }
 
@@ -1541,7 +1544,7 @@ function renderResults(){
   const s = state.scores;
   const sourceLabel = state.sourceMode==='live' ? '실시간 카메라 측정' : '촬영 영상 업로드';
   document.getElementById('analysisSourceOut').textContent =
-    `${sourceLabel}의 최고 위험 자세를 ${s.analysisModel==='rtmw'?'RTMW-l 384×288':s.analysisModel==='baseline'?'MediaPipe 서버':'브라우저 MediaPipe'}로 분석하고 동일한 RULA Table A / B / C를 적용했습니다. 유효 프레임 ${state.quality?.usableFrames??0}개.`;
+    `${sourceLabel}의 최고 위험 자세를 ${s.analysisModel==='rtmw'?'RTMW-l 384×288':s.analysisModel==='industrial_clean_aug'?'산업현장 정제·증강 모델':s.analysisModel==='baseline'?'MediaPipe 서버':'브라우저 MediaPipe'}로 분석하고 동일한 RULA Table A / B / C를 적용했습니다. 유효 프레임 ${state.quality?.usableFrames??0}개.`;
   document.getElementById('wristResultNotice').textContent = s.wristMeasured
     ? '손목 굽힘은 관절 추론값을 반영했습니다. 단일 카메라로 신뢰하기 어려운 손목 비틀림만 중립 범위로 가정했습니다.'
     : '서버에서 손목 각도를 계산하지 못해 브라우저 Baseline 대체값을 사용했습니다. 실제 손목 자세에 따라 결과가 달라질 수 있습니다.';

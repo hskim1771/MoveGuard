@@ -1,0 +1,451 @@
+{
+  "definition": "80% frame resampling repeatability; not expert RULA accuracy",
+  "source": "fixed independent AI-Hub industrial test split MediaPipe raw cache",
+  "detected_images": 14744,
+  "groups": 21,
+  "repeats_per_group": 100,
+  "sample_ratio": 0.8,
+  "seed": 20260805,
+  "methods": {
+    "max": {
+      "exact_repeatability": 1.0,
+      "mean_absolute_score_change": 0.0,
+      "changed_runs": 0,
+      "total_runs": 2100
+    },
+    "top3_median": {
+      "exact_repeatability": 1.0,
+      "mean_absolute_score_change": 0.0,
+      "changed_runs": 0,
+      "total_runs": 2100
+    },
+    "top3_mean": {
+      "exact_repeatability": 1.0,
+      "mean_absolute_score_change": 0.0,
+      "changed_runs": 0,
+      "total_runs": 2100
+    }
+  },
+  "per_group": [
+    {
+      "group_id": "F01_P001_A2_W001_D2022-08-23-10-12-00",
+      "frames": 137,
+      "sampled_frames": 110,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F01_P005_A2_W002_D2022-08-23-10-50-00",
+      "frames": 581,
+      "sampled_frames": 465,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F01_P006_A1_W003_D2022-08-23-11-29-22",
+      "frames": 302,
+      "sampled_frames": 242,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F01_P007_A3_W005_D2022-08-23-13-23-00",
+      "frames": 486,
+      "sampled_frames": 389,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F02_P003_A3_W003_D2022-08-24-11-36-30",
+      "frames": 143,
+      "sampled_frames": 114,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F02_P004_A1_W005_D2022-08-24-13-30-24",
+      "frames": 490,
+      "sampled_frames": 392,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F02_P006_A3_W007_D2022-08-24-14-06-57",
+      "frames": 380,
+      "sampled_frames": 304,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F02_P010_A2_W011_D2022-08-24-16-27-50",
+      "frames": 223,
+      "sampled_frames": 178,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F03_P001_A2_W001_D2022-08-25-10-32-20",
+      "frames": 939,
+      "sampled_frames": 751,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F03_P002_A2_W002_D2022-08-25-11-08-40",
+      "frames": 563,
+      "sampled_frames": 450,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F03_P002_A3_W002_D2022-08-25-11-08-33",
+      "frames": 537,
+      "sampled_frames": 430,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F03_P005_A1_W005_D2022-08-25-13-54-40",
+      "frames": 963,
+      "sampled_frames": 770,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F03_P007_A2_W007_D2022-08-25-14-13-22",
+      "frames": 352,
+      "sampled_frames": 282,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F04_P001_A1_W001_D2022-09-16-10-15-12",
+      "frames": 433,
+      "sampled_frames": 346,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F04_P004_A2_W003_D2022-09-16-15-20-53",
+      "frames": 35,
+      "sampled_frames": 28,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F04_P005_A3_W004_D2022-09-16-14-27-23",
+      "frames": 632,
+      "sampled_frames": 506,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F05_P001_A1_W001_D2022-09-23-10-07-01",
+      "frames": 136,
+      "sampled_frames": 109,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F05_P002_A3_W002_D2022-09-23-11-25-52",
+      "frames": 1029,
+      "sampled_frames": 823,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F05_P002_A3_W002_D2022-09-23-13-29-32",
+      "frames": 1937,
+      "sampled_frames": 1550,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F05_P002_A3_W002_D2022-09-23-13-50-32",
+      "frames": 183,
+      "sampled_frames": 146,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    },
+    {
+      "group_id": "F05_P005_A2_W004_D2022-09-23-16-20-03",
+      "frames": 2429,
+      "sampled_frames": 1943,
+      "full_scores": {
+        "max": 4.0,
+        "top3_median": 4.0,
+        "top3_mean": 4.0
+      },
+      "exact_repeatability": {
+        "max": 1.0,
+        "top3_median": 1.0,
+        "top3_mean": 1.0
+      },
+      "mean_absolute_score_change": {
+        "max": 0.0,
+        "top3_median": 0.0,
+        "top3_mean": 0.0
+      }
+    }
+  ]
+}

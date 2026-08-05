@@ -83,11 +83,12 @@ def _baseline(landmarks: np.ndarray) -> np.ndarray:
 class PoseRefiner:
     """Apply the frozen joint-domain model without changing MediaPipe detection."""
 
-    def __init__(self, checkpoint_path: Path) -> None:
+    def __init__(self, checkpoint_path: Path, *, apply_hand_centers: bool = False) -> None:
         checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=False)
         self.model = Corrector()
         self.model.load_state_dict(checkpoint["state_dict"])
         self.model.eval()
+        self.apply_hand_centers = apply_hand_centers
 
     @torch.inference_mode()
     def predict(self, landmarks: Sequence[object]) -> list[RefinedLandmark]:
@@ -118,6 +119,22 @@ class PoseRefiner:
                 visibility=original.visibility,
                 presence=original.presence,
             )
+        if self.apply_hand_centers:
+            # Preserve the MediaPipe hand-point shape while moving its center
+            # to the AI-Hub-supervised hand-center prediction.
+            for human_index, mediapipe_indices in ((22, (17, 19, 21)), (23, (18, 20, 22))):
+                current_center = normalized[list(mediapipe_indices), :2].mean(0)
+                delta = predicted[human_index] - current_center
+                for mediapipe_index in mediapipe_indices:
+                    point = normalized[mediapipe_index, :2] + delta
+                    original = output[mediapipe_index]
+                    output[mediapipe_index] = RefinedLandmark(
+                        x=float(np.clip(left + point[0] * width, -0.25, 1.25)),
+                        y=float(np.clip(top + point[1] * height, -0.25, 1.25)),
+                        z=original.z,
+                        visibility=original.visibility,
+                        presence=original.presence,
+                    )
         return output
 
     @staticmethod
