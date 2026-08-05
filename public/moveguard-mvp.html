@@ -319,7 +319,7 @@
 
       <div class="consent-box">
         <h3>근로자 촬영·분석 동의</h3>
-        <p>현재 기본 분석은 이 브라우저 안에서 처리됩니다. 대표 사진 1장은 법정서식 미리보기에만 사용되며, 초기화하거나 화면을 닫으면 사라집니다. 로컬 FastAPI가 연결된 경우 원본 영상 전체가 아니라 최고 위험 프레임 사진 1장과 관절 좌표만 전송하며 서버에는 저장하지 않습니다.</p>
+        <p>현재 기본 분석은 이 브라우저 안에서 처리됩니다. 대표 사진은 얼굴을 비식별화한 뒤 법정서식 미리보기에만 사용되며, 초기화하거나 화면을 닫으면 사라집니다. 로컬 FastAPI가 연결된 경우 원본 영상 전체가 아니라 최고 위험 프레임 사진 1장과 관절 좌표만 전송하며 서버에는 저장하지 않습니다.</p>
         <label>
           <input type="checkbox" id="fWorkerConsent">
           <span>촬영 목적과 처리 방식을 안내받았으며, 자세 분석과 대표 사진 생성에 동의합니다.</span>
@@ -342,6 +342,10 @@
       <input type="text" id="fWorkerName" list="workerNameOptions" placeholder="예: 김작업자" autocomplete="name">
       <datalist id="workerNameOptions"><option value="미지정 작업자"></option></datalist>
       <p class="help">개인 분석 기록과 작업장 전체 통계를 분리하기 위한 작업자 식별값입니다.</p>
+      <label class="consent-box" style="margin-top:10px;">
+        <input type="checkbox" id="fPseudonymizeWorker" checked>
+        <span>저장되는 분석 기록에서는 작업자 이름을 가명 ID로 변환합니다. 현재 보고서 화면에는 입력한 이름이 표시됩니다.</span>
+      </label>
 
       <h3>2. 분석 설정</h3>
 
@@ -438,6 +442,9 @@
         </div>
       </div>
       <div class="quality-notice" id="qualityNotice" role="status" aria-live="polite"></div>
+      <div style="margin-top:10px;text-align:right;">
+        <button class="btn secondary" id="downloadErrorLogBtn" type="button">오류 로그 다운로드</button>
+      </div>
 
       <div id="supplementBox" style="display:none;margin-top:22px;">
         <div class="group-box">
@@ -553,6 +560,70 @@ import { FilesetResolver, PoseLandmarker } from "https://cdn.jsdelivr.net/npm/@m
 const ANALYSIS_API_URL = (window.MOVEGUARD_CONFIG.analysisApiUrl || '').replace(/\/$/, '');
 const MIN_FRAME_CONFIDENCE = 0.55;
 const MIN_USABLE_FRAMES = 5;
+const ERROR_LOG_KEY = 'moveguard.safeErrorLogs.v1';
+const DEVICE_SALT_KEY = 'moveguard.localPseudonymSalt.v1';
+
+function activeScreen(){
+  return document.querySelector('.step.active')?.id || 'unknown';
+}
+
+function recordOperationalError(code, error, context={}){
+  try{
+    const previous = JSON.parse(localStorage.getItem(ERROR_LOG_KEY) || '[]');
+    const message = String(error?.message || error || 'unknown error')
+      .replace(/([?&](?:key|token|api_key|apikey)=)[^&\s]+/gi, '$1[REDACTED]')
+      .slice(0, 300);
+    previous.push({
+      timestamp:new Date().toISOString(),
+      error_code:String(code).slice(0, 80),
+      screen:activeScreen(),
+      model:state?.poseModel || 'baseline',
+      api_configured:Boolean(ANALYSIS_API_URL),
+      source_mode:state?.sourceMode || 'unknown',
+      message,
+      context:Object.fromEntries(Object.entries(context).filter(([,value])=>
+        ['string','number','boolean'].includes(typeof value)
+      ).slice(0, 8))
+    });
+    localStorage.setItem(ERROR_LOG_KEY, JSON.stringify(previous.slice(-50)));
+  }catch{
+    // 로그 저장 실패가 분석 흐름을 막지 않도록 한다.
+  }
+}
+
+function downloadOperationalLogs(){
+  const logs = JSON.parse(localStorage.getItem(ERROR_LOG_KEY) || '[]');
+  const payload = {
+    schema_version:'1.0',
+    privacy_notice:'원본 영상, 이미지, 작업자 이름, 관절좌표, API Key를 포함하지 않음',
+    exported_at:new Date().toISOString(),
+    logs
+  };
+  const url = URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)], {type:'application/json'}));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `moveguard-error-log-${new Date().toISOString().replace(/[:.]/g,'-')}.json`;
+  link.click();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+
+async function pseudonymizeWorkerName(workerName){
+  try{
+    let salt = localStorage.getItem(DEVICE_SALT_KEY);
+    if(!salt){
+      salt = crypto.randomUUID();
+      localStorage.setItem(DEVICE_SALT_KEY, salt);
+    }
+    const bytes = new TextEncoder().encode(`${salt}:${workerName}`);
+    const digest = await crypto.subtle.digest('SHA-256', bytes);
+    const code = [...new Uint8Array(digest)].slice(0, 5).map(value=>value.toString(16).padStart(2,'0')).join('').toUpperCase();
+    return `작업자-${code}`;
+  }catch(error){
+    recordOperationalError('PSEUDONYM_GENERATION_FAILED', error);
+    return `작업자-${crypto.randomUUID().slice(0,8).toUpperCase()}`;
+  }
+}
+
 const state = {
   survey:{},
   consent:null,
@@ -569,7 +640,8 @@ const state = {
   measurementStartedAt:null,
   measurementEndedAt:null,
   dashboardSessionId:null,
-  dashboardSaved:false
+  dashboardSaved:false,
+  privacy:{faceDeidentified:false}
 };
 window.state = state;
 
@@ -605,13 +677,16 @@ window.startSurvey = function(){
 
 document.getElementById('fSurveyDate').valueAsDate = new Date();
 
-window.validateStep2 = function(){
+window.validateStep2 = async function(){
   const workerName = document.getElementById('fWorkerName').value.trim();
   const jobName = document.getElementById('fJobName').value.trim();
   if(!workerName){ alert('분석할 작업자를 선택하거나 이름을 입력해 주세요.'); return; }
   if(!jobName){ alert('작업명은 최소한 입력해 주세요.'); return; }
+  const pseudonymize = document.getElementById('fPseudonymizeWorker').checked;
   state.survey = {
     workerName: workerName,
+    pseudonymize,
+    workerPseudonym:pseudonymize ? await pseudonymizeWorkerName(workerName) : workerName,
     regular: document.getElementById('chkRegular').checked,
     sick: document.getElementById('chkSick').checked,
     newEquip: document.getElementById('chkNew').checked,
@@ -697,6 +772,7 @@ const modelStatus = document.getElementById('modelStatus');
 const progressLine = document.getElementById('progressLine');
 const analyzeBtn = document.getElementById('analyzeBtn');
 const resetBtn = document.getElementById('resetBtn');
+const downloadErrorLogBtn = document.getElementById('downloadErrorLogBtn');
 const supplementBox = document.getElementById('supplementBox');
 const toResultsBtn = document.getElementById('toResultsBtn');
 const apiStatus = document.getElementById('apiStatus');
@@ -732,6 +808,40 @@ function stopLiveTracks(){
     liveStream = null;
   }
   if(video.srcObject) video.srcObject = null;
+}
+
+downloadErrorLogBtn.addEventListener('click', downloadOperationalLogs);
+
+function createPrivacySafePhoto(sourceCanvas, landmarks){
+  const safe = document.createElement('canvas');
+  safe.width = sourceCanvas.width;
+  safe.height = sourceCanvas.height;
+  const safeContext = safe.getContext('2d');
+  safeContext.drawImage(sourceCanvas, 0, 0);
+  const facePoints = [0,7,8]
+    .map(index=>landmarks?.[index])
+    .filter(point=>point && Number.isFinite(point.x) && Number.isFinite(point.y));
+  if(facePoints.length<2) return {canvas:safe, faceDeidentified:false};
+  const xs = facePoints.map(point=>point.x*safe.width);
+  const ys = facePoints.map(point=>point.y*safe.height);
+  const centerX = xs.reduce((sum,value)=>sum+value,0)/xs.length;
+  const centerY = ys.reduce((sum,value)=>sum+value,0)/ys.length;
+  const earSpan = Math.max(...xs)-Math.min(...xs);
+  const boxWidth = Math.max(earSpan*2.2, safe.width*0.09);
+  const boxHeight = boxWidth*1.25;
+  const x = Math.max(0, Math.round(centerX-boxWidth/2));
+  const y = Math.max(0, Math.round(centerY-boxHeight*0.46));
+  const width = Math.min(safe.width-x, Math.round(boxWidth));
+  const height = Math.min(safe.height-y, Math.round(boxHeight));
+  if(width<=0 || height<=0) return {canvas:safe, faceDeidentified:false};
+  const pixel = document.createElement('canvas');
+  pixel.width = 12;
+  pixel.height = Math.max(12, Math.round(12*height/width));
+  pixel.getContext('2d').drawImage(safe, x, y, width, height, 0, 0, pixel.width, pixel.height);
+  safeContext.imageSmoothingEnabled = false;
+  safeContext.drawImage(pixel, 0, 0, pixel.width, pixel.height, x, y, width, height);
+  safeContext.imageSmoothingEnabled = true;
+  return {canvas:safe, faceDeidentified:true};
 }
 
 function setMeasurementMode(mode){
@@ -783,7 +893,8 @@ async function checkApiHealth(){
         : `FastAPI 연결됨 · ${selectedModelLabel()} 설치 확인 필요`,
       selectedStatus?.configured ? 'online' : 'offline'
     );
-  }catch{
+  }catch(error){
+    recordOperationalError('ANALYSIS_API_HEALTH_FAILED', error, {endpoint:'health'});
     setApiStatus('서버 연결 실패 · 브라우저 분석 유지', 'offline');
   }finally{
     clearTimeout(timeout);
@@ -852,6 +963,7 @@ async function requestServerAnalysis(imageBlob, options={}){
     return result;
   }catch(error){
     state.serverAnalysis = null;
+    recordOperationalError('ANALYSIS_API_REQUEST_FAILED', error, {endpoint:'posture'});
     const message = error?.name==='AbortError' ? '서버 응답 시간이 초과되었습니다.' : error?.message;
     renderPoseResult(null, message);
     setApiStatus('서버 분석 실패 · 브라우저 Baseline 유지', 'offline');
@@ -886,8 +998,9 @@ async function requestAihubAnalysis(imageBlob){
     state.aihubAnalysis = result;
     setApiStatus('AI Hub 학습모델 비교 완료', 'online');
     return result;
-  }catch{
+  }catch(error){
     state.aihubAnalysis = null;
+    recordOperationalError('AIHUB_CLASSIFICATION_FAILED', error, {endpoint:'aihub_classify'});
     setApiStatus('AI Hub 분석 실패 · 브라우저 RULA 결과 유지', 'offline');
     return null;
   }finally{
@@ -913,6 +1026,7 @@ async function initModel(){
     analyzeBtn.disabled = false;
     startLiveBtn.disabled = false;
   }catch(e){
+    recordOperationalError('MEDIAPIPE_GPU_INIT_FAILED', e, {delegate:'GPU'});
     try{
       const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
       poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
@@ -923,6 +1037,7 @@ async function initModel(){
       analyzeBtn.disabled = false;
       startLiveBtn.disabled = false;
     }catch(e2){
+      recordOperationalError('MEDIAPIPE_MODEL_INIT_FAILED', e2, {delegate:'CPU'});
       modelStatus.textContent = '❌ 모델 로딩 실패: ' + e2.message;
     }
   }
@@ -1049,6 +1164,7 @@ function resetAnalysisState(sourceMode){
   state.aihubAnalysis = null;
   state.dashboardSaved = false;
   state.dashboardSessionId = crypto.randomUUID();
+  state.privacy = {faceDeidentified:false};
   supplementBox.style.display = 'none';
   toResultsBtn.disabled = true;
   qualityNotice.className = 'quality-notice';
@@ -1152,6 +1268,7 @@ startLiveBtn.addEventListener('click', async ()=>{
     progressLine.textContent = '카메라 측정 시작 · 몸 전체가 보이도록 자세를 잡아주세요.';
     liveFrameRequest = requestAnimationFrame(runLiveMeasurement);
   }catch(error){
+    recordOperationalError('CAMERA_START_FAILED', error, {permissionDenied:error?.name==='NotAllowedError'});
     stopLiveTracks();
     startLiveBtn.disabled = false;
     qualityNotice.className = 'quality-notice danger';
@@ -1207,7 +1324,9 @@ stopLiveBtn.addEventListener('click', async ()=>{
   };
 
   const captureCanvas = liveWorstCanvas;
-  state.capturedPhoto = captureCanvas.toDataURL('image/jpeg', 0.85);
+  const privacyPhoto = createPrivacySafePhoto(captureCanvas, worst.landmarks);
+  state.capturedPhoto = privacyPhoto.canvas.toDataURL('image/jpeg', 0.85);
+  state.privacy.faceDeidentified = privacyPhoto.faceDeidentified;
   const capturedBlob = await new Promise(resolve=>
     captureCanvas.toBlob(resolve, 'image/jpeg', 0.85)
   );
@@ -1316,7 +1435,9 @@ analyzeBtn.addEventListener('click', async ()=>{
   const capCanvas = document.createElement('canvas');
   capCanvas.width = video.videoWidth; capCanvas.height = video.videoHeight;
   capCanvas.getContext('2d').drawImage(video, 0, 0);
-  state.capturedPhoto = capCanvas.toDataURL('image/jpeg', 0.85);
+  const privacyPhoto = createPrivacySafePhoto(capCanvas, worst.landmarks);
+  state.capturedPhoto = privacyPhoto.canvas.toDataURL('image/jpeg', 0.85);
+  state.privacy.faceDeidentified = privacyPhoto.faceDeidentified;
   const capturedBlob = await new Promise(resolve=>
     capCanvas.toBlob(resolve, 'image/jpeg', 0.85)
   );
@@ -1395,7 +1516,7 @@ function buildDashboardSession(){
   );
   return {
     id:state.dashboardSessionId || crypto.randomUUID(),
-    workerName:state.survey.workerName || '미지정 작업자',
+    workerName:state.survey.workerPseudonym || state.survey.workerName || '미지정 작업자',
     jobName:state.survey.jobName || '미지정 작업',
     rulaScore:state.scores?.grand ?? null,
     startedAt,
@@ -1427,7 +1548,8 @@ async function saveDashboardSession(){
       state.dashboardSaved = true;
       state.dashboardSessionId = session.id;
     }
-  }catch{
+  }catch(error){
+    recordOperationalError('DASHBOARD_SESSION_SAVE_FAILED', error, {endpoint:'sessions'});
     // 보고서 생성은 대시보드 저장 실패와 관계없이 계속 동작합니다.
   }
 }
@@ -1656,6 +1778,7 @@ window.buildDocument = function(){
         <tr><th>작업명</th><td colspan="3">${sv.jobName}</td></tr>
         <tr><th>분석 방식</th><td colspan="3">${state.sourceMode==='live'?'실시간 카메라 측정':'촬영 영상 업로드'} · ${s.analysisModel==='rtmw'?'RTMW-l 384×288':s.analysisModel==='baseline'?'MediaPipe 서버':'브라우저 MediaPipe'}</td></tr>
         <tr><th>촬영·분석 동의</th><td colspan="3">${state.consent?.agreed ? '동의 완료 ('+new Date(state.consent.agreedAt).toLocaleString('ko-KR')+')' : '확인 필요'}</td></tr>
+        <tr><th>개인정보 보호</th><td colspan="3">서버 저장 작업자 ID: ${sv.workerPseudonym||'가명 미적용'} · 대표 사진 얼굴 비식별화: ${state.privacy?.faceDeidentified?'적용':'적용 불가/사진 없음'}</td></tr>
       </table>
     </div>
 
