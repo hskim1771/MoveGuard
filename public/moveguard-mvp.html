@@ -73,9 +73,10 @@
   .live-mode-card p{margin:0;color:#596776;font-size:12.5px;}
   .stage{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;}
   .video-box{flex:1 1 340px;min-width:260px;}
-  video,canvas{width:100%;border-radius:2px;background:#111;}
+  video,canvas{width:100%;border-radius:2px;}
   .canvas-wrap{position:relative;}
-  .canvas-wrap canvas{position:absolute;top:0;left:0;}
+  .canvas-wrap video{display:block;background:#111;}
+  .canvas-wrap canvas{position:absolute;top:0;left:0;background:transparent;pointer-events:none;}
   .side-info{flex:1 1 240px;min-width:220px;font-family:var(--mono);font-size:12px;}
   .live-risk{display:none;margin-top:12px;padding:12px 14px;border:1px solid var(--line);background:#f7f6f2;}
   .live-risk.visible{display:block;}
