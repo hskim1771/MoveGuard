@@ -131,12 +131,10 @@ export default function Dashboard() {
     <main className="dashboard-page">
       <header className="topbar dashboard-topbar">
         <a className="brand-lockup brand-link" href="/">
-          <div className="brand-mark" aria-hidden="true">
-            M
-          </div>
+          <div className="brand-mark" aria-hidden="true" />
           <div>
             <p className="brand-name">MoveGuard</p>
-            <p className="brand-caption">자세 분석 MVP</p>
+            <p className="brand-caption">자세 분석</p>
           </div>
         </a>
         <nav className="product-nav" aria-label="MoveGuard 주요 메뉴">
@@ -146,10 +144,6 @@ export default function Dashboard() {
           <a href="/history">분석 기록</a>
           <a href="/history">리포트</a>
         </nav>
-        <div className="privacy-chip">
-          <span className="privacy-dot" aria-hidden="true" />
-          영상 저장 없음 · 수치만 저장
-        </div>
       </header>
 
       <section className="dashboard-content">

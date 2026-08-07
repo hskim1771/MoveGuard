@@ -73,16 +73,13 @@ a {
 }
 
 .brand-mark {
-  align-items: center;
-  background: var(--navy);
-  border-radius: 13px;
-  color: var(--teal-bright);
-  display: flex;
-  font-size: 20px;
-  font-weight: 900;
+  background: url("/moveguard-logo.png") center / contain no-repeat;
+  color: transparent;
+  flex: 0 0 auto;
+  font-size: 0;
   height: 44px;
-  justify-content: center;
-  letter-spacing: -0.08em;
+  object-fit: contain;
+  object-position: center;
   width: 44px;
 }
 
@@ -1940,12 +1937,8 @@ body {
 }
 
 .brand-mark {
-  background: linear-gradient(145deg, #2f73ff, #174bc6);
-  border-radius: 14px;
-  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.35);
-  color: #ffffff;
+  filter: drop-shadow(0 8px 12px rgba(20, 75, 198, 0.3));
   height: 42px;
-  letter-spacing: -0.04em;
   width: 42px;
 }
 
@@ -2141,3 +2134,83 @@ body {
 }
 .dashboard-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
 .dashboard-card select { margin-top: 12px; min-width: 240px; padding: 12px 14px; border: 1px solid #d9e0e7; border-radius: 10px; background: white; }
+
+/* Worker history has a compact three-part layout, unlike the four-card dashboard. */
+.dashboard-content:has(#worker-select) .dashboard-hero {
+  align-items: center;
+  margin-bottom: 36px;
+}
+
+.dashboard-content:has(#worker-select) .dashboard-hero > div {
+  max-width: 680px;
+}
+
+.dashboard-content:has(#worker-select) .dashboard-hero .button {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 17px;
+  white-space: nowrap;
+}
+
+.dashboard-content:has(#worker-select) > .dashboard-card:has(#worker-select) {
+  align-items: center;
+  display: flex;
+  gap: 28px;
+  margin-bottom: 18px;
+  min-height: 112px;
+  padding: 26px 28px;
+}
+
+.dashboard-content:has(#worker-select) label[for="worker-select"] {
+  flex: 0 0 132px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.dashboard-content:has(#worker-select) #worker-select {
+  font-size: 15px;
+  height: 46px;
+  margin: 0;
+  max-width: 270px;
+  min-width: 0;
+  padding: 0 16px;
+  width: min(100%, 270px);
+}
+
+.dashboard-content:has(#worker-select) .summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 720px) {
+  .dashboard-content:has(#worker-select) .dashboard-hero {
+    gap: 22px;
+    margin-bottom: 28px;
+  }
+
+  .dashboard-content:has(#worker-select) .dashboard-hero .button {
+    width: 100%;
+  }
+
+  .dashboard-content:has(#worker-select) > .dashboard-card:has(#worker-select) {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px;
+  }
+
+  .dashboard-content:has(#worker-select) label[for="worker-select"] {
+    flex-basis: auto;
+  }
+
+  .dashboard-content:has(#worker-select) #worker-select {
+    max-width: none;
+    width: 100%;
+  }
+
+  .dashboard-content:has(#worker-select) .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

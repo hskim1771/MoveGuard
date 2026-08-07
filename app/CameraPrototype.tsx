@@ -1077,9 +1077,7 @@ export default function CameraPrototype() {
     <main className="app-shell">
       <header className="topbar">
         <div className="brand-lockup">
-          <div className="brand-mark" aria-hidden="true">
-            M
-          </div>
+          <div className="brand-mark" aria-hidden="true" />
           <div>
             <p className="brand-name">MoveGuard</p>
             <p className="brand-caption">카메라 자세 인식 시험판</p>
@@ -1092,10 +1090,6 @@ export default function CameraPrototype() {
           <a href="/video-analysis">영상 분석</a>
           <a href="/dashboard">분석 대시보드</a>
         </nav>
-        <div className="privacy-chip">
-          <span className="privacy-dot" aria-hidden="true" />
-          프레임 메모리 분석 · 원본 영상 저장 없음
-        </div>
       </header>
 
       <section className="hero">

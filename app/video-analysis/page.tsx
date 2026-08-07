@@ -16,9 +16,7 @@ export default function VideoAnalysisPage() {
     <main className="video-analysis-page">
       <header className="topbar video-analysis-topbar">
         <a className="brand-lockup brand-link" href="/">
-          <div className="brand-mark" aria-hidden="true">
-            M
-          </div>
+          <div className="brand-mark" aria-hidden="true" />
           <div>
             <p className="brand-name">MoveGuard</p>
             <p className="brand-caption">통합 RULA 측정</p>
@@ -30,10 +28,6 @@ export default function VideoAnalysisPage() {
           </a>
           <a href="/dashboard">분석 대시보드</a>
         </nav>
-        <div className="privacy-chip">
-          <span className="privacy-dot" aria-hidden="true" />
-          원본 영상 저장 없음 · 위험 프레임만 분석
-        </div>
       </header>
 
       <iframe
