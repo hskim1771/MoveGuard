@@ -28,6 +28,7 @@ export default function VideoAnalysisPage() {
           </a>
           <a href="/dashboard">분석 대시보드</a>
           <a href="/hazard-survey">일정관리</a>
+          <a href="/prevention-education">예방교육관리</a>
         </nav>
       </header>
 

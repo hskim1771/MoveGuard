@@ -142,6 +142,7 @@ export default function Dashboard() {
           <a href="/">실시간 분석</a>
           <a href="/history">작업자 관리</a>
           <a href="/hazard-survey">일정관리</a>
+          <a href="/prevention-education">예방교육관리</a>
           <a href="/history">분석 기록</a>
           <a href="/history">리포트</a>
         </nav>

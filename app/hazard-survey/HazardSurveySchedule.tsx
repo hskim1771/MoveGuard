@@ -137,6 +137,7 @@ export default function HazardSurveySchedule() {
           <a className="active" href="/hazard-survey" aria-current="page">
             일정관리
           </a>
+          <a href="/prevention-education">예방교육관리</a>
           <a href="/history">분석 기록</a>
         </nav>
       </header>
