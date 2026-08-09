@@ -1,0 +1,9 @@
+{
+  "read_only_checkpoint": "/Users/admin/Documents/Codex/2026-08-02/ao/work/MoveGuard/checkpoints/human_pose_3d_v1/best.pt",
+  "split": "/Users/admin/Documents/Codex/2026-08-02/ao/work/MoveGuard/checkpoints/human_pose_3d_v1/split_manifest.json",
+  "train_count": 3828,
+  "validation_count": 545,
+  "test_count": 627,
+  "mediapipe_pck_0_10": 0.7878048780487805,
+  "refiner_5k_pck_0_10": 0.932520325203252
+}

@@ -1,0 +1,58 @@
+{
+  "definition": "same-image perturbation repeatability; not expert RULA accuracy",
+  "checkpoint": "checkpoints/industrial_clean_aug_v1/best.pt",
+  "sample_images": 210,
+  "groups": 21,
+  "variants": {
+    "brightness_80": {
+      "reference_detected": 196,
+      "detected_both": 186,
+      "detection_retention": 0.9489795918367347,
+      "landmark_self_mae_normalized": 0.01896092594774235,
+      "wrist_angle_repeat_mae_deg": 6.795350656353707,
+      "wrist_score_exact_repeatability": 0.9010416666666666,
+      "frame_rula_exact_repeatability": 0.9745222929936306,
+      "valid_wrist_comparisons": 192,
+      "valid_frame_rula_comparisons": 157
+    },
+    "brightness_120": {
+      "reference_detected": 196,
+      "detected_both": 184,
+      "detection_retention": 0.9387755102040817,
+      "landmark_self_mae_normalized": 0.019858375149221473,
+      "wrist_angle_repeat_mae_deg": 6.256713425651722,
+      "wrist_score_exact_repeatability": 0.8781725888324873,
+      "frame_rula_exact_repeatability": 0.9548387096774194,
+      "valid_wrist_comparisons": 197,
+      "valid_frame_rula_comparisons": 155
+    },
+    "jpeg_60": {
+      "reference_detected": 196,
+      "detected_both": 191,
+      "detection_retention": 0.9744897959183674,
+      "landmark_self_mae_normalized": 0.01881824539956891,
+      "wrist_angle_repeat_mae_deg": 6.047193588372119,
+      "wrist_score_exact_repeatability": 0.8492462311557789,
+      "frame_rula_exact_repeatability": 0.9371069182389937,
+      "valid_wrist_comparisons": 199,
+      "valid_frame_rula_comparisons": 159
+    },
+    "center_crop_5": {
+      "reference_detected": 196,
+      "detected_both": 187,
+      "detection_retention": 0.9540816326530612,
+      "landmark_self_mae_normalized": 0.04276372959197797,
+      "wrist_angle_repeat_mae_deg": 7.130630443528668,
+      "wrist_score_exact_repeatability": 0.8043478260869565,
+      "frame_rula_exact_repeatability": 0.9423076923076923,
+      "valid_wrist_comparisons": 184,
+      "valid_frame_rula_comparisons": 156
+    }
+  },
+  "overall": {
+    "detection_retention": 0.9540816326530612,
+    "wrist_score_exact_repeatability": 0.8588082901554405,
+    "frame_rula_exact_repeatability": 0.9521531100478469,
+    "wrist_angle_repeat_mae_deg": 6.5449577675759425
+  }
+}

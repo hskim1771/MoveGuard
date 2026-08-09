@@ -1,0 +1,104 @@
+{
+  "model": "industrial_clean_aug_v1",
+  "independent_test": true,
+  "evaluated_detected_images": 14744,
+  "overall_common_pck_0_10": 0.887715042609556,
+  "overall_common_pck_0_05": 0.7193235134531295,
+  "per_joint": {
+    "pelvis_center": {
+      "pck_0_10": 0.9450623982637005,
+      "pck_0_05": 0.8256918068366793,
+      "count": 14744
+    },
+    "left_hip": {
+      "pck_0_10": 0.9367878459034183,
+      "pck_0_05": 0.7930005425935974,
+      "count": 14744
+    },
+    "right_hip": {
+      "pck_0_10": 0.9352278893109062,
+      "pck_0_05": 0.795374389582203,
+      "count": 14744
+    },
+    "left_knee": {
+      "pck_0_10": 0.8455642973412913,
+      "pck_0_05": 0.6899077590884427,
+      "count": 14744
+    },
+    "right_knee": {
+      "pck_0_10": 0.8868014107433533,
+      "pck_0_05": 0.7112045577862182,
+      "count": 14744
+    },
+    "spine": {
+      "pck_0_10": 0.9688686923494303,
+      "pck_0_05": 0.8371540965816603,
+      "count": 14744
+    },
+    "left_ankle": {
+      "pck_0_10": 0.835729788388497,
+      "pck_0_05": 0.662438958220293,
+      "count": 14744
+    },
+    "right_ankle": {
+      "pck_0_10": 0.8742539338035811,
+      "pck_0_05": 0.6715274009766685,
+      "count": 14744
+    },
+    "left_foot": {
+      "pck_0_10": 0.7655317417254477,
+      "pck_0_05": 0.5617200217037439,
+      "count": 14744
+    },
+    "right_foot": {
+      "pck_0_10": 0.812194791101465,
+      "pck_0_05": 0.5692485078676072,
+      "count": 14744
+    },
+    "neck": {
+      "pck_0_10": 0.9607976125881714,
+      "pck_0_05": 0.9209848073792729,
+      "count": 14744
+    },
+    "left_shoulder": {
+      "pck_0_10": 0.9474362452523061,
+      "pck_0_05": 0.8383749321758003,
+      "count": 14744
+    },
+    "right_shoulder": {
+      "pck_0_10": 0.9510987520347259,
+      "pck_0_05": 0.8591291372761801,
+      "count": 14744
+    },
+    "left_elbow": {
+      "pck_0_10": 0.8889717851329354,
+      "pck_0_05": 0.6212018448182312,
+      "count": 14744
+    },
+    "right_elbow": {
+      "pck_0_10": 0.8710661964188823,
+      "pck_0_05": 0.6276451437873033,
+      "count": 14744
+    },
+    "left_wrist": {
+      "pck_0_10": 0.8351871947911015,
+      "pck_0_05": 0.6404639175257731,
+      "count": 14744
+    },
+    "right_wrist": {
+      "pck_0_10": 0.8305751492132393,
+      "pck_0_05": 0.6034319045035269,
+      "count": 14744
+    }
+  },
+  "wrist_angle_mae": 14.625991596773831,
+  "wrist_angle_within_10": 0.5994748030511442,
+  "wrist_score_agreement": 0.6434913092409653,
+  "wrist_score_count": 15994,
+  "derived_frame_rula_agreement": 0.9484735781806911,
+  "derived_frame_rula_count": 12906,
+  "notes": [
+    "GT keypoint-derived 2D angles/scores; not expert final RULA accuracy",
+    "test cache was not used for model selection"
+  ]
+}

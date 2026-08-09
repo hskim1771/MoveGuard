@@ -1,0 +1,51 @@
+{
+  "source": "industrial train split only",
+  "source_train_count": 65060,
+  "quality_candidates_before_dedup": 17276,
+  "selected_count": 9979,
+  "selection_rate": 0.15338149400553336,
+  "thresholds": {
+    "mean_critical_confidence": 0.65,
+    "min_critical_confidence": 0.15,
+    "max_mean_normalized_disagreement": 0.25,
+    "min_frame_gap": 2
+  },
+  "rejection_reasons": {
+    "gt_outside_crop": 5782,
+    "low_mean_confidence": 39802,
+    "pose_or_label_disagreement": 621,
+    "implausible_left_right_ratio": 912,
+    "low_critical_confidence": 631,
+    "degenerate_segment": 36,
+    "near_duplicate_frame": 7297
+  },
+  "wrist_bending_distribution": {
+    "source": {
+      "0": 60684,
+      "1": 4376
+    },
+    "selected": {
+      "1": 721,
+      "0": 9258
+    }
+  },
+  "split_protection": {
+    "train_selected": 9979,
+    "validation_selected": 0,
+    "test_selected": 0
+  },
+  "augmentation_plan": {
+    "online_only": true,
+    "copies_per_epoch": "random; source files are not duplicated",
+    "allowed": [
+      "brightness",
+      "contrast",
+      "jpeg",
+      "small_noise_blur",
+      "rotation_3deg",
+      "translation_scale_5pct",
+      "small_occlusion"
+    ],
+    "horizontal_flip": "only with left/right keypoint and label remapping"
+  }
+}

@@ -1,0 +1,1 @@
+ALTER TABLE `measurement_sessions` ADD `metric_average` text DEFAULT '{}' NOT NULL;

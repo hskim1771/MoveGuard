@@ -1,0 +1,18 @@
+{
+  "seed": 20260804,
+  "learning_rate": 0.001,
+  "batch_size": 128,
+  "max_epochs": 80,
+  "optimizer": "AdamW",
+  "scheduler": null,
+  "loss": "SmoothL1 beta=0.02",
+  "augmentation": null,
+  "early_stopping_patience": 12,
+  "device": "mps",
+  "train": 20000,
+  "validation": 545,
+  "test": 627,
+  "detected_train": 19286,
+  "detected_validation": 539,
+  "detected_test": 615
+}

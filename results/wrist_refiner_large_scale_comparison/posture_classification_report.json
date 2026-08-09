@@ -1,0 +1,57 @@
+{
+  "existing_71_7_trace": "0.717103 is validation binary F1 for neck_bending, not an overall posture accuracy",
+  "checkpoint": "/Users/admin/Documents/Codex/2026-08-02/ao/work/MoveGuard/artifacts/aihub/multimodal_full/best.pt",
+  "test_count": 14744,
+  "metrics": [
+    {
+      "target": "neck",
+      "accuracy": 0.5566332067281606,
+      "macro_precision": 0.48035164129054087,
+      "macro_recall": 0.6096658186390184,
+      "macro_f1": 0.46966416356963664,
+      "weighted_f1": 0.5953139060789752,
+      "support": 14744,
+      "final_pipeline_note": "unchanged: wrist refiner is downstream of this frozen classifier"
+    },
+    {
+      "target": "trunk",
+      "accuracy": 0.8830032555615843,
+      "macro_precision": 0.8248640427105334,
+      "macro_recall": 0.8890999209188445,
+      "macro_f1": 0.8483373016479977,
+      "weighted_f1": 0.8882309345245779,
+      "support": 14744,
+      "final_pipeline_note": "unchanged: wrist refiner is downstream of this frozen classifier"
+    },
+    {
+      "target": "upperarm",
+      "accuracy": 0.7057107976125881,
+      "macro_precision": 0.4362459997748159,
+      "macro_recall": 0.6137407966002999,
+      "macro_f1": 0.4512126507067721,
+      "weighted_f1": 0.7155708470437588,
+      "support": 14744,
+      "final_pipeline_note": "unchanged: wrist refiner is downstream of this frozen classifier"
+    },
+    {
+      "target": "lowerarm",
+      "accuracy": 0.879137276180141,
+      "macro_precision": 0.5277619446001851,
+      "macro_recall": 0.7304583715775376,
+      "macro_f1": 0.5857990168816668,
+      "weighted_f1": 0.900517581047312,
+      "support": 14744,
+      "final_pipeline_note": "unchanged: wrist refiner is downstream of this frozen classifier"
+    },
+    {
+      "target": "legs",
+      "accuracy": 0.561584373304395,
+      "macro_precision": 0.38569522947546436,
+      "macro_recall": 0.4389755344933206,
+      "macro_f1": 0.3627112550081402,
+      "weighted_f1": 0.6165907362740796,
+      "support": 14744,
+      "final_pipeline_note": "unchanged: wrist refiner is downstream of this frozen classifier"
+    }
+  ]
+}
