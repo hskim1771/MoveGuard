@@ -14,6 +14,9 @@ export type MetricValues = Record<MetricKey, number>;
 
 export type MeasurementSessionInput = {
   id: string;
+  workerName: string;
+  jobName: string;
+  rulaScore: number | null;
   startedAt: string;
   endedAt: string;
   durationSeconds: number;

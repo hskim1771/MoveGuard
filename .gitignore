@@ -20,6 +20,9 @@
 
 # misc
 .DS_Store
+artifacts/
+.venv/
+__pycache__/
 *.pem
 
 # debug
